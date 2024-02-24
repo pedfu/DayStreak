@@ -1,0 +1,20 @@
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Translate animation for moving from left to right -->
+    <translate
+        android:fromXDelta="-200%"
+        android:toXDelta="300%"
+        android:fromYDelta="0%"
+        android:toYDelta="0%"
+        android:duration="4000"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator" />
+
+    <!-- Rotate animation for arching effect -->
+    <rotate
+        android:fromDegrees="-90"
+        android:toDegrees="0"
+        android:pivotX="-50%"
+        android:pivotY="100%"
+        android:startOffset="-700"
+        android:duration="4000"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator" />
+</set>

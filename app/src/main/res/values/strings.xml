@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">DAY STREAK</string>
+    <string name="app_description">Ignite your success</string>
+    <string name="intro_main_phrase">Ignite your success streak with Day Streak.</string>
+    <string name="intro_description">Discover a new way to manage your goals and stay motivated with Day Streak. Track your progress, build habits, and unlock your full potential, one successful day at a time.</string>
+    <string name="get_started">Get Started</string>
+
+    <!--    streak details-->
+    <string name="start_timer">Start timer</string>
+    <string name="complete_day">Complete day</string>
+
+    <string name="share">Share</string>
+    <string name="continue_">Continue</string>
+    <string name="back">Back</string>
+    <string name="create">Create</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="pending">Pending</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+    <string name="done">Done</string>
+    <string name="over">Over</string>
+    <string name="timer">Timer</string>
+    <string name="notifications">Notifications</string>
+    <string name="clear">Clear</string>
+    <string name="congrats">Congrats!</string>
+    <string name="mark_all_as_read">Mark all as read</string>
+
+    <string name="name">Name</string>
+    <string name="number_of">Number of...</string>
+    <string name="days">days</string>
+    <string name="email">Email</string>
+    <string name="invited_people">Invited people:</string>
+    <string name="min_time_per_day_optional">Min. time per day (optional)</string>
+    <string name="streak_goal_duration_optional">Streak goal duration (optional)</string>
+    <string name="category">Category</string>
+    <string name="background_picture">Background picture</string>
+    <string name="description">Description</string>
+    <string name="drop_or_select_your_picture">Drop or Select your picture here</string>
+
+    <string name="invite_other_to_same_streak">Invite others to do the same streak with you!</string>
+
+</resources>
