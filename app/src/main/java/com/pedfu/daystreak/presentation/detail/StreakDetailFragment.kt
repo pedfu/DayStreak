@@ -13,6 +13,11 @@ import androidx.navigation.fragment.findNavController
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentStreakDetailBinding
 import com.pedfu.daystreak.presentation.timer.TimerFragmentArgs
+import com.pedfu.daystreak.presentation.utils.Modals
+
+val CANCEL = 1
+val HIDE = 2
+val DELETE = 3
 
 class StreakDetailFragment : Fragment() {
 
@@ -47,19 +52,28 @@ class StreakDetailFragment : Fragment() {
             val args = TimerFragmentArgs.Builder(15).build()
             findNavController().navigate(R.id.action_from_details_to_timer, args.toBundle())
         }
+        imageButtonDelete.setOnClickListener {
+            showConfirmationAdvancedModal()
+        }
     }
 
-    // mudar nome
-    private fun showModal() {
-        val dialog = Dialog(this.requireContext())
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
-//        dialog.setContentView(R.id.layout_custom_dialog)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    private fun onOptionClicked(option: Int, dialog: Dialog) {
+        when (option) {
+            CANCEL -> dialog.hide()
+            HIDE -> dialog.hide()
+            CANCEL -> dialog.hide()
+        }
+    }
 
-        // config text
-        // config setonclicklistener
-
-        dialog.show()
+    private fun showConfirmationAdvancedModal() {
+        Modals.showConfirmationAdvancedDialog(
+            requireContext(),
+            ::onOptionClicked,
+            getString(R.string.are_you_sure_want_delete),
+            getString(R.string.cancel),
+            getString(R.string.hide),
+            getString(R.string.delete),
+            getString(R.string.confirm_delete_or_hide)
+        )
     }
 }

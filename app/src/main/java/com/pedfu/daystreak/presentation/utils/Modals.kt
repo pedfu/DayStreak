@@ -77,6 +77,50 @@ object Modals {
         dialog.show()
     }
 
+    fun showConfirmationAdvancedDialog(
+        context: Context,
+        onClick: (option: Int, dialog: Dialog) -> Unit,
+        title: String,
+        firstOptionText: String,
+        secondOptionText: String,
+        thirdOptionText: String,
+        message: String? = null,
+    ) {
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_confirm_advanced)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val textViewTitle = dialog.findViewById<TextView>(R.id.textViewTitle)
+        val textViewMessage = dialog.findViewById<TextView>(R.id.textViewMessage)
+        textViewTitle.text = title
+        textViewMessage.text = message ?: ""
+        textViewMessage.isVisible = message != null
+
+        val buttonClose = dialog.findViewById<ImageButton>(R.id.buttonClose)
+        val buttonFirstOption = dialog.findViewById<MaterialButton>(R.id.buttonFirstOption)
+        buttonFirstOption.text = firstOptionText
+        val buttonSecondOption = dialog.findViewById<MaterialButton>(R.id.buttonSecondOption)
+        buttonSecondOption.text = secondOptionText
+        val buttonThirdOption = dialog.findViewById<MaterialButton>(R.id.buttonThirdOption)
+        buttonThirdOption.text = thirdOptionText
+        buttonClose.setOnClickListener {
+            dialog.hide()
+        }
+        buttonFirstOption.setOnClickListener {
+            onClick(1, dialog)
+        }
+        buttonSecondOption.setOnClickListener {
+            onClick(2, dialog)
+        }
+        buttonThirdOption.setOnClickListener {
+            onClick(3, dialog)
+        }
+
+        dialog.show()
+    }
+
     fun showBadgeDialog(
         context: Context,
         onShareClick: () -> Unit,

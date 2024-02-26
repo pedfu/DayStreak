@@ -109,7 +109,7 @@
                     app:shapeAppearanceOverlay="@style/roundedSmall" />
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView2"
+                    android:id="@+id/cardViewTitleInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -137,8 +137,19 @@
                     android:layout_margin="10dp"
                     android:backgroundTint="@color/transparent"
                     android:src="@drawable/ic_pencil"
-                    app:layout_constraintEnd_toEndOf="@+id/cardView2"
-                    app:layout_constraintTop_toTopOf="@+id/cardView2" />
+                    app:layout_constraintEnd_toEndOf="@+id/cardViewTitleInfo"
+                    app:layout_constraintTop_toTopOf="@+id/cardViewTitleInfo" />
+
+                <ImageButton
+                    android:id="@+id/imageButtonDelete"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_margin="10dp"
+                    android:padding="10dp"
+                    android:background="@drawable/background_rounded_full_lightred"
+                    android:src="@drawable/ic_delete_black"
+                    app:layout_constraintEnd_toEndOf="@+id/detailsPicture"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -9,4 +9,6 @@
     <color name="gray_line">#99C8C8C8</color>
     <color name="white_semitransparent">#99FFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="blue_font">#74A5F8</color>
+    <color name="red_font">#F67C7D</color>
 </resources>
