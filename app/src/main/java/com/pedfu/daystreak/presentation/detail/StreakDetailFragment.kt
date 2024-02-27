@@ -55,7 +55,12 @@ class StreakDetailFragment : Fragment() {
         imageButtonDelete.setOnClickListener {
             showConfirmationAdvancedModal()
         }
+        buttonCompleteDay.setOnClickListener {
+            Modals.showCompleteDayDialog(requireContext(), ::onCompleteDaySave)
+        }
     }
+
+    private fun onCompleteDaySave() {}
 
     private fun onOptionClicked(option: Int, dialog: Dialog) {
         when (option) {

@@ -4,17 +4,25 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.DisplayMetrics
+import android.view.ViewGroup
 import android.view.Window
+import android.view.WindowManager.LayoutParams
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputLayout
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.domain.notification.NotificationItem
+import com.pedfu.daystreak.domain.streak.StreakStatus
 import com.pedfu.daystreak.presentation.home.adapters.NotificationAdapter
+import java.util.Date
 
 object Modals {
     fun showNotificationDialog(
@@ -27,6 +35,7 @@ object Modals {
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.dialog_notifications)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
 
         val buttonClose = dialog.findViewById<ImageButton>(R.id.buttonClose)
         buttonClose.setOnClickListener {
@@ -54,6 +63,7 @@ object Modals {
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.dialog_confirm)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
 
         val textViewTitle = dialog.findViewById<TextView>(R.id.textViewTitle)
         val textViewMessage = dialog.findViewById<TextView>(R.id.textViewMessage)
@@ -91,6 +101,7 @@ object Modals {
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.dialog_confirm_advanced)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
 
         val textViewTitle = dialog.findViewById<TextView>(R.id.textViewTitle)
         val textViewMessage = dialog.findViewById<TextView>(R.id.textViewMessage)
@@ -132,6 +143,7 @@ object Modals {
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.dialog_new_badge)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
 
         val textViewBadgeName = dialog.findViewById<TextView>(R.id.textViewBadgeName)
         val textViewMessage = dialog.findViewById<TextView>(R.id.textViewMessage)
@@ -145,6 +157,50 @@ object Modals {
         }
         buttonShare.setOnClickListener {
             onShareClick()
+        }
+
+        dialog.show()
+    }
+
+    fun showCompleteDayDialog(
+        context: Context,
+        onSave: () -> Unit,
+        startHour: Date? = null,
+        endHour: Date? = null,
+    ) {
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_complete_day)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+
+        val dateLabel = dialog.findViewById<TextView>(R.id.labelDate)
+        val textInputDate = dialog.findViewById<TextInputLayout>(R.id.textInputDate)
+
+        val todayTab = dialog.findViewById<TextView>(R.id.today)
+        val anotherDayTab = dialog.findViewById<LinearLayout>(R.id.anotherDay)
+        todayTab.setOnClickListener {
+            todayTab.background = ContextCompat.getDrawable(context, R.drawable.background_border_bottom_light)
+            anotherDayTab.background = null
+            dateLabel.isVisible = false
+            textInputDate.isVisible = false
+        }
+        anotherDayTab.setOnClickListener {
+            anotherDayTab.background = ContextCompat.getDrawable(context, R.drawable.background_border_bottom_light)
+            todayTab.background = null
+            dateLabel.isVisible = true
+            textInputDate.isVisible = true
+        }
+
+        val buttonClose = dialog.findViewById<ImageButton>(R.id.buttonClose)
+        val buttonSave = dialog.findViewById<MaterialButton>(R.id.buttonSave)
+        buttonClose.setOnClickListener {
+            dialog.hide()
+        }
+        buttonSave.setOnClickListener {
+//            onSave(startHour, endHour, date, description)
+            onSave()
         }
 
         dialog.show()

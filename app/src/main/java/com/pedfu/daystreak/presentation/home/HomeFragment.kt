@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.ScrollView
 import android.widget.TextView
@@ -135,7 +136,7 @@ class HomeFragment : Fragment() {
     private fun showCreateCategoryDialog() {
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
+        dialog.setCancelable(false)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setupStreakForm(dialog)
         dialog.show()
@@ -143,12 +144,7 @@ class HomeFragment : Fragment() {
 
     private fun setupStreakForm(dialog: Dialog) {
         dialog.setContentView(R.layout.dialog_streak_form)
-
-        // Get screen width
-        val displayMetrics = DisplayMetrics()
-        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-        val screenWidth = displayMetrics.widthPixels
-        dialog.window?.setLayout(screenWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
 
         val buttonClose = dialog.findViewById<ImageButton>(R.id.buttonClose)
         val buttonContinue = dialog.findViewById<MaterialButton>(R.id.buttonContinue)
