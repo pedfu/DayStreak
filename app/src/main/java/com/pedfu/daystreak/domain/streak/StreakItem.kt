@@ -7,10 +7,11 @@ enum class StreakStatus {
 }
 
 data class StreakItem(
-    val id: Long,
+    val id: Long?,
     val backgroundPicture: String,
-    val title: String,
+    val name: String,
     val description: String?,
     val categoryId: Long,
     val status: StreakStatus = StreakStatus.PENDING,
+    val currentStreakCount: Int = 0,
 )

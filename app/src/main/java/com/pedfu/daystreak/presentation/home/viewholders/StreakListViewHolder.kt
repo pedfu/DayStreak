@@ -18,7 +18,7 @@ class StreakListViewHolder(
 
     private fun ItemCardBinding.setupCard(streakItem: StreakItem, onClick: (streakId: Long) -> Unit) {
         contraintLayoutCard.setOnClickListener {
-            onClick(streakItem.id)
+            onClick(streakItem.id ?: 0)
         }
     }
 
@@ -49,7 +49,7 @@ class StreakListViewHolder(
     }
 
     private fun ItemCardBinding.setupText(streakItem: StreakItem) {
-        textViewTitle.text = streakItem.title
+        textViewTitle.text = streakItem.name
         textViewDescription.text = streakItem.description ?: ""
     }
 }

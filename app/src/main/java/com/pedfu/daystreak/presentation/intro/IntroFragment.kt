@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentIntroBinding
+import com.pedfu.daystreak.presentation.signin.SignInActivity
 
 class IntroFragment : Fragment() {
 
@@ -37,7 +38,12 @@ class IntroFragment : Fragment() {
         binding.mainPhrase.text = spannableStr
 
         binding.buttonStart.setOnClickListener {
-            findNavController().navigate(R.id.action_from_intro_to_home)
+//            findNavController().navigate(R.id.action_from_intro_to_home)
+//            (activity as? SignInActivity)?.signOutAndStartSignInActivity()
+        }
+
+        binding.buttonGoogle.setOnClickListener {
+            (activity as? SignInActivity)?.signIn()
         }
     }
 

@@ -35,6 +35,7 @@
             android:layout_weight="1">
 
             <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imageViewProfilePicture"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:scaleType="centerCrop"
@@ -120,10 +121,11 @@
             style="@style/SemiboldText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hi, UserXX!"
             android:textAlignment="center"
             android:textSize="36sp"
             android:textColor="@color/black"
+            android:maxLength="20"
+            tools:text="Hi, user!"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/arch1"
             app:layout_constraintTop_toBottomOf="@+id/startText" />

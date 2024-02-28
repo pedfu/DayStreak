@@ -12,4 +12,6 @@
     <color name="blue_font">#74A5F8</color>
     <color name="red_font">#F67C7D</color>
     <color name="yellow_premium">#EFCA48</color>
+    <color name="google_blue">#459DE4</color>
+    <color name="google_red">#FF0000</color>
 </resources>

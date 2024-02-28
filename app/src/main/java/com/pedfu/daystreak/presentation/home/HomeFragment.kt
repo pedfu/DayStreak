@@ -18,17 +18,21 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import com.pedfu.daystreak.MainActivity
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentHomeBinding
 import com.pedfu.daystreak.domain.notification.NotificationItem
 import com.pedfu.daystreak.domain.streak.StreakCategoryItem
 import com.pedfu.daystreak.domain.streak.StreakItem
 import com.pedfu.daystreak.domain.streak.StreakStatus
+import com.pedfu.daystreak.domain.user.User
 import com.pedfu.daystreak.presentation.detail.StreakDetailFragmentArgs
 import com.pedfu.daystreak.presentation.home.adapters.NotificationAdapter
 import com.pedfu.daystreak.presentation.home.adapters.StreakCategoryAdapter
@@ -38,6 +42,8 @@ import com.pedfu.daystreak.presentation.utils.Modals
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding: FragmentHomeBinding get() = _binding!!
+
+    private val viewModel: HomeViewModel by viewModels()
 
     private val adapter = StreakListAdapter(::navigateToDetails)
     private val categoryAdapter = StreakCategoryAdapter(::onSelectCategory)
@@ -62,6 +68,7 @@ class HomeFragment : Fragment() {
         binding.run {
             setupButtons()
             setupRecyclerView()
+            observeViewModel()
         }
     }
 
@@ -79,12 +86,29 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
+    private fun FragmentHomeBinding.observeViewModel() {
+        viewModel.userLiveData.observe(viewLifecycleOwner) { setUser(it) }
+    }
+
+    private fun FragmentHomeBinding.setUser(user: User?) {
+        if (user != null) {
+            Glide.with(requireContext())
+                .load(user.photoUrl)
+                .into(imageViewProfilePicture)
+
+            startMainText.text = getString(R.string.hi_username, user.username)
+        }
+    }
+
     private fun FragmentHomeBinding.setupButtons() {
         frameLayoutBell.setOnClickListener {
             showNotificationsDialog()
         }
         createStreakCategoryButton.setOnClickListener {
             showCreateCategoryDialog()
+        }
+        imageViewProfilePicture.setOnClickListener {
+            (activity as? MainActivity)?.signOutAndStartSignInActivity()
         }
     }
 
