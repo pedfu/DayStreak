@@ -30,7 +30,7 @@ Timer
 <img src="https://i.imgur.com/yUHM8N2.png" alt="drawing" width="200"/>
 
 Intro page
-<img src="https://i.imgur.com/SzW5stM.png" alt="drawing" width="200"/>
+<img src="https://i.imgur.com/flofnIY.png" alt="drawing" width="200"/>
 
 Modals
 <img src="https://i.imgur.com/qn9FPGL.png" alt="drawing" width="200"/>
