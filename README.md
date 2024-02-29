@@ -21,19 +21,19 @@ Badge System: Earn badges based on your streak performance, adding a gamified el
 # Screenshots
 
 Home Screen
-![Home page](https://i.imgur.com/kOnTFfb.png)
+<img src="https://i.imgur.com/kOnTFfb.png" alt="drawing" width="200"/>
 
 Streak Details
-![Streak details](https://i.imgur.com/ZYMoKw4.png)
+<img src="https://i.imgur.com/ZYMoKw4.png" alt="drawing" width="200"/>
 
 Timer
-![Timer](https://i.imgur.com/yUHM8N2.png)
+<img src="https://i.imgur.com/yUHM8N2.png" alt="drawing" width="200"/>
 
 Intro page
-![Intro](https://i.imgur.com/SzW5stM.png)
+<img src="https://i.imgur.com/SzW5stM.png" alt="drawing" width="200"/>
 
 Modals
-![Modal complete day](https://i.imgur.com/qn9FPGL.png)
-![Modal notifications](https://i.imgur.com/1nsAtzJ.png)
-![Modal badge](https://i.imgur.com/bpCZHdt.png)
-![Modal create streak](https://i.imgur.com/SzW5stM.png)
+<img src="https://i.imgur.com/qn9FPGL.png" alt="drawing" width="200"/>
+<img src="https://i.imgur.com/1nsAtzJ.png" alt="drawing" width="200"/>
+<img src="https://i.imgur.com/bpCZHdt.png" alt="drawing" width="200"/>
+<img src="https://i.imgur.com/SzW5stM.png" alt="drawing" width="200"/>
