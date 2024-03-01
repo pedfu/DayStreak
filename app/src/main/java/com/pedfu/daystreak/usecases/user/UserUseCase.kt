@@ -25,16 +25,20 @@ class UserUseCase(
                 "teste",
                 "https://lh3.googleusercontent.com/a/ACg8ocLpIcU5pnqjjDLovy1sIJPO-9PZbSnh3FRZ3EW9WgG4mA=s96-c",
             )
-            userRepository.saveUser(response.toUser())
+            userRepository.saveUser(response.toUser(user.token))
         }
+    }
+
+    suspend fun getUser(): User? {
+        return userRepository.getUser()
     }
 }
 
-fun UserResponse.toUser(): User = User(
+fun UserResponse.toUser(token: String): User = User(
     id,
+    token,
     username,
     email,
     uid,
     if (photoUrl != null) Uri.parse(photoUrl) else null,
-    null,
 )

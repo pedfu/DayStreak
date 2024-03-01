@@ -9,6 +9,7 @@ import com.pedfu.daystreak.data.remote.user.UserService
 import com.pedfu.daystreak.data.repositories.streak.StreakRepository
 import com.pedfu.daystreak.data.repositories.user.UserRepository
 import com.pedfu.daystreak.helpers.RetrofitBuilder
+import com.pedfu.daystreak.usecases.login.LoginUseCase
 import com.pedfu.daystreak.usecases.user.UserUseCase
 import retrofit2.Retrofit
 import retrofit2.create
@@ -38,6 +39,8 @@ object Inject {
     val userUseCase by lazy { UserUseCase() }
 
     val streakApi by lazy { unauthorizedRetrofit.create<StreakApi>() }
+
+    val loginUseCase by lazy { LoginUseCase() }
 
     fun init(application: Application) {
         appContext = application.applicationContext

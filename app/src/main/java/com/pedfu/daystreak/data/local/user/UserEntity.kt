@@ -9,8 +9,8 @@ class UserEntity(
     @PrimaryKey val id: Long,
     val username: String?,
     val email: String?,
+    val token: String,
     val uid: String?,
-    val tenantId: String?,
     val photoUri: String?,
 ) {
     constructor(user: User): this(
@@ -18,7 +18,7 @@ class UserEntity(
         username = user.username,
         email = user.email,
         uid = user.uid,
-        tenantId = user.tenantId,
+        token = user.token,
         photoUri = user.photoUrl.toString()
     )
 }

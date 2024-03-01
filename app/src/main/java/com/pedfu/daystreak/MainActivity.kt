@@ -44,18 +44,19 @@ class MainActivity : AppCompatActivity() {
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
+        // verify in view model with current database
         val currentUser = Firebase.auth.currentUser
         if (currentUser == null) {
             startSignInActivity()
         } else {
-            userLoggedIn = User(
-                id = 0,
-                username = currentUser.displayName,
-                email = currentUser.email,
-                uid = currentUser.uid,
-                tenantId = currentUser.tenantId,
-                photoUrl = currentUser.photoUrl
-            )
+            // get user from view model
+//            userLoggedIn = User(
+//                id = 0,
+//                username = currentUser.displayName,
+//                email = currentUser.email,
+//                uid = currentUser.uid,
+//                photoUrl = currentUser.photoUrl
+//            )
         }
     }
 

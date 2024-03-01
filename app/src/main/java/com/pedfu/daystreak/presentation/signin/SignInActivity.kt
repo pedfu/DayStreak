@@ -1,10 +1,15 @@
 package com.pedfu.daystreak.presentation.signin
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.AttributeSet
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.viewModels
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -15,6 +20,8 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.pedfu.daystreak.Inject
 import com.pedfu.daystreak.MainActivity
 import com.pedfu.daystreak.R
+import com.pedfu.daystreak.databinding.ActivitySignInBinding
+import com.pedfu.daystreak.databinding.FragmentHomeBinding
 import com.pedfu.daystreak.domain.user.User
 import kotlinx.coroutines.runBlocking
 
@@ -22,34 +29,31 @@ class SignInActivity : AppCompatActivity() {
     companion object {
         private const val SIGN_IN = 9001
     }
+    private lateinit var binding: ActivitySignInBinding
 
     private lateinit var auth: FirebaseAuth
+
+    private val viewModel: SignInViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
+        binding = ActivitySignInBinding.inflate(layoutInflater)
 
-        auth = FirebaseAuth.getInstance()
+        observeViewModel()
+    }
 
-        // redirect to main activity if logged
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            // trocar o runblocking
-            runBlocking {
-                Inject.userRepository.saveUser(
-                    User(
-                        id = 0,
-                        username = currentUser.displayName,
-                        email = currentUser.email,
-                        uid = currentUser.uid,
-                        tenantId = currentUser.tenantId,
-                        photoUrl = currentUser.photoUrl
-                    )
-                )
-            }
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+    private fun observeViewModel() {
+        viewModel.stateLiveData.observe(this) { setState(it) }
+
+    }
+
+    private fun setState(state: SignInState) {
+        when (state) {
+            SignInState.IDLE -> return
+            SignInState.LOADING -> return
+            SignInState.LOGGED_IN -> navigateToMainActivity()
+            SignInState.ERROR -> Toast.makeText(this, "Google sign in failed:", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -81,26 +85,26 @@ class SignInActivity : AppCompatActivity() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    runBlocking {
-                        val currentUser = auth.currentUser
-                        if (currentUser != null) {
-                            Inject.userRepository.saveUser(
-                                User(
-                                    id = 0,
-                                    username = currentUser.displayName,
-                                    email = currentUser.email,
-                                    uid = currentUser.uid,
-                                    tenantId = currentUser.tenantId,
-                                    photoUrl = currentUser.photoUrl
-                                )
-                            )
+                    val currUser = auth.currentUser
+                    currUser?.getIdToken(true)?.addOnCompleteListener { firebaseTask ->
+                        if (firebaseTask.isSuccessful) {
+                            val firebaseToken = firebaseTask.result.token
+
+                            // save token
+                            viewModel.saveUser(currUser, firebaseToken)
+                        } else {
+                            Toast.makeText(this, "Auth failed", Toast.LENGTH_SHORT).show()
                         }
                     }
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
                 } else {
                     Toast.makeText(this, "Auth failed", Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

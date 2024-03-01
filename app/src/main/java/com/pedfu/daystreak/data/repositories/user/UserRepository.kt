@@ -28,9 +28,9 @@ class UserRepository(
 
 fun UserEntity.toUser(): User = User(
     id = id,
+    token = token,
     username = username,
     email = email,
     uid = uid,
-    tenantId = tenantId,
     photoUrl = Uri.parse(photoUri)
 )
