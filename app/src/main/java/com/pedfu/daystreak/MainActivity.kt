@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
             startSignInActivity()
         } else {
             userLoggedIn = User(
-                userId = 0,
+                id = 0,
                 username = currentUser.displayName,
                 email = currentUser.email,
                 uid = currentUser.uid,

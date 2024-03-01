@@ -15,7 +15,7 @@ interface UserDao {
     @Query("SELECT * FROM user WHERE id = :id LIMIT 1")
     fun observeById(id: Long): Flow<UserEntity?>
 
-    @Query("SELECT * FROM user LIMIT 1")
+    @Query("SELECT * FROM user ORDER BY id DESC LIMIT 1")
     fun observe(): Flow<UserEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -34,11 +34,11 @@ class SignInActivity : AppCompatActivity() {
         // redirect to main activity if logged
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            // trocar o runbloacking
+            // trocar o runblocking
             runBlocking {
                 Inject.userRepository.saveUser(
                     User(
-                        userId = 0,
+                        id = 0,
                         username = currentUser.displayName,
                         email = currentUser.email,
                         uid = currentUser.uid,
@@ -62,6 +62,7 @@ class SignInActivity : AppCompatActivity() {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, SIGN_IN)
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == SIGN_IN) {
@@ -85,7 +86,7 @@ class SignInActivity : AppCompatActivity() {
                         if (currentUser != null) {
                             Inject.userRepository.saveUser(
                                 User(
-                                    userId = 0,
+                                    id = 0,
                                     username = currentUser.displayName,
                                     email = currentUser.email,
                                     uid = currentUser.uid,

@@ -6,8 +6,7 @@ import com.pedfu.daystreak.domain.user.User
 
 @Entity(tableName = "user")
 class UserEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long? = null,
-    val userId: Long,
+    @PrimaryKey val id: Long,
     val username: String?,
     val email: String?,
     val uid: String?,
@@ -15,7 +14,7 @@ class UserEntity(
     val photoUri: String?,
 ) {
     constructor(user: User): this(
-        userId = user.userId,
+        id = user.id,
         username = user.username,
         email = user.email,
         uid = user.uid,

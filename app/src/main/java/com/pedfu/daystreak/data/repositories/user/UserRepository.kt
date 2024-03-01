@@ -27,7 +27,7 @@ class UserRepository(
 }
 
 fun UserEntity.toUser(): User = User(
-    userId = userId,
+    id = id,
     username = username,
     email = email,
     uid = uid,

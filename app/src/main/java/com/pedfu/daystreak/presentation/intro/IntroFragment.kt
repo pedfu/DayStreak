@@ -37,12 +37,10 @@ class IntroFragment : Fragment() {
 
         binding.mainPhrase.text = spannableStr
 
-        binding.buttonStart.setOnClickListener {
-//            findNavController().navigate(R.id.action_from_intro_to_home)
-//            (activity as? SignInActivity)?.signOutAndStartSignInActivity()
+        binding.linearLayoutGoogleButton.setOnClickListener {
+            (activity as? SignInActivity)?.signIn()
         }
-
-        binding.buttonGoogle.setOnClickListener {
+        binding.signInButton.setOnClickListener {
             (activity as? SignInActivity)?.signIn()
         }
     }

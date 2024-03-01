@@ -3,7 +3,7 @@ package com.pedfu.daystreak.domain.user
 import android.net.Uri
 
 class User (
-    val userId: Long,
+    val id: Long,
     val username: String?,
     val email: String?,
     val uid: String?,
