@@ -25,6 +25,20 @@
         android:id="@+id/introFragment"
         android:name="com.pedfu.daystreak.presentation.intro.IntroFragment"
         android:label="Intro"
-        tools:layout="@layout/fragment_intro"/>
+        tools:layout="@layout/fragment_intro">
+        <action
+            android:id="@+id/action_from_intro_to_login"
+            app:destination="@id/loginFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.pedfu.daystreak.presentation.login.LoginFragment"
+        android:label="Intro"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_from_login_to_home"
+            app:destination="@id/homeFragment"/>
+    </fragment>
 
 </navigation>

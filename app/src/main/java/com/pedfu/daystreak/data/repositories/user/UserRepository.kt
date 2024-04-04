@@ -1,6 +1,5 @@
 package com.pedfu.daystreak.data.repositories.user
 
-import android.net.Uri
 import com.pedfu.daystreak.Inject
 import com.pedfu.daystreak.data.local.user.UserDao
 import com.pedfu.daystreak.data.local.user.UserEntity
@@ -25,12 +24,3 @@ class UserRepository(
         userDao.deleteAll()
     }
 }
-
-fun UserEntity.toUser(): User = User(
-    id = id,
-    token = token,
-    username = username,
-    email = email,
-    uid = uid,
-    photoUrl = Uri.parse(photoUri)
-)

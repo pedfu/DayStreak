@@ -41,7 +41,7 @@ class IntroFragment : Fragment() {
             (activity as? SignInActivity)?.signIn()
         }
         binding.signInButton.setOnClickListener {
-            (activity as? SignInActivity)?.signIn()
+            findNavController().navigate(R.id.action_from_intro_to_login)
         }
     }
 

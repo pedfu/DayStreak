@@ -4,9 +4,12 @@ import android.net.Uri
 
 class User (
     val id: Long,
-    val token: String,
-    val username: String?,
-    val email: String?,
-    val uid: String?,
+    val email: String,
+    val firstName: String,
+    val lastName: String,
+    val username: String,
+    val role: String,
     val photoUrl: Uri?,
+    val uuid: String,
+    val maxStreak: Int
 )

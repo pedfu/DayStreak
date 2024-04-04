@@ -39,7 +39,7 @@ class SignInViewModel(
     fun saveUser(fUser: FirebaseUser?, token: String?) {
         viewModelScope.launch {
             state = SignInState.LOADING
-            loginUseCase.saveUserAndToken(fUser, token)
+//            loginUseCase.saveUserAndToken(fUser, token)
             state = SignInState.LOGGED_IN
         }
     }
