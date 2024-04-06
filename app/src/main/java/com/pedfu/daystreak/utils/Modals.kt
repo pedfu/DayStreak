@@ -1,4 +1,4 @@
-package com.pedfu.daystreak.presentation.utils
+package com.pedfu.daystreak.utils
 
 import android.app.Dialog
 import android.content.Context

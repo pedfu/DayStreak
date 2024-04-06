@@ -21,8 +21,10 @@ class LoginUseCase(
     suspend fun login(usernameOrEmail: String, password: String) {
         val request = LoginRequest(usernameOrEmail, password)
         val response = loginService.login(request)
-        authorizationManager.token = response.tokenKey
-        val user = response.user.toUser()
-        userRepository.saveUser(user)
+        if (response != null) {
+            authorizationManager.token = response.tokenKey
+            val user = response.user.toUser()
+            userRepository.saveUser(user)
+        }
     }
 }

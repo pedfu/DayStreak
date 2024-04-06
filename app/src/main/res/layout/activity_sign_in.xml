@@ -8,5 +8,5 @@
     android:layout_height="match_parent"
     android:background="?android:attr/windowBackground"
     app:defaultNavHost="true"
-    app:navGraph="@navigation/nav_sign_in"
+    app:navGraph="@navigation/nav_main"
     tools:context=".presentation.signin.SignInActivity" />

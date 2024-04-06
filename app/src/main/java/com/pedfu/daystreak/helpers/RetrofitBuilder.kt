@@ -7,14 +7,15 @@ import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.time.Duration
 
 private const val AUTHORIZATION = "Authorization"
 
 class RetrofitBuilder(
     private val authorizationManager: AuthorizationManager?,
-    private val readTimeout: Duration? = null
-//    private val moshi: Moshi = Inject.moshi,
+    private val readTimeout: Duration? = null,
+    private val moshi: Moshi = Inject.moshi,
 ) {
     private val clientBuilder = OkHttpClient.Builder()
 
@@ -26,9 +27,10 @@ class RetrofitBuilder(
             configTimeout(readTimeout)
         }
 
+//            .addConverterFactory(GsonConverterFactory.create())
         return Retrofit.Builder()
-            .baseUrl("https://localhost:8000") // BASE URL FROM CONFIG
-//            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .baseUrl("https://ddf4-189-123-96-242.ngrok-free.app/") // BASE URL FROM CONFIG
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(clientBuilder.build())
             .build()
     }

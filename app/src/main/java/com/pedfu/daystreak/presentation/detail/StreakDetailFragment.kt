@@ -9,11 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentStreakDetailBinding
 import com.pedfu.daystreak.presentation.timer.TimerFragmentArgs
-import com.pedfu.daystreak.presentation.utils.Modals
+import com.pedfu.daystreak.utils.Modals
 
 val CANCEL = 1
 val HIDE = 2
@@ -24,9 +26,13 @@ class StreakDetailFragment : Fragment() {
     private var _binding: FragmentStreakDetailBinding? = null
     private val binding: FragmentStreakDetailBinding get() = _binding!!
 
+
+    private lateinit var onBackPressedCallback: OnBackPressedCallback
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupBackButton()
         binding.run {
             setupButtons()
         }
@@ -44,6 +50,12 @@ class StreakDetailFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setupBackButton() {
+        onBackPressedCallback = requireActivity().onBackPressedDispatcher.addCallback {
+            findNavController().navigateUp()
+        }
     }
 
     private fun FragmentStreakDetailBinding.setupButtons() {

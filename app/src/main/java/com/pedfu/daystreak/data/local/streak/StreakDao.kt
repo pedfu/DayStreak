@@ -9,6 +9,9 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface StreakDao {
+    @Query("SELECT * FROM streak")
+    suspend fun getAll(): List<StreakEntity>
+
     @Query("SELECT * FROM streak WHERE id = :id LIMIT 1")
     suspend fun findById(id: Long): StreakEntity?
 

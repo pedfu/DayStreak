@@ -1,5 +1,7 @@
 package com.pedfu.daystreak.data.remote.streak
 
+import com.pedfu.daystreak.domain.streak.StreakItem
+import com.pedfu.daystreak.domain.streak.StreakStatus
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.util.Date
@@ -8,10 +10,27 @@ import java.util.Date
 class StreakResponse (
     @Json(name = "id") val id: Long,
     @Json(name = "name") val name: String,
+    @Json(name = "duration_days") val durationDays: Int,
     @Json(name = "description") val description: String,
-    @Json(name = "streak_goal") val streakGoal: Int?, // duration days
-    @Json(name = "created_at") val createdAt: Date, // for offline update
-    @Json(name = "background") val background: String,
-    @Json(name = "category") val category: CategoryRequest,
-    @Json(name = "created_by") val createdBy: String // email? username? all?
-)
+    @Json(name = "created_by") val createdBy: String,
+    @Json(name = "category") val category: CategoryResponse,
+    @Json(name = "user_streak_id") val userStreakId: Long,
+    @Json(name = "status") val status: String,
+    @Json(name = "background_picture") val backgroundPicture: String,
+    @Json(name = "created_at") val createdAt: Date,
+    @Json(name = "max_streak") val maxStreak: Int,
+) {
+    fun toStreak(): StreakItem = StreakItem(
+        id = id,
+        name = name,
+        durationDays = durationDays,
+        description = description,
+        createdBy = createdBy,
+        categoryId = category.id,
+        userStreakId = userStreakId,
+        status = StreakStatus.valueOf(status),
+        backgroundPicture = backgroundPicture,
+        createdAt = createdAt,
+        maxStreak = maxStreak,
+    )
+}

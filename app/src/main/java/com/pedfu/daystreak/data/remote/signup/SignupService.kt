@@ -5,11 +5,13 @@ import com.pedfu.daystreak.data.remote.login.LoginApi
 import com.pedfu.daystreak.data.remote.login.LoginRequest
 import com.pedfu.daystreak.data.remote.login.LoginResponse
 import com.pedfu.daystreak.data.remote.user.RemoteService
+import com.squareup.moshi.Moshi
 import retrofit2.HttpException
 
 class SignupService (
-    private val signupApi: SignupApi = Inject.signupApi
-): RemoteService() {
+    private val signupApi: SignupApi = Inject.signupApi,
+    private val moshi: Moshi = Inject.moshi
+): RemoteService(moshi) {
     suspend fun signup(signupRequest: SignupRequest): SignupResponse {
         return try {
             signupApi.signup(signupRequest)

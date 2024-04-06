@@ -11,6 +11,7 @@ import com.pedfu.daystreak.data.remote.login.LoginService
 import com.pedfu.daystreak.data.remote.signup.SignupApi
 import com.pedfu.daystreak.data.remote.signup.SignupService
 import com.pedfu.daystreak.data.remote.streak.StreakApi
+import com.pedfu.daystreak.data.remote.streak.StreakService
 import com.pedfu.daystreak.data.remote.user.UserApi
 import com.pedfu.daystreak.data.remote.user.UserService
 import com.pedfu.daystreak.data.repositories.streak.StreakRepository
@@ -20,7 +21,10 @@ import com.pedfu.daystreak.data.stores.session.SessionStore
 import com.pedfu.daystreak.data.stores.session.SessionStoreImpl
 import com.pedfu.daystreak.helpers.RetrofitBuilder
 import com.pedfu.daystreak.usecases.login.LoginUseCase
+import com.pedfu.daystreak.usecases.refresh.RefreshUseCase
+import com.pedfu.daystreak.usecases.streak.StreakUseCase
 import com.pedfu.daystreak.usecases.user.UserUseCase
+import com.squareup.moshi.Moshi
 import retrofit2.Retrofit
 import retrofit2.create
 import java.lang.reflect.Constructor
@@ -29,6 +33,8 @@ object Inject {
     lateinit var appContext: Context
         private set
     lateinit var database: AppDatabase
+        private set
+    lateinit var moshi: Moshi
         private set
     lateinit var unauthorizedRetrofit: Retrofit
         private set
@@ -54,6 +60,8 @@ object Inject {
     val userUseCase by lazy { UserUseCase() }
 
     val streakApi by lazy { authorizedRetrofit.create<StreakApi>() }
+    val streakService by lazy { StreakService() }
+    val streakUseCase by lazy { StreakUseCase() }
 
     val signupApi by lazy { unauthorizedRetrofit.create<SignupApi>() }
     val signupService by lazy { SignupService() }
@@ -62,9 +70,12 @@ object Inject {
     val loginService by lazy { LoginService() }
     val loginUseCase by lazy { LoginUseCase() }
 
+    val refreshUseCase by lazy { RefreshUseCase() }
+
     fun init(application: Application) {
         appContext = application.applicationContext
         database = AppDatabase.getDatabase(appContext)
+        moshi = MoshiBuilder.build()
 
         sessionStore = store(SESSION_STORE, ::SessionStoreImpl)
         authorizationManager = AuthorizationManagerImpl()

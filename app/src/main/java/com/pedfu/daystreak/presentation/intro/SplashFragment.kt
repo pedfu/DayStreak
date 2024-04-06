@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentHomeBinding
@@ -17,6 +18,8 @@ import com.pedfu.daystreak.databinding.FragmentSplashBinding
 class SplashFragment : Fragment() {
     private var _binding: FragmentSplashBinding? = null
     private val binding: FragmentSplashBinding get() = _binding!!
+
+    private val viewModel: SplashViewModel by viewModels()
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -45,15 +48,34 @@ class SplashFragment : Fragment() {
         val sunRiseAnimation = AnimationUtils.loadAnimation(this.context, R.anim.sun_rise)
         binding.sunIcon.startAnimation(sunRiseAnimation)
 
-        Handler().postDelayed({
-            try {
-                binding.sunIcon.isVisible = false
-                binding.textView.isVisible = false
-                binding.textViewDescription.isVisible = false
+        binding.run {
+            observeViewModel()
+        }
+    }
+
+    private fun FragmentSplashBinding.observeViewModel() {
+        viewModel.stateLiveData.observe(viewLifecycleOwner) { setState(it) }
+    }
+
+    private fun FragmentSplashBinding.setState(state: SplashState) {
+        when (state) {
+            SplashState.LOGGED_IN -> {
+                sunIcon.isVisible = false
+                textView.isVisible = false
+                textViewDescription.isVisible = false
+
+                findNavController().popBackStack(R.id.splashFragment, false)
+                findNavController().navigate(R.id.action_from_splash_to_home)
+            }
+            SplashState.NOT_LOGGED_IN -> {
+                sunIcon.isVisible = false
+                textView.isVisible = false
+                textViewDescription.isVisible = false
 
                 findNavController().popBackStack(R.id.splashFragment, false)
                 findNavController().navigate(R.id.action_from_splash_to_intro)
-            } catch (err: Throwable) {} // Ignore errors
-        }, 4000)
+            }
+            else -> null
+        }
     }
 }

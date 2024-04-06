@@ -15,7 +15,7 @@ class UserJson(
     @Json(name = "last_name") val lastName: String,
     @Json(name = "username") val username: String,
     @Json(name = "role") val role: String,
-    @Json(name = "profile_picture") val photoUrl: String,
+    @Json(name = "profile_picture") val photoUrl: String?,
     @Json(name = "uuid") val uuid: String,
     @Json(name = "max_streak") val maxStreak: Int,
 ) {
@@ -38,7 +38,7 @@ class UserJson(
         lastName,
         username,
         role,
-        Uri.parse(photoUrl),
+        if (photoUrl != null) Uri.parse(photoUrl) else null,
         uuid,
         maxStreak
     )

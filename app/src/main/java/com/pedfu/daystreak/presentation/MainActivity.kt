@@ -1,12 +1,21 @@
-package com.pedfu.daystreak
+package com.pedfu.daystreak.presentation
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import com.pedfu.daystreak.Inject
+import com.pedfu.daystreak.R
 import com.pedfu.daystreak.presentation.signin.SignInActivity
 
 class MainActivity : AppCompatActivity() {
+    private val mainViewModel: MainViewModel by viewModels()
     private val authorizationManager = Inject.authorizationManager
+
+    private val navController by lazy {
+        findNavController(R.id.nav_host_fragment)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

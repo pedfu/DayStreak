@@ -4,18 +4,14 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageButton
-import android.widget.ScrollView
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
-import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -25,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
-import com.pedfu.daystreak.MainActivity
+import com.pedfu.daystreak.presentation.MainActivity
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentHomeBinding
 import com.pedfu.daystreak.domain.notification.NotificationItem
@@ -33,34 +29,28 @@ import com.pedfu.daystreak.domain.streak.StreakCategoryItem
 import com.pedfu.daystreak.domain.streak.StreakItem
 import com.pedfu.daystreak.domain.streak.StreakStatus
 import com.pedfu.daystreak.domain.user.User
+import com.pedfu.daystreak.presentation.MainViewModel
 import com.pedfu.daystreak.presentation.detail.StreakDetailFragmentArgs
 import com.pedfu.daystreak.presentation.home.adapters.NotificationAdapter
 import com.pedfu.daystreak.presentation.home.adapters.StreakCategoryAdapter
 import com.pedfu.daystreak.presentation.home.adapters.StreakListAdapter
-import com.pedfu.daystreak.presentation.utils.Modals
+import com.pedfu.daystreak.utils.Modals
+import com.pedfu.daystreak.utils.lazyViewModel
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding: FragmentHomeBinding get() = _binding!!
 
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel: HomeViewModel by lazyViewModel {
+        HomeViewModel()
+    }
+    private val mainViewModel: MainViewModel by viewModels()
 
     private val adapter = StreakListAdapter(::navigateToDetails)
     private val categoryAdapter = StreakCategoryAdapter(::onSelectCategory)
     private val notificationAdapter = NotificationAdapter(::handleNotificationClick, ::handleShareClick, ::handleShareClick)
 
-    private val listOfItems = listOf(StreakItem(1, "", "Test titulo", "Teste descricao", 1, StreakStatus.PENDING),
-        StreakItem(2, "", "Test titulo 2", "Teste descricao", 2, StreakStatus.PENDING),
-        StreakItem(3, "", "Test titulo3", "Teste descricao", 3, StreakStatus.DAY_DONE),
-        StreakItem(4, "", "Test titulo4", "Teste descricao", 2, StreakStatus.STREAK_OVER),
-        StreakItem(5, "", "Test titulo5", "Teste descricao", 2, StreakStatus.PENDING),
-        StreakItem(6, "", "Test titulo6", "Teste descricao", 1, StreakStatus.PENDING),
-        StreakItem(7, "", "Test titulo7", "Teste descricao", 4, StreakStatus.PENDING),
-        StreakItem(8, "", "Test titulo8", "Teste descricao", 1, StreakStatus.PENDING),
-        StreakItem(9, "", "Test titulo9", "Teste descricao", 3, StreakStatus.PENDING),
-        StreakItem(10, "", "Test titulo10", "Teste descricao", 2, StreakStatus.PENDING),
-        StreakItem(11, "", "Test titulo11", "Teste descricao", 2, StreakStatus.PENDING)
-    )
+    private val listOfItems = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

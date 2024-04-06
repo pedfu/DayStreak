@@ -6,6 +6,8 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.pedfu.daystreak.data.local.category.CategoryEntity
 import com.pedfu.daystreak.domain.streak.StreakItem
+import com.pedfu.daystreak.domain.streak.StreakStatus
+import java.util.Date
 
 @Entity(
     tableName = "streak",
@@ -25,19 +27,41 @@ import com.pedfu.daystreak.domain.streak.StreakItem
 class StreakEntity(
     @PrimaryKey(autoGenerate = true) val id: Long? = null,
     val name: String,
+    val durationDays: Int,
     val description: String?,
-    val categoryId: Long, // modificar para relacionamento
+    val createdBy: String,
+    val categoryId: Long,
+    val userStreakId: Long,
     val status: String,
-    val backgroundUri: String,
-    val currentStreakCount: Int,
+    val backgroundPicture: String,
+    val createdAt: Date,
+    val maxStreak: Int,
 ) {
     constructor(streak: StreakItem): this(
         id = streak.id,
         name = streak.name,
+        durationDays = streak.durationDays,
         description = streak.description,
+        createdBy = streak.createdBy,
         categoryId = streak.categoryId,
+        userStreakId = streak.userStreakId,
         status = streak.status.name,
-        backgroundUri = streak.backgroundPicture,
-        currentStreakCount = streak.currentStreakCount,
+        backgroundPicture = streak.backgroundPicture,
+        createdAt = streak.createdAt,
+        maxStreak = streak.maxStreak,
+    )
+
+    fun toStreak(): StreakItem = StreakItem(
+        id = id,
+        name = name,
+        durationDays = durationDays,
+        description = description,
+        createdBy = createdBy,
+        categoryId = categoryId,
+        userStreakId = userStreakId,
+        status = StreakStatus.valueOf(status),
+        backgroundPicture = backgroundPicture,
+        createdAt = createdAt,
+        maxStreak = maxStreak,
     )
 }

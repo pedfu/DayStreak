@@ -14,7 +14,7 @@
         android:theme="@style/Theme.DayStreak"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.login.LoginActivity"
@@ -30,5 +30,7 @@
             </intent-filter>
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>

@@ -1,5 +1,7 @@
 package com.pedfu.daystreak.domain.streak
 
+import java.util.Date
+
 enum class StreakStatus {
     DAY_DONE,
     PENDING,
@@ -8,10 +10,14 @@ enum class StreakStatus {
 
 data class StreakItem(
     val id: Long?,
-    val backgroundPicture: String,
     val name: String,
+    val durationDays: Int,
     val description: String?,
+    val createdBy: String,
     val categoryId: Long,
+    val userStreakId: Long,
     val status: StreakStatus = StreakStatus.PENDING,
-    val currentStreakCount: Int = 0,
+    val backgroundPicture: String,
+    val createdAt: Date,
+    val maxStreak: Int = 0,
 )

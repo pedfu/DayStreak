@@ -1,6 +1,5 @@
 package com.pedfu.daystreak.presentation.login
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,9 +8,7 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.pedfu.daystreak.MainActivity
 import com.pedfu.daystreak.R
-import com.pedfu.daystreak.databinding.FragmentHomeBinding
 import com.pedfu.daystreak.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
@@ -63,9 +60,10 @@ class LoginFragment : Fragment() {
     }
 
     private fun navigateToHome() {
-        val intent = Intent(requireContext(), MainActivity::class.java)
-        startActivity(intent)
-        requireActivity().finish()
+//        val intent = Intent(requireContext(), MainActivity::class.java)
+//        startActivity(intent)
+//        requireActivity().finish()
+        findNavController().navigate(R.id.action_from_login_to_home)
     }
 
 }
