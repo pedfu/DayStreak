@@ -5,6 +5,7 @@ import com.pedfu.daystreak.Inject
 import com.pedfu.daystreak.data.remote.authorization.AuthorizationManager
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -27,9 +28,12 @@ class RetrofitBuilder(
             configTimeout(readTimeout)
         }
 
-//            .addConverterFactory(GsonConverterFactory.create())
+        val httpLoggingInterceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
+        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        clientBuilder.addNetworkInterceptor(httpLoggingInterceptor)
+
         return Retrofit.Builder()
-            .baseUrl("https://ddf4-189-123-96-242.ngrok-free.app/") // BASE URL FROM CONFIG
+            .baseUrl("https://3406-189-123-96-242.ngrok-free.app/") // BASE URL FROM CONFIG
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(clientBuilder.build())
             .build()

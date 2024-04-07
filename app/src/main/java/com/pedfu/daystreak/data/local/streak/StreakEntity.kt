@@ -59,7 +59,7 @@ class StreakEntity(
         createdBy = createdBy,
         categoryId = categoryId,
         userStreakId = userStreakId,
-        status = StreakStatus.valueOf(status),
+        status = StreakStatus.fromString(status) ?: StreakStatus.PENDING,
         backgroundPicture = backgroundPicture,
         createdAt = createdAt,
         maxStreak = maxStreak,

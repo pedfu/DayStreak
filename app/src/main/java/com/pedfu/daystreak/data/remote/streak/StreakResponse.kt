@@ -17,7 +17,7 @@ class StreakResponse (
     @Json(name = "user_streak_id") val userStreakId: Long,
     @Json(name = "status") val status: String,
     @Json(name = "background_picture") val backgroundPicture: String,
-    @Json(name = "created_at") val createdAt: Date,
+//    @Json(name = "created_at") val createdAt: Date,
     @Json(name = "max_streak") val maxStreak: Int,
 ) {
     fun toStreak(): StreakItem = StreakItem(
@@ -28,9 +28,9 @@ class StreakResponse (
         createdBy = createdBy,
         categoryId = category.id,
         userStreakId = userStreakId,
-        status = StreakStatus.valueOf(status),
+        status = StreakStatus.fromString(status) ?: StreakStatus.PENDING,
         backgroundPicture = backgroundPicture,
-        createdAt = createdAt,
+        createdAt = Date(),
         maxStreak = maxStreak,
     )
 }

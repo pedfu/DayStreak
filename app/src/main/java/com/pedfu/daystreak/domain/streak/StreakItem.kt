@@ -2,10 +2,17 @@ package com.pedfu.daystreak.domain.streak
 
 import java.util.Date
 
-enum class StreakStatus {
-    DAY_DONE,
-    PENDING,
-    STREAK_OVER,
+enum class StreakStatus(s: String) {
+    DAY_DONE("day_done"),
+    PENDING("pending"),
+    STREAK_OVER("streak_over");
+
+    companion object {
+        // Function to map a string to the corresponding enum value
+        fun fromString(status: String): StreakStatus? {
+            return values().find { it.name.lowercase() == status }
+        }
+    }
 }
 
 data class StreakItem(

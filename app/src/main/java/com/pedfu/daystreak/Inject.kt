@@ -8,12 +8,15 @@ import com.pedfu.daystreak.data.remote.authorization.AuthorizationManager
 import com.pedfu.daystreak.data.remote.authorization.AuthorizationManagerImpl
 import com.pedfu.daystreak.data.remote.login.LoginApi
 import com.pedfu.daystreak.data.remote.login.LoginService
+import com.pedfu.daystreak.data.remote.notification.NotificationApi
+import com.pedfu.daystreak.data.remote.notification.NotificationService
 import com.pedfu.daystreak.data.remote.signup.SignupApi
 import com.pedfu.daystreak.data.remote.signup.SignupService
 import com.pedfu.daystreak.data.remote.streak.StreakApi
 import com.pedfu.daystreak.data.remote.streak.StreakService
 import com.pedfu.daystreak.data.remote.user.UserApi
 import com.pedfu.daystreak.data.remote.user.UserService
+import com.pedfu.daystreak.data.repositories.notification.NotificationRepository
 import com.pedfu.daystreak.data.repositories.streak.StreakRepository
 import com.pedfu.daystreak.data.repositories.user.UserRepository
 import com.pedfu.daystreak.data.stores.session.SESSION_STORE
@@ -21,6 +24,7 @@ import com.pedfu.daystreak.data.stores.session.SessionStore
 import com.pedfu.daystreak.data.stores.session.SessionStoreImpl
 import com.pedfu.daystreak.helpers.RetrofitBuilder
 import com.pedfu.daystreak.usecases.login.LoginUseCase
+import com.pedfu.daystreak.usecases.notification.NotificationUseCase
 import com.pedfu.daystreak.usecases.refresh.RefreshUseCase
 import com.pedfu.daystreak.usecases.streak.StreakUseCase
 import com.pedfu.daystreak.usecases.user.UserUseCase
@@ -65,6 +69,12 @@ object Inject {
 
     val signupApi by lazy { unauthorizedRetrofit.create<SignupApi>() }
     val signupService by lazy { SignupService() }
+
+    val notificationDao by lazy { database.notificationDao() }
+    val notificationRepository by lazy { NotificationRepository() }
+    val nofiticationApi by lazy { authorizedRetrofit.create<NotificationApi>() }
+    val notificationService by lazy { NotificationService() }
+    val notificationUseCase by lazy { NotificationUseCase() }
 
     val loginApi by lazy { unauthorizedRetrofit.create<LoginApi>() }
     val loginService by lazy { LoginService() }

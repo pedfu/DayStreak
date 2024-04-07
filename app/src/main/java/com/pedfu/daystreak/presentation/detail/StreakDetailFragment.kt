@@ -11,21 +11,32 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentStreakDetailBinding
+import com.pedfu.daystreak.domain.streak.StreakItem
+import com.pedfu.daystreak.presentation.MainViewModel
 import com.pedfu.daystreak.presentation.timer.TimerFragmentArgs
+import com.pedfu.daystreak.utils.ImageProvider
 import com.pedfu.daystreak.utils.Modals
+import com.pedfu.daystreak.utils.lazyViewModel
 
-val CANCEL = 1
-val HIDE = 2
-val DELETE = 3
+const val CANCEL = 1
+const val HIDE = 2
+const val DELETE = 3
 
 class StreakDetailFragment : Fragment() {
 
     private var _binding: FragmentStreakDetailBinding? = null
     private val binding: FragmentStreakDetailBinding get() = _binding!!
 
+    private val args by navArgs<StreakDetailFragmentArgs>()
+
+    private val viewModel by lazyViewModel {
+        StreakDetailViewModel(args.streakId)
+    }
 
     private lateinit var onBackPressedCallback: OnBackPressedCallback
 
@@ -34,6 +45,8 @@ class StreakDetailFragment : Fragment() {
 
         setupBackButton()
         binding.run {
+            observeViewModel()
+            setupSwipeRefresh()
             setupButtons()
         }
     }
@@ -58,6 +71,17 @@ class StreakDetailFragment : Fragment() {
         }
     }
 
+    private fun FragmentStreakDetailBinding.setupSwipeRefresh() {
+        swipeRefreshLayout.setOnRefreshListener {
+            viewModel.refreshDetails()
+        }
+    }
+
+    private fun FragmentStreakDetailBinding.observeViewModel() {
+        viewModel.stateLiveData.observe(viewLifecycleOwner) { setState(it) }
+        viewModel.streakLiveData.observe(viewLifecycleOwner) { setStreak(it) }
+    }
+
     private fun FragmentStreakDetailBinding.setupButtons() {
         buttonStartTimer.setOnClickListener {
             // precisa aparecer modal -> pessoa digita quantidade -> inicia timer
@@ -70,6 +94,18 @@ class StreakDetailFragment : Fragment() {
         buttonCompleteDay.setOnClickListener {
             Modals.showCompleteDayDialog(requireContext(), ::onCompleteDaySave)
         }
+    }
+
+    private fun FragmentStreakDetailBinding.setStreak(streak: StreakItem?) {
+        if (streak != null) {
+            textViewStreakTitle.text = streak.name
+            textViewStreakDescription.text = streak.description
+            ImageProvider.loadImageFromUrl(detailsPicture, streak.backgroundPicture)
+        }
+    }
+
+    private fun FragmentStreakDetailBinding.setState(state: StreakDetailState) {
+        swipeRefreshLayout.isRefreshing = state == StreakDetailState.LOADING
     }
 
     private fun onCompleteDaySave() {}

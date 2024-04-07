@@ -20,7 +20,7 @@ class NotificationViewHolder(
     }
 
     private fun ItemNotificationBinding.setupCard(notificationItem: NotificationItem) {
-        linearLayoutButtons.isVisible = notificationItem.showButton
+        linearLayoutButtons.isVisible = notificationItem.type == "confirm"
         imageViewNotRead.isVisible = !notificationItem.read
     }
 

@@ -20,7 +20,8 @@ class StreakService(
 
     suspend fun getStreaks(): List<StreakResponse> {
         return try {
-            streakApi.getStreaks()
+            val response = streakApi.getStreaks()
+            response.body() ?: emptyList()
         } catch (e: HttpException) {
             throw e
         }

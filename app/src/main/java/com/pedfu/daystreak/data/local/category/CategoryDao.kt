@@ -16,7 +16,7 @@ interface CategoryDao {
     fun observeById(id: Long): Flow<CategoryEntity?>
 
     @Query("SELECT * FROM category")
-    fun observe(): Flow<List<CategoryEntity?>>
+    fun observe(): Flow<List<CategoryEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(streak: CategoryEntity)

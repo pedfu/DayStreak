@@ -27,7 +27,7 @@ class NotificationAdapter(
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
         val notificationItem = items[position]
 
-        if (notificationItem.showButton) {
+        if (notificationItem.type == "confirm") {
             holder.bind(notificationItem, onConfirm, onDecline)
         } else {
             holder.bind(notificationItem, onClick)

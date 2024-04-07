@@ -4,7 +4,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface SignupApi {
-    @POST("signup/")
+    @POST("api/v1/signup/")
     suspend fun signup(@Body request: SignupRequest): SignupResponse
 
 }

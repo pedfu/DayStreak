@@ -1,235 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
-
-    <View
-        android:id="@+id/arch1"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="@drawable/bottom_arch_background_yellow_dark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/navbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingVertical="10dp"
-        android:paddingHorizontal="20dp"
-        android:weightSum="7"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/frameLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_weight="1">
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imageViewProfilePicture"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/intro_image"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/rounded" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:text="@string/app_name"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            style="@style/SemiboldText"
-            android:textSize="20sp" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/frameLayoutBell"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_weight="1">
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="45dp"
-                android:layout_height="40dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_bell"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/rounded" />
-
-            <TextView
-                android:layout_width="13dp"
-                android:layout_height="13dp"
-                android:background="@drawable/background_rounded_sm_red"
-                android:padding="1dp"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginVertical="2dp"
-                android:text="9+"
-                android:textSize="8sp"
-                android:textColor="@color/white"
-                android:textAlignment="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/linearLayoutMain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:flow_verticalAlign="center"
-        android:layout_marginTop="80dp"
-        app:layout_constraintBottom_toTopOf="@+id/contraintLayoutDayStreak"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/arch1">
-
-        <TextView
-            android:id="@+id/startText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Start streaking now!"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="@+id/arch1"
-            app:layout_constraintEnd_toEndOf="@+id/arch1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/arch1" />
-
-        <TextView
-            android:id="@+id/startMainText"
-            style="@style/SemiboldText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="36sp"
-            android:textColor="@color/black"
-            android:maxLength="20"
-            tools:text="Hi, user!"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/arch1"
-            app:layout_constraintTop_toBottomOf="@+id/startText" />
-    </LinearLayout>
-
+    android:id="@+id/swipeRefreshLayout">
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/contraintLayoutDayStreak"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-80dp"
-        android:paddingHorizontal="50dp"
-        android:paddingVertical="10dp"
-        android:background="@drawable/background_rounded_orange"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/arch1">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <View
+            android:id="@+id/arch1"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@drawable/bottom_arch_background_yellow_dark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="wrap_content"
+            android:id="@+id/navbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="center_vertical"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
+            android:weightSum="7"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/frameLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imageViewProfilePicture"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/intro_image"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/rounded" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <TextView
-                android:id="@+id/dayStreakQnt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:text="@string/app_name"
+                android:textAlignment="center"
+                android:textColor="@color/black"
                 style="@style/SemiboldText"
-                android:layout_width="wrap_content"
+                android:textSize="20sp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/frameLayoutBell"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="89"
-                android:textColor="@color/white"
-                android:textSize="60sp" />
+                android:layout_gravity="start"
+                android:layout_weight="1">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="45dp"
+                    android:layout_height="40dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_bell"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/rounded" />
+
+                <TextView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:background="@drawable/background_rounded_sm_red"
+                    android:padding="1dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="2dp"
+                    android:text="9+"
+                    android:textSize="8sp"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayoutMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:flow_verticalAlign="center"
+            android:layout_marginTop="80dp"
+            app:layout_constraintBottom_toTopOf="@+id/contraintLayoutDayStreak"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/arch1">
 
             <TextView
-                android:id="@+id/dayStreakText"
+                android:id="@+id/startText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Start streaking now!"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/arch1"
+                app:layout_constraintEnd_toEndOf="@+id/arch1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/arch1" />
+
+            <TextView
+                android:id="@+id/startMainText"
+                style="@style/SemiboldText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="36sp"
+                android:textColor="@color/black"
+                android:maxLength="20"
+                tools:text="Hi, user!"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/arch1"
+                app:layout_constraintTop_toBottomOf="@+id/startText" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/contraintLayoutDayStreak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-80dp"
+            android:paddingHorizontal="50dp"
+            android:paddingVertical="10dp"
+            android:background="@drawable/background_rounded_orange"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/arch1">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="day streak"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/dayStreakQnt"
+                    style="@style/SemiboldText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="89"
+                    android:textColor="@color/white"
+                    android:textSize="60sp" />
+
+                <TextView
+                    android:id="@+id/dayStreakText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="day streak"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/contraintLayoutCategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contraintLayoutDayStreak">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewStreakCategories"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/contraintLayoutCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingRight="50dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:gravity="center_vertical"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:itemCount="8"
-            tools:listitem="@layout/item_streak_category" />
+            app:layout_constraintTop_toBottomOf="@+id/contraintLayoutDayStreak">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/createStreakCategoryButton"
-            style="@style/Widget.MaterialComponents.Button.TextButton.Black"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginHorizontal="20dp"
-            android:padding="0dp"
-            android:text="+"
-            android:textAlignment="center"
-            app:iconPadding="0dp"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewStreakCategories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="50dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="8"
+                tools:listitem="@layout/item_streak_category" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/createStreakCategoryButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton.Black"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginHorizontal="20dp"
+                android:padding="0dp"
+                android:text="+"
+                android:textAlignment="center"
+                app:iconPadding="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/rounded" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewStreaks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearance="@style/rounded" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contraintLayoutCategory"
+            tools:itemCount="10"
+            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:listitem="@layout/item_card"
+            tools:orientation="horizontal"
+            tools:scrollbars="vertical" />
+
+        <FrameLayout
+            android:id="@+id/detailsFragment"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewStreaks"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contraintLayoutCategory"
-        tools:itemCount="10"
-        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        tools:listitem="@layout/item_card"
-        tools:orientation="horizontal"
-        tools:scrollbars="vertical" />
-
-    <FrameLayout
-        android:id="@+id/detailsFragment"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

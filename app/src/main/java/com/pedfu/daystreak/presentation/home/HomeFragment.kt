@@ -29,6 +29,7 @@ import com.pedfu.daystreak.domain.streak.StreakCategoryItem
 import com.pedfu.daystreak.domain.streak.StreakItem
 import com.pedfu.daystreak.domain.streak.StreakStatus
 import com.pedfu.daystreak.domain.user.User
+import com.pedfu.daystreak.presentation.MainState
 import com.pedfu.daystreak.presentation.MainViewModel
 import com.pedfu.daystreak.presentation.detail.StreakDetailFragmentArgs
 import com.pedfu.daystreak.presentation.home.adapters.NotificationAdapter
@@ -56,6 +57,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.run {
+            setupSwipeRefresh()
             setupButtons()
             setupRecyclerView()
             observeViewModel()
@@ -77,7 +79,15 @@ class HomeFragment : Fragment() {
     }
 
     private fun FragmentHomeBinding.observeViewModel() {
+        mainViewModel.stateLiveData.observe(viewLifecycleOwner) { setState(it) }
+
         viewModel.userLiveData.observe(viewLifecycleOwner) { setUser(it) }
+        viewModel.streaksLiveData.observe(viewLifecycleOwner) { focusOnSelectedCategory() }
+        viewModel.categoriesLiveData.observe(viewLifecycleOwner) { focusOnSelectedCategory(it) }
+        viewModel.selectedCategoryLiveData.observe(viewLifecycleOwner) { focusOnSelectedCategory() }
+        viewModel.notificationsLiveData.observe(viewLifecycleOwner) {
+            notificationAdapter.items = it
+        }
     }
 
     private fun FragmentHomeBinding.setUser(user: User?) {
@@ -87,6 +97,28 @@ class HomeFragment : Fragment() {
                 .into(imageViewProfilePicture)
 
             startMainText.text = getString(R.string.hi_username, user.username)
+        }
+    }
+
+    private fun FragmentHomeBinding.setState(state: MainState) {
+        swipeRefreshLayout.isRefreshing = state == MainState.REFRESHING_SWIPE
+    }
+
+    private fun focusOnSelectedCategory(categoriesP: List<StreakCategoryItem>? = null) {
+        val categories = categoriesP ?: viewModel.categoriesLiveData.value ?: emptyList()
+        if (categories.isEmpty()) return
+        val selectedCategory = categories.find { it.id == viewModel.selectedCategoryLiveData.value } ?: categories.first()
+        categoryAdapter.items = categories.map {
+            it.selected = it.id == selectedCategory.id
+            it
+
+        }
+        adapter.items = (viewModel.streaksLiveData.value ?: emptyList()).filter { it.categoryId == selectedCategory.id }
+    }
+
+    private fun FragmentHomeBinding.setupSwipeRefresh() {
+        swipeRefreshLayout.setOnRefreshListener {
+            mainViewModel.refresh(true)
         }
     }
 
@@ -107,21 +139,11 @@ class HomeFragment : Fragment() {
         recyclerViewStreakCategories.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         recyclerViewStreakCategories.adapter = categoryAdapter
         ViewCompat.setNestedScrollingEnabled(recyclerViewStreakCategories, true)
-        categoryAdapter.items = listOf(
-            StreakCategoryItem(1, "Main", true),
-            StreakCategoryItem(2, "Trabalho", false),
-            StreakCategoryItem(3, "Estudos", false),
-            StreakCategoryItem(4, "Internet", false),
-            StreakCategoryItem(5, "Hobbies", false),
-        )
 
-        // streak items
-        val selectedCategory = categoryAdapter.items.find { it.selected }
+        // streaks
         recyclerViewStreaks.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         recyclerViewStreaks.adapter = adapter
         ViewCompat.setNestedScrollingEnabled(recyclerViewStreaks, true)
-
-        adapter.items = listOfItems.filter { it.categoryId == selectedCategory?.id }
     }
 
     private fun onSelectCategory(id: Long) {
@@ -133,18 +155,14 @@ class HomeFragment : Fragment() {
         }
 
         // update adapter items
-        adapter.items = listOfItems.filter { it.categoryId == selectedCategory?.id }
+        adapter.items = (viewModel.streaksLiveData.value ?: emptyList())
+            .filter {
+                it.categoryId == selectedCategory?.id
+            }
     }
 
     private fun showNotificationsDialog() {
-        val items = listOf(
-            NotificationItem(1, "You got a 10 days streak badge in XXXX!", "", true, false),
-            NotificationItem(2, "You got invited to a streak challenge in XXXX against Pedro!", "", false, true),
-            NotificationItem(3, "You got a 10 days streak badge in XXXX!", "", true, false),
-            NotificationItem(4, "You got invited to a streak challenge in XXXX against Pedro!", "", false, false),
-            NotificationItem(5, "You got invited to a streak challenge in XXXX against Pedro!", "", true, true),
-        )
-        Modals.showNotificationDialog(requireContext(), items, notificationAdapter)
+        Modals.showNotificationDialog(requireContext(), notificationAdapter.items, notificationAdapter)
     }
 
     private fun showCreateCategoryDialog() {
@@ -204,13 +222,6 @@ class HomeFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
 //        recyclerView.adapter = adapter
         ViewCompat.setNestedScrollingEnabled(recyclerView, true)
-//        adapter.items = listOf(
-//            StreakCategoryItem(1, "Main", true),
-//            StreakCategoryItem(2, "Trabalho", false),
-//            StreakCategoryItem(3, "Estudos", false),
-//            StreakCategoryItem(4, "Internet", false),
-//            StreakCategoryItem(5, "Hobbies", false),
-//        )
 
         buttonBack.setOnClickListener {
             setupStreakForm(dialog)

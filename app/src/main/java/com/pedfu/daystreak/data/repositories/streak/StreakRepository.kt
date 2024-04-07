@@ -19,10 +19,15 @@ class StreakRepository(
     private val streakDao: StreakDao = Inject.streakDao,
     private val categoryDao: CategoryDao = Inject.categoryDao,
 ) {
-    val streaksFlow: Flow<List<StreakItem?>> = streakDao.observe().map { it.map { s -> s?.toStreak() } }
+    val streaksFlow: Flow<List<StreakItem>> = streakDao.observe().map {
+        it.map { s -> s.toStreak() }
+    }
+    val categoriesFlow: Flow<List<StreakCategoryItem>> = categoryDao.observe().map {
+        it.map { s -> s.toCategory() }
+    }
 
-    suspend fun getStreak(): StreakItem? {
-        return streakDao.findById(1L)?.toStreak()
+    suspend fun getStreak(id: Long): StreakItem? {
+        return streakDao.findById(id)?.toStreak()
     }
 
     suspend fun getAllStreaks(): List<StreakItem> {

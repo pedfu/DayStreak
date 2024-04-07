@@ -2,6 +2,7 @@ package com.pedfu.daystreak.data.local.category
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.pedfu.daystreak.domain.streak.StreakCategoryItem
 
 @Entity(
     tableName = "category"
@@ -11,4 +12,8 @@ class CategoryEntity (
     val name: String
 ) {
 
+    fun toCategory(): StreakCategoryItem = StreakCategoryItem(
+        id,
+        name
+    )
 }

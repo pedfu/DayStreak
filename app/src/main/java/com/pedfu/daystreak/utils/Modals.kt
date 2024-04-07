@@ -45,7 +45,7 @@ object Modals {
         val recyclerViewNotifications = dialog.findViewById<RecyclerView>(R.id.recyclerViewNotifications)
         recyclerViewNotifications.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         recyclerViewNotifications.adapter = notificationAdapter.apply {
-            items = notificationItems
+//            items = notificationItems
         }
         ViewCompat.setNestedScrollingEnabled(recyclerViewNotifications, true)
 

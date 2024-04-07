@@ -19,7 +19,7 @@ interface StreakDao {
     fun observeById(id: Long): Flow<StreakEntity?>
 
     @Query("SELECT * FROM streak")
-    fun observe(): Flow<List<StreakEntity?>>
+    fun observe(): Flow<List<StreakEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(streak: StreakEntity)
