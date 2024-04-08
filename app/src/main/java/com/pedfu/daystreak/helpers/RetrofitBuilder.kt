@@ -1,13 +1,11 @@
 package com.pedfu.daystreak.helpers
 
-import com.google.gson.GsonBuilder
 import com.pedfu.daystreak.Inject
 import com.pedfu.daystreak.data.remote.authorization.AuthorizationManager
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.time.Duration
 
@@ -33,7 +31,7 @@ class RetrofitBuilder(
         clientBuilder.addNetworkInterceptor(httpLoggingInterceptor)
 
         return Retrofit.Builder()
-            .baseUrl("https://3406-189-123-96-242.ngrok-free.app/") // BASE URL FROM CONFIG
+            .baseUrl("https://8a28-189-123-96-242.ngrok-free.app/") // BASE URL FROM CONFIG
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(clientBuilder.build())
             .build()

@@ -1,23 +1,19 @@
 package com.pedfu.daystreak.presentation.detail
 
 import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
-import androidx.fragment.app.viewModels
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentStreakDetailBinding
 import com.pedfu.daystreak.domain.streak.StreakItem
-import com.pedfu.daystreak.presentation.MainViewModel
 import com.pedfu.daystreak.presentation.timer.TimerFragmentArgs
 import com.pedfu.daystreak.utils.ImageProvider
 import com.pedfu.daystreak.utils.Modals
@@ -106,6 +102,7 @@ class StreakDetailFragment : Fragment() {
 
     private fun FragmentStreakDetailBinding.setState(state: StreakDetailState) {
         swipeRefreshLayout.isRefreshing = state == StreakDetailState.LOADING
+        progressBar.isVisible = state != StreakDetailState.IDLE
     }
 
     private fun onCompleteDaySave() {}

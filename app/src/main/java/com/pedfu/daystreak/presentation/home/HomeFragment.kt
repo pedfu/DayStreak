@@ -12,6 +12,7 @@ import android.view.WindowManager
 import android.widget.ImageButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,14 +22,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
-import com.pedfu.daystreak.presentation.MainActivity
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentHomeBinding
 import com.pedfu.daystreak.domain.notification.NotificationItem
 import com.pedfu.daystreak.domain.streak.StreakCategoryItem
-import com.pedfu.daystreak.domain.streak.StreakItem
-import com.pedfu.daystreak.domain.streak.StreakStatus
 import com.pedfu.daystreak.domain.user.User
+import com.pedfu.daystreak.presentation.MainActivity
 import com.pedfu.daystreak.presentation.MainState
 import com.pedfu.daystreak.presentation.MainViewModel
 import com.pedfu.daystreak.presentation.detail.StreakDetailFragmentArgs
@@ -85,9 +84,13 @@ class HomeFragment : Fragment() {
         viewModel.streaksLiveData.observe(viewLifecycleOwner) { focusOnSelectedCategory() }
         viewModel.categoriesLiveData.observe(viewLifecycleOwner) { focusOnSelectedCategory(it) }
         viewModel.selectedCategoryLiveData.observe(viewLifecycleOwner) { focusOnSelectedCategory() }
-        viewModel.notificationsLiveData.observe(viewLifecycleOwner) {
-            notificationAdapter.items = it
-        }
+        viewModel.notificationsLiveData.observe(viewLifecycleOwner) { setNotifications(it) }
+    }
+
+    private fun FragmentHomeBinding.setNotifications(notifications: List<NotificationItem>) {
+        notificationAdapter.items = notifications
+        textViewNotificationQnt.text = notifications.size.toString()
+        textViewNotificationQnt.isVisible = notifications.isNotEmpty()
     }
 
     private fun FragmentHomeBinding.setUser(user: User?) {
@@ -97,11 +100,13 @@ class HomeFragment : Fragment() {
                 .into(imageViewProfilePicture)
 
             startMainText.text = getString(R.string.hi_username, user.username)
+            dayStreakQnt.text = user.maxStreak.toString()
         }
     }
 
     private fun FragmentHomeBinding.setState(state: MainState) {
         swipeRefreshLayout.isRefreshing = state == MainState.REFRESHING_SWIPE
+        progressBar.isVisible = state == MainState.REFRESHING
     }
 
     private fun focusOnSelectedCategory(categoriesP: List<StreakCategoryItem>? = null) {
