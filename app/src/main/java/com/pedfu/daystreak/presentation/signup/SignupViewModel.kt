@@ -106,11 +106,7 @@ class SignupViewModel(
         viewModelScope.launch {
             state = SignupState.LOADING
             signupUseCase.signup(email, username, firstName, lastName, password)
-            val user = userRepository.getUser()
-            state = when (user) {
-                null -> SignupState.ERROR
-                else -> SignupState.DATA_SENT
-            }
+            state = SignupState.DATA_SENT
         }
     }
 
