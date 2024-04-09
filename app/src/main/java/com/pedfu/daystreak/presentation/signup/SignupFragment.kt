@@ -37,6 +37,7 @@ class SignupFragment : Fragment() {
 
     private fun FragmentSignupBinding.observeViewModel() {
         viewModel.stateLiveData.observe(viewLifecycleOwner) { setState(it) }
+        viewModel.emailErrorLiveData.observe(viewLifecycleOwner) { setEmailError(it) }
     }
 
     private fun FragmentSignupBinding.setupButtons() {
@@ -58,18 +59,26 @@ class SignupFragment : Fragment() {
 
     private fun FragmentSignupBinding.setState(state: SignupState) {
         signUpButton.isClickable = state == SignupState.READY
+        signUpButton.isEnabled = state == SignupState.READY
         signUpButton.error = if (state == SignupState.ERROR) "Wrong user or password" else null
 
         if (state == SignupState.DATA_SENT) {
-            navigateToHome()
+            navigateToEmailSent()
         }
     }
 
-    private fun navigateToHome() {
-        findNavController().navigate(R.id.action_from_signup_to_home)
+    private fun FragmentSignupBinding.setEmailError(showError: Boolean) {
+        when (showError) {
+            true -> editTextEmail.error = "Please enter a valid email address"
+            else -> editTextEmail.error = null
+        }
     }
 
     private fun navigateToLogin() {
         findNavController().navigate(R.id.action_from_signup_to_login)
+    }
+
+    private fun navigateToEmailSent() {
+        findNavController().navigate(R.id.action_from_signup_to_emailsent)
     }
 }

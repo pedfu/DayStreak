@@ -90,4 +90,9 @@
     <string name="would_you_like_to_save_track">Would you like to save this time duration?</string>
     <string name="track_saving_added_to_daily_progress">By saving, it will be added to your daily streak progress.</string>
 
+    <!-- Email sent -->
+    <string name="email_sent">Email sent!</string>
+    <string name="verify_email_to_finish_signup">Verify your email to finish signing up</string>
+    <string name="email_already_verified">Email already verified?</string>
+
 </resources>

@@ -8,14 +8,9 @@ import com.pedfu.daystreak.data.repositories.user.UserRepository
 
 class SignupUseCase(
     private val signupService: SignupService = Inject.signupService,
-    private val userRepository: UserRepository = Inject.userRepository,
-    private val authorizationManager: AuthorizationManager = Inject.authorizationManager
 ) {
     suspend fun signup(email: String, username: String, firstName: String, lastName: String, password: String) {
         val request = SignupRequest(email, username, firstName, lastName, password)
-        val response = signupService.signup(request)
-        authorizationManager.token = response.tokenKey
-        val user = response.user.toUser()
-        userRepository.saveUser(user)
+        signupService.signup(request)
     }
 }

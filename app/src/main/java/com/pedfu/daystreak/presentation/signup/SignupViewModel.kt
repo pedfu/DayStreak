@@ -1,13 +1,15 @@
 package com.pedfu.daystreak.presentation.signup
 
+import android.text.TextUtils
+import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.pedfu.daystreak.Inject
 import com.pedfu.daystreak.data.repositories.user.UserRepository
-import com.pedfu.daystreak.usecases.login.LoginUseCase
-import androidx.lifecycle.viewModelScope
 import com.pedfu.daystreak.usecases.signup.SignupUseCase
 import kotlinx.coroutines.launch
+
 
 enum class SignupState {
     IDLE,
@@ -58,6 +60,7 @@ class SignupViewModel(
     val lastNameLiveData = MutableLiveData(lastName)
     val usernameLiveData = MutableLiveData(username)
     val passwordLiveData = MutableLiveData(password)
+    val emailErrorLiveData = MutableLiveData<Boolean>(false)
 
     fun onEmailChanged(text: String) {
         email = text
@@ -81,6 +84,7 @@ class SignupViewModel(
     }
 
     private fun checkDataState() {
+        if (isValidEmail(email)) emailErrorLiveData.value = false
         val ready =
             !email.isNullOrBlank() &&
             !firstName.isNullOrBlank() &&
@@ -94,6 +98,10 @@ class SignupViewModel(
     }
 
     fun onSignupClicked() {
+        if (!isValidEmail(email)) {
+            emailErrorLiveData.value = true
+            return
+        }
         if (state < SignupState.READY) return
         viewModelScope.launch {
             state = SignupState.LOADING
@@ -104,5 +112,9 @@ class SignupViewModel(
                 else -> SignupState.DATA_SENT
             }
         }
+    }
+
+    private fun isValidEmail(target: CharSequence?): Boolean {
+        return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches()
     }
 }

@@ -12,7 +12,7 @@ class SignupService (
     private val signupApi: SignupApi = Inject.signupApi,
     private val moshi: Moshi = Inject.moshi
 ): RemoteService(moshi) {
-    suspend fun signup(signupRequest: SignupRequest): SignupResponse {
+    suspend fun signup(signupRequest: SignupRequest) {
         return try {
             signupApi.signup(signupRequest)
         } catch (e: HttpException) {
