@@ -43,6 +43,9 @@ class LoginFragment : Fragment() {
         signInButton.setOnClickListener {
             viewModel.onLoginClicked()
         }
+        signUpButton.setOnClickListener {
+            navigateToSignup()
+        }
     }
 
     private fun FragmentLoginBinding.setupTextEdit() {
@@ -60,10 +63,10 @@ class LoginFragment : Fragment() {
     }
 
     private fun navigateToHome() {
-//        val intent = Intent(requireContext(), MainActivity::class.java)
-//        startActivity(intent)
-//        requireActivity().finish()
         findNavController().navigate(R.id.action_from_login_to_home)
     }
 
+    private fun navigateToSignup() {
+        findNavController().navigate(R.id.action_from_login_to_signup)
+    }
 }

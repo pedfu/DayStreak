@@ -31,11 +31,27 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.pedfu.daystreak.presentation.login.LoginFragment"
-        android:label="Intro"
+        android:label="Login"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_from_login_to_home"
             app:destination="@id/homeFragment"/>
+        <action
+            android:id="@+id/action_from_login_to_signup"
+            app:destination="@id/signupFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="com.pedfu.daystreak.presentation.signup.SignupFragment"
+        android:label="Signup"
+        tools:layout="@layout/fragment_signup">
+        <action
+            android:id="@+id/action_from_signup_to_home"
+            app:destination="@id/homeFragment"/>
+        <action
+            android:id="@+id/action_from_signup_to_login"
+            app:destination="@id/loginFragment"/>
     </fragment>
 
     <fragment

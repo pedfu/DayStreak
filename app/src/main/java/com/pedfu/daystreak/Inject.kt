@@ -26,6 +26,7 @@ import com.pedfu.daystreak.helpers.RetrofitBuilder
 import com.pedfu.daystreak.usecases.login.LoginUseCase
 import com.pedfu.daystreak.usecases.notification.NotificationUseCase
 import com.pedfu.daystreak.usecases.refresh.RefreshUseCase
+import com.pedfu.daystreak.usecases.signup.SignupUseCase
 import com.pedfu.daystreak.usecases.streak.StreakUseCase
 import com.pedfu.daystreak.usecases.timer.TimerUseCase
 import com.pedfu.daystreak.usecases.user.UserUseCase
@@ -70,6 +71,7 @@ object Inject {
 
     val signupApi by lazy { unauthorizedRetrofit.create<SignupApi>() }
     val signupService by lazy { SignupService() }
+    val signupUseCase by lazy { SignupUseCase() }
 
     val notificationDao by lazy { database.notificationDao() }
     val notificationRepository by lazy { NotificationRepository() }

@@ -17,9 +17,15 @@
     <!-- Common -->
     <string name="sign_in">Sign in</string>
     <string name="enter_your_credentials_to_sign_in">Enter your credentials to sign in</string>
+    <string name="enter_your_credentials_to_create_account">Enter your information to create your account</string>
     <string name="username_or_email">Username or email</string>
     <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="username">Username</string>
     <string name="dont_have_an_account">Don\'t have an account?</string>
+    <string name="already_have_an_account">Already have an account?</string>
     <string name="sign_up">Sign up</string>
     <string name="delete">Delete</string>
     <string name="share">Share</string>
@@ -48,7 +54,6 @@
     <string name="another_day">Another day</string>
     <string name="number_of">Number of...</string>
     <string name="days">days</string>
-    <string name="email">Email</string>
     <string name="invited_people">Invited people:</string>
     <string name="min_time_per_day_optional">Min. time per day (optional)</string>
     <string name="streak_goal_duration_optional">Streak goal duration (optional)</string>
@@ -70,7 +75,6 @@
     <string name="settings">Settings</string>
     <string name="sign_out">Sign out</string>
     <string name="sign_in_with_google">Sign in with Google</string>
-    <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
