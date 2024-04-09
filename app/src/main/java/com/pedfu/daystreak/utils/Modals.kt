@@ -57,6 +57,7 @@ object Modals {
         onConfirm: () -> Unit,
         title: String,
         message: String? = null,
+        onCancel: (() -> Unit)? = null,
     ) {
         val dialog = Dialog(context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -72,13 +73,16 @@ object Modals {
         textViewMessage.isVisible = message != null
 
         val buttonClose = dialog.findViewById<ImageButton>(R.id.buttonClose)
-        val buttonConfirm = dialog.findViewById<ImageButton>(R.id.buttonConfirm)
-        val buttonCancel = dialog.findViewById<ImageButton>(R.id.buttonCancel)
+        val buttonConfirm = dialog.findViewById<MaterialButton>(R.id.buttonConfirm)
+        val buttonCancel = dialog.findViewById<MaterialButton>(R.id.buttonCancel)
         buttonClose.setOnClickListener {
             dialog.hide()
         }
         buttonCancel.setOnClickListener {
             dialog.hide()
+//            if (onCancel != null) {
+//                onCancel()
+//            }
         }
         buttonConfirm.setOnClickListener {
             onConfirm()

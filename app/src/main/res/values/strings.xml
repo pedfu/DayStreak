@@ -82,5 +82,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- Timer -->
+    <string name="would_you_like_to_save_track">Would you like to save this time duration?</string>
+    <string name="track_saving_added_to_daily_progress">By saving, it will be added to your daily streak progress.</string>
 
 </resources>

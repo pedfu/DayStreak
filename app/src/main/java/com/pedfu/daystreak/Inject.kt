@@ -27,6 +27,7 @@ import com.pedfu.daystreak.usecases.login.LoginUseCase
 import com.pedfu.daystreak.usecases.notification.NotificationUseCase
 import com.pedfu.daystreak.usecases.refresh.RefreshUseCase
 import com.pedfu.daystreak.usecases.streak.StreakUseCase
+import com.pedfu.daystreak.usecases.timer.TimerUseCase
 import com.pedfu.daystreak.usecases.user.UserUseCase
 import com.squareup.moshi.Moshi
 import retrofit2.Retrofit
@@ -81,6 +82,8 @@ object Inject {
     val loginUseCase by lazy { LoginUseCase() }
 
     val refreshUseCase by lazy { RefreshUseCase() }
+
+    val timerUseCase by lazy { TimerUseCase() }
 
     fun init(application: Application) {
         appContext = application.applicationContext
