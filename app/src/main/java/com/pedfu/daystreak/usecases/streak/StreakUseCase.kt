@@ -1,6 +1,7 @@
 package com.pedfu.daystreak.usecases.streak
 
 import com.pedfu.daystreak.Inject
+import com.pedfu.daystreak.data.remote.streak.CategoryRequest
 import com.pedfu.daystreak.data.remote.streak.StreakService
 import com.pedfu.daystreak.data.repositories.streak.StreakRepository
 import com.pedfu.daystreak.domain.streak.StreakCategoryItem
@@ -25,5 +26,10 @@ class StreakUseCase(
 
     suspend fun saveCategory(category: StreakCategoryItem) {
         streakRepository.saveCategory(category)
+    }
+
+    suspend fun createCategory(category: CategoryRequest) {
+        // api call
+        // save repo if api call succeed
     }
 }

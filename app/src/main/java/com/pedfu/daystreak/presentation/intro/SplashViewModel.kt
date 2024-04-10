@@ -2,15 +2,12 @@ package com.pedfu.daystreak.presentation.intro
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.pedfu.daystreak.Inject
-import com.pedfu.daystreak.data.repositories.user.UserRepository
-import com.pedfu.daystreak.usecases.login.LoginUseCase
 import androidx.lifecycle.viewModelScope
+import com.pedfu.daystreak.Inject
 import com.pedfu.daystreak.domain.user.User
 import com.pedfu.daystreak.usecases.streak.StreakUseCase
 import com.pedfu.daystreak.usecases.user.UserUseCase
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 enum class SplashState {
     LOADING,

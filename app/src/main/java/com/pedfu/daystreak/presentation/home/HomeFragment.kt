@@ -36,6 +36,7 @@ import com.pedfu.daystreak.presentation.home.adapters.StreakCategoryAdapter
 import com.pedfu.daystreak.presentation.home.adapters.StreakListAdapter
 import com.pedfu.daystreak.utils.Modals
 import com.pedfu.daystreak.utils.lazyViewModel
+import java.util.Calendar
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -49,8 +50,7 @@ class HomeFragment : Fragment() {
     private val adapter = StreakListAdapter(::navigateToDetails)
     private val categoryAdapter = StreakCategoryAdapter(::onSelectCategory)
     private val notificationAdapter = NotificationAdapter(::handleNotificationClick, ::handleShareClick, ::handleShareClick)
-
-    private val listOfItems = null
+    private val calendar = Calendar.getInstance()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -132,10 +132,18 @@ class HomeFragment : Fragment() {
             showNotificationsDialog()
         }
         createStreakCategoryButton.setOnClickListener {
-            showCreateCategoryDialog()
+            selectOptionModal.isVisible = true
+            selectOptionModal.layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
         }
         imageViewProfilePicture.setOnClickListener {
             (activity as? MainActivity)?.signOutAndStartSignInActivity()
+        }
+        buttonStreak.setOnClickListener {
+            selectOptionModal.isVisible = false
+        }
+        buttonCategory.setOnClickListener {
+            selectOptionModal.isVisible = false
+            showCreateCategoryDialog(true)
         }
     }
 
@@ -170,12 +178,16 @@ class HomeFragment : Fragment() {
         Modals.showNotificationDialog(requireContext(), notificationAdapter.items, notificationAdapter)
     }
 
-    private fun showCreateCategoryDialog() {
+    private fun showCreateCategoryDialog(isCategory: Boolean) {
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        setupStreakForm(dialog)
+
+        when (isCategory) {
+            true -> setupCreateCategoryForm(dialog)
+            else -> setupStreakForm(dialog)
+        }
         dialog.show()
     }
 
@@ -239,6 +251,32 @@ class HomeFragment : Fragment() {
             dialog.hide()
         }
         editTextEmail.addTextChangedListener {  }
+    }
+
+    private fun setupCreateCategoryForm(dialog: Dialog) {
+        dialog.setContentView(R.layout.dialog_category_form)
+        dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
+
+        val buttonClose = dialog.findViewById<ImageButton>(R.id.buttonClose)
+        val buttonBack = dialog.findViewById<MaterialButton>(R.id.buttonBack)
+        val buttonCreate = dialog.findViewById<MaterialButton>(R.id.buttonCreate)
+        val editTextName = dialog.findViewById<TextInputEditText>(R.id.editTextName)
+
+        buttonCreate.setOnClickListener {
+            viewModel.onCreateCategory()
+            dialog.hide()
+        }
+        buttonClose.setOnClickListener {
+            // clear data in view model
+            viewModel.onCategoryNameChanged("")
+            dialog.hide()
+        }
+        buttonBack.setOnClickListener {
+            // clear data in view model
+            viewModel.onCategoryNameChanged("")
+            dialog.hide()
+        }
+        editTextName.addTextChangedListener { viewModel.onCategoryNameChanged(it.toString()) }
     }
 
     private fun handleShareClick() {}

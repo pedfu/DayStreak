@@ -1,11 +1,11 @@
 package com.pedfu.daystreak.presentation.login
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.pedfu.daystreak.R
@@ -55,7 +55,8 @@ class LoginFragment : Fragment() {
 
     private fun FragmentLoginBinding.setState(state: LoginState) {
         signInButton.isClickable = state == LoginState.READY
-        signInButton.error = if (state == LoginState.ERROR) "Wrong user or password" else null
+        signInButton.isEnabled = state == LoginState.READY
+//        signInButton.error = if (state == LoginState.ERROR) "Wrong user or password" else null
 
         if (state == LoginState.LOGGED_IN) {
             navigateToHome()

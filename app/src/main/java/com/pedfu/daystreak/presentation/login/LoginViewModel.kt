@@ -2,10 +2,10 @@ package com.pedfu.daystreak.presentation.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.pedfu.daystreak.Inject
 import com.pedfu.daystreak.data.repositories.user.UserRepository
 import com.pedfu.daystreak.usecases.login.LoginUseCase
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
 enum class LoginState {
@@ -61,11 +61,10 @@ class LoginViewModel(
         if (state < LoginState.READY) return
         viewModelScope.launch {
             state = LoginState.LOADING
-            loginUseCase.login(usernameOrEmail, password)
-            val user = userRepository.getUser()
-            state = when (user) {
-                null -> LoginState.ERROR
-                else -> LoginState.LOGGED_IN
+            val success = loginUseCase.login(usernameOrEmail, password)
+            state = when (success) {
+                true -> LoginState.LOGGED_IN
+                else -> LoginState.ERROR
             }
         }
     }
