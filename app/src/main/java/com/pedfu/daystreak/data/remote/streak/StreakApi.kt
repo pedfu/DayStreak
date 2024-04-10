@@ -17,4 +17,7 @@ interface StreakApi {
 
     @POST("api/v1/streak")
     suspend fun createStreak(@Body streakRequest: StreakRequest): StreakResponse
+
+    @POST("api/v1/category/")
+    suspend fun createCategory(@Body streakRequest: CategoryRequest): CategoryResponse
 }

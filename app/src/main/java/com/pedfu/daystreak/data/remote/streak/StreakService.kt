@@ -18,6 +18,14 @@ class StreakService(
         }
     }
 
+    suspend fun createCategory(categoryRequest: CategoryRequest): CategoryResponse {
+        return try {
+            streakApi.createCategory(categoryRequest)
+        } catch (e: HttpException) {
+            throw e
+        }
+    }
+
     suspend fun getStreaks(): List<StreakResponse> {
         return try {
             val response = streakApi.getStreaks()

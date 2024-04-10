@@ -140,6 +140,7 @@ class HomeFragment : Fragment() {
         }
         buttonStreak.setOnClickListener {
             selectOptionModal.isVisible = false
+            showCreateCategoryDialog(false)
         }
         buttonCategory.setOnClickListener {
             selectOptionModal.isVisible = false
@@ -160,18 +161,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun onSelectCategory(id: Long) {
-        var selectedCategory: StreakCategoryItem? = null
-        categoryAdapter.items = categoryAdapter.items.map {
-            if (it.id == id) selectedCategory = it
-            it.selected = it.id == id
-            it
-        }
-
-        // update adapter items
-        adapter.items = (viewModel.streaksLiveData.value ?: emptyList())
-            .filter {
-                it.categoryId == selectedCategory?.id
-            }
+        viewModel.onSelectCategory(id)
     }
 
     private fun showNotificationsDialog() {
@@ -263,8 +253,7 @@ class HomeFragment : Fragment() {
         val editTextName = dialog.findViewById<TextInputEditText>(R.id.editTextName)
 
         buttonCreate.setOnClickListener {
-            viewModel.onCreateCategory()
-            dialog.hide()
+            viewModel.onCreateCategory(dialog::hide)
         }
         buttonClose.setOnClickListener {
             // clear data in view model

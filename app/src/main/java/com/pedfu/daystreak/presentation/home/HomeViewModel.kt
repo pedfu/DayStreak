@@ -48,11 +48,15 @@ class HomeViewModel(
     val selectedCategoryLiveData = MutableLiveData(selectedCategory)
     val categoryFormErrorLiveData = MutableLiveData<String?>(null)
 
+    fun onSelectCategory(id: Long) {
+        selectedCategory = id
+    }
+
     fun onCategoryNameChanged(text: String) {
         newCategoryName = text
     }
 
-    fun onCreateCategory() {
+    fun onCreateCategory(closeDialog: () -> Unit) {
         if (newCategoryName.isNullOrBlank()) return
 
         viewModelScope.launch {
@@ -61,6 +65,7 @@ class HomeViewModel(
             newCategoryName = ""
             state = HomeState.IDLE
 
+            closeDialog()
             // on error - show tooltip on page
         }
     }

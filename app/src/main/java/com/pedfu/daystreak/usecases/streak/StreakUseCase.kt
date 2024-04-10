@@ -29,7 +29,7 @@ class StreakUseCase(
     }
 
     suspend fun createCategory(category: CategoryRequest) {
-        // api call
-        // save repo if api call succeed
+        val categoryResponse = streakService.createCategory(category)
+        streakRepository.saveCategory(categoryResponse.toCategory())
     }
 }
