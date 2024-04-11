@@ -38,7 +38,7 @@
                 android:id="@+id/labelName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/name"
+                android:text="@string/name_mandatory"
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@+id/buttonClose" />
 
@@ -54,62 +54,68 @@
                     android:id="@+id/editTextName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/name"
                     android:inputType="textPersonName|textCapWords"
                     android:singleLine="true" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/labelStreakDuration"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/streak_goal_duration_optional"
-                android:textColor="@color/black"
-                app:layout_constraintTop_toBottomOf="@+id/textInputName" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayoutStreakDuration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/labelStreakDuration"
-                tools:layout_editor_absoluteX="20dp">
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/textInputName">
+
+                <TextView
+                    android:id="@+id/labelStreakDuration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/streak_goal_deadline"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="@+id/textInputStreakGoalDeadline"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/labelStreakMinTimePerDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/min_time_per_day_optional"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="@+id/textInputStreakMinPerDay"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputStreakNumber"
+                    android:id="@+id/textInputStreakGoalDeadline"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toStartOf="@+id/textInputStreakType"
+                    app:layout_constraintEnd_toStartOf="@+id/textInputStreakMinPerDay"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="@id/labelStreakDuration">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextStreakNumber"
+                        android:id="@+id/editTextStreakGoalDeadline"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/number_of"
                         android:inputType="textPersonName|textCapWords"
                         android:singleLine="true" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputStreakType"
+                    android:id="@+id/textInputStreakMinPerDay"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    app:layout_constraintBaseline_toBaselineOf="@id/textInputStreakNumber"
+                    app:layout_constraintBaseline_toBaselineOf="@id/textInputStreakGoalDeadline"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/textInputStreakNumber"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintStart_toEndOf="@id/textInputStreakGoalDeadline"
+                    app:layout_constraintTop_toBottomOf="@id/labelStreakDuration">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextStreakType"
+                        android:id="@+id/editTextStreakMinPerDay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/number_of"
                         android:inputType="textPersonName|textCapWords"
                         android:singleLine="true" />
 
@@ -117,40 +123,13 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/labelMinTimePerDay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/min_time_per_day_optional"
-                android:textColor="@color/black"
-                app:layout_constraintTop_toBottomOf="@id/constraintLayoutStreakDuration" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputMinTimePerDay"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/labelMinTimePerDay">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextMinTimePerDay"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/number_of"
-                    android:inputType="textPersonName|textCapWords"
-                    android:singleLine="true" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
                 android:id="@+id/labelCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/category"
+                android:text="@string/category_mandatory"
                 android:textColor="@color/black"
-                app:layout_constraintTop_toBottomOf="@id/textInputMinTimePerDay" />
+                app:layout_constraintTop_toBottomOf="@id/constraintLayoutStreakDuration" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputCategory"
@@ -164,7 +143,6 @@
                     android:id="@+id/editTextCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/number_of"
                     android:inputType="textPersonName|textCapWords"
                     android:singleLine="true" />
 
@@ -175,7 +153,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/background_picture"
+                android:text="@string/background_picture_mandatory"
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/textInputCategory" />
 
@@ -207,14 +185,26 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <ImageView
+                android:id="@+id/imageViewPictureTaken"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:scaleType="centerCrop"
+                android:background="@drawable/background_transparent_border"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayoutBackgroundPicture" />
+
             <TextView
                 android:id="@+id/labelDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/description"
+                android:text="@string/description_mandatory"
                 android:textColor="@color/black"
-                app:layout_constraintTop_toBottomOf="@id/constraintLayoutBackgroundPicture" />
+                app:layout_constraintTop_toBottomOf="@id/imageViewPictureTaken" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputDescription"
@@ -229,7 +219,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:gravity="top|start"
-                    android:hint="@string/description"
                     android:inputType="textMultiLine"
                     android:lines="8"
                     android:minLines="6"
@@ -267,7 +256,7 @@
                     android:layout_weight="1"
                     android:padding="0dp"
                     android:background="@drawable/background_rounded_md_orange"
-                    android:text="@string/continue_"
+                    android:text="@string/create"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:backgroundTint="@null" />

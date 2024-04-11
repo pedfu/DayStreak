@@ -2,6 +2,7 @@ package com.pedfu.daystreak.usecases.streak
 
 import com.pedfu.daystreak.Inject
 import com.pedfu.daystreak.data.remote.streak.CategoryRequest
+import com.pedfu.daystreak.data.remote.streak.StreakRequest
 import com.pedfu.daystreak.data.remote.streak.StreakService
 import com.pedfu.daystreak.data.repositories.streak.StreakRepository
 import com.pedfu.daystreak.domain.streak.StreakCategoryItem
@@ -31,5 +32,10 @@ class StreakUseCase(
     suspend fun createCategory(category: CategoryRequest) {
         val categoryResponse = streakService.createCategory(category)
         streakRepository.saveCategory(categoryResponse.toCategory())
+    }
+
+    suspend fun createStreak(streak: StreakRequest) {
+        val streakResponse = streakService.createStreak(streak)
+        streakRepository.saveStreak(streakResponse.toStreak())
     }
 }

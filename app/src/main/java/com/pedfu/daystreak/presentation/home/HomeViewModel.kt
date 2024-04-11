@@ -7,12 +7,18 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.pedfu.daystreak.Inject
 import com.pedfu.daystreak.data.remote.streak.CategoryRequest
+import com.pedfu.daystreak.data.remote.streak.StreakRequest
 import com.pedfu.daystreak.data.repositories.notification.NotificationRepository
 import com.pedfu.daystreak.data.repositories.streak.StreakRepository
 import com.pedfu.daystreak.data.repositories.user.UserRepository
 import com.pedfu.daystreak.domain.user.User
 import com.pedfu.daystreak.usecases.streak.StreakUseCase
 import kotlinx.coroutines.launch
+import java.io.File
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
+import java.util.Calendar
+import java.util.Date
 
 enum class HomeState {
     IDLE,
@@ -38,7 +44,6 @@ class HomeViewModel(
             field = value
             selectedCategoryLiveData.value = value
         }
-    private var newCategoryName: String = ""
 
     val stateLiveData = MutableLiveData(state)
     val userLiveData: LiveData<User?> = userRepository.userFlow.asLiveData()
@@ -46,15 +51,30 @@ class HomeViewModel(
     val categoriesLiveData = streakRepository.categoriesFlow.asLiveData()
     val notificationsLiveData = notificationRepository.notificationsFlow.asLiveData()
     val selectedCategoryLiveData = MutableLiveData(selectedCategory)
+
+    // category form modal
+    private var newCategoryName: String = ""
     val categoryFormErrorLiveData = MutableLiveData<String?>(null)
+
+    // streak form modal
+    private var newStreakName: String = ""
+    private var newStreakGoalDeadline: Date? = null
+    private var newStreakMinTimePerDay: Int = 0
+    private var newStreakBackgroundPicture: File? = null
+    private var newStreakDescription: String = ""
+    private var newStreakCategoryId: Long? = null
 
     fun onSelectCategory(id: Long) {
         selectedCategory = id
     }
 
-    fun onCategoryNameChanged(text: String) {
-        newCategoryName = text
-    }
+    fun onCategoryNameChanged(text: String) { newCategoryName = text }
+    fun onStreakNameChanged(text: String) { newStreakName = text }
+    fun onStreakGoalDeadlineChanged(endDate: Date) { newStreakGoalDeadline = endDate }
+    fun onStreakMinTimePerDayChanged(minTimePerDay: Int) { newStreakMinTimePerDay = minTimePerDay }
+    fun onStreakBackgroundPictureChanged(backgroundPicture: File) { newStreakBackgroundPicture = backgroundPicture }
+    fun onStreakDescriptionChanged(text: String) { newStreakDescription = text }
+    fun onStreakCategoryChanged(text: String) { newStreakCategoryId = categoriesLiveData.value?.find { it.name == text }?.id }
 
     fun onCreateCategory(closeDialog: () -> Unit) {
         if (newCategoryName.isNullOrBlank()) return
@@ -63,6 +83,45 @@ class HomeViewModel(
             state = HomeState.CREATING_CATEGORY
             streakUseCase.createCategory(CategoryRequest(null, newCategoryName))
             newCategoryName = ""
+            state = HomeState.IDLE
+
+            closeDialog()
+            // on error - show tooltip on page
+        }
+    }
+
+    fun onCreateStreak(closeDialog: () -> Unit) {
+        if (
+            newStreakName.isNullOrBlank() ||
+            newStreakCategoryId == null ||
+            newStreakBackgroundPicture == null ||
+            newStreakDescription.isNullOrBlank()) return
+
+        val categoryId = newStreakCategoryId ?: return
+
+        viewModelScope.launch {
+            state = HomeState.CREATING_STREAK
+            val durationDays: Long? = if (newStreakGoalDeadline != null) {
+                val today = Calendar.getInstance()
+                val deadline = Calendar.getInstance().apply { time = newStreakGoalDeadline }
+                val todayLocalDate = LocalDate.of(today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1, today.get(Calendar.DAY_OF_MONTH))
+                val deadlineLocalDate = LocalDate.of(deadline.get(Calendar.YEAR), deadline.get(Calendar.MONTH) + 1, deadline.get(Calendar.DAY_OF_MONTH))
+                ChronoUnit.DAYS.between(todayLocalDate, deadlineLocalDate)
+            } else {
+                null
+            }
+            val request = StreakRequest(
+                id = null,
+                name = newStreakName,
+                description = newStreakDescription,
+                durationDays = durationDays,
+                endDate = newStreakGoalDeadline,
+                background = newStreakBackgroundPicture!!,
+                category = null,
+                categoryId = categoryId,
+                minTimePerDay = newStreakMinTimePerDay,
+            )
+            streakUseCase.createStreak(request)
             state = HomeState.IDLE
 
             closeDialog()

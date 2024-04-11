@@ -1,15 +1,20 @@
 package com.pedfu.daystreak.presentation.home
 
 import android.app.Dialog
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
@@ -36,11 +41,17 @@ import com.pedfu.daystreak.presentation.home.adapters.StreakCategoryAdapter
 import com.pedfu.daystreak.presentation.home.adapters.StreakListAdapter
 import com.pedfu.daystreak.utils.Modals
 import com.pedfu.daystreak.utils.lazyViewModel
+import java.io.File
+import java.io.FileOutputStream
 import java.util.Calendar
+import java.util.Date
+
+private const val REQUEST_IMAGE_SELECTED = 1
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding: FragmentHomeBinding get() = _binding!!
+    private lateinit var dialog: Dialog
 
     private val viewModel: HomeViewModel by lazyViewModel {
         HomeViewModel()
@@ -51,6 +62,11 @@ class HomeFragment : Fragment() {
     private val categoryAdapter = StreakCategoryAdapter(::onSelectCategory)
     private val notificationAdapter = NotificationAdapter(::handleNotificationClick, ::handleShareClick, ::handleShareClick)
     private val calendar = Calendar.getInstance()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        dialog = Dialog(requireContext())
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -146,6 +162,13 @@ class HomeFragment : Fragment() {
             selectOptionModal.isVisible = false
             showCreateCategoryDialog(true)
         }
+        buttonClose.setOnClickListener {
+            selectOptionModal.isVisible = false
+            dialog.hide()
+        }
+        selectOptionModal.setOnClickListener {
+            selectOptionModal.isVisible = false
+        }
     }
 
     private fun FragmentHomeBinding.setupRecyclerView() {
@@ -169,19 +192,20 @@ class HomeFragment : Fragment() {
     }
 
     private fun showCreateCategoryDialog(isCategory: Boolean) {
-        val dialog = Dialog(requireContext())
+        dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(false)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setCancelable(true)
 
         when (isCategory) {
-            true -> setupCreateCategoryForm(dialog)
-            else -> setupStreakForm(dialog)
+            true -> setupCreateCategoryForm()
+            else -> setupStreakForm()
         }
         dialog.show()
     }
 
-    private fun setupStreakForm(dialog: Dialog) {
+    private fun setupStreakForm() {
+        // dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.dialog_streak_form)
         dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
 
@@ -196,54 +220,56 @@ class HomeFragment : Fragment() {
         }
         buttonContinue.setOnClickListener {
             // change for second
-            setupStreakInviteForm(dialog)
+            // setupStreakInviteForm() -> uncomment when implement invite
+            viewModel.onCreateStreak(dialog::hide)
         }
 
         // add listeners
         val editTextName = dialog.findViewById<TextInputEditText>(R.id.editTextName)
-        val editTextStreakNumber = dialog.findViewById<TextInputEditText>(R.id.editTextStreakNumber)
-        val editTextStreakType = dialog.findViewById<TextInputEditText>(R.id.editTextStreakType)
-        val editTextMinTimePerDay = dialog.findViewById<TextInputEditText>(R.id.editTextMinTimePerDay)
+        val editTextStreakGoalDeadline = dialog.findViewById<TextInputEditText>(R.id.editTextStreakGoalDeadline)
+        val editTextMinTimePerDay = dialog.findViewById<TextInputEditText>(R.id.editTextStreakMinPerDay)
         val editTextCategory = dialog.findViewById<TextInputEditText>(R.id.editTextCategory)
         val editTextDescription = dialog.findViewById<TextInputEditText>(R.id.editTextDescription)
         val constraintLayoutBackgroundPicture = dialog.findViewById<ConstraintLayout>(R.id.constraintLayoutBackgroundPicture)
+        val imageViewPictureTaken = dialog.findViewById<ImageView>(R.id.imageViewPictureTaken)
 
-        editTextName.addTextChangedListener {  }
-        editTextStreakNumber.addTextChangedListener {  }
-        editTextStreakType.addTextChangedListener {  }
-        editTextMinTimePerDay.addTextChangedListener {  }
-        editTextCategory.addTextChangedListener {  }
-        editTextDescription.addTextChangedListener {  }
-        constraintLayoutBackgroundPicture.setOnClickListener {  }
+        editTextName.addTextChangedListener { viewModel.onStreakNameChanged(it.toString()) }
+        editTextStreakGoalDeadline.addTextChangedListener { viewModel.onStreakGoalDeadlineChanged(Date(it.toString())) }
+        editTextMinTimePerDay.addTextChangedListener { viewModel.onStreakMinTimePerDayChanged(it.toString().toInt()) }
+        editTextCategory.addTextChangedListener { viewModel.onStreakCategoryChanged(it.toString()) }
+        editTextDescription.addTextChangedListener { viewModel.onStreakDescriptionChanged(it.toString()) }
+        constraintLayoutBackgroundPicture.setOnClickListener { dispatchSelectPictureIntent() }
+        imageViewPictureTaken.setOnClickListener { dispatchSelectPictureIntent() }
     }
 
-    private fun setupStreakInviteForm(dialog: Dialog) {
-        dialog.setContentView(R.layout.dialog_streak_form_invite)
+//    private fun setupStreakInviteForm() {
+//        dialog.setContentView(R.layout.dialog_streak_form_invite)
+//
+//        val buttonClose = dialog.findViewById<ImageButton>(R.id.buttonClose)
+//        val buttonBack = dialog.findViewById<MaterialButton>(R.id.buttonBack)
+//        val buttonCreate = dialog.findViewById<MaterialButton>(R.id.buttonCreate)
+//        val editTextEmail = dialog.findViewById<TextInputEditText>(R.id.editTextEmail)
+//        val recyclerView = dialog.findViewById<RecyclerView>(R.id.recyclerViewPeople)
+//
+//        recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+//        // recyclerView.adapter = adapter
+//        ViewCompat.setNestedScrollingEnabled(recyclerView, true)
+//
+//        buttonBack.setOnClickListener {
+//            setupStreakForm()
+//        }
+//        buttonCreate.setOnClickListener {
+//            dialog.hide()
+//        }
+//        buttonClose.setOnClickListener {
+//            // clear data in view model
+//            dialog.hide()
+//        }
+//        editTextEmail.addTextChangedListener {  }
+//    }
 
-        val buttonClose = dialog.findViewById<ImageButton>(R.id.buttonClose)
-        val buttonBack = dialog.findViewById<MaterialButton>(R.id.buttonBack)
-        val buttonCreate = dialog.findViewById<MaterialButton>(R.id.buttonCreate)
-        val editTextEmail = dialog.findViewById<TextInputEditText>(R.id.editTextEmail)
-        val recyclerView = dialog.findViewById<RecyclerView>(R.id.recyclerViewPeople)
-
-        recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-//        recyclerView.adapter = adapter
-        ViewCompat.setNestedScrollingEnabled(recyclerView, true)
-
-        buttonBack.setOnClickListener {
-            setupStreakForm(dialog)
-        }
-        buttonCreate.setOnClickListener {
-            dialog.hide()
-        }
-        buttonClose.setOnClickListener {
-            // clear data in view model
-            dialog.hide()
-        }
-        editTextEmail.addTextChangedListener {  }
-    }
-
-    private fun setupCreateCategoryForm(dialog: Dialog) {
+    private fun setupCreateCategoryForm() {
+//        dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.dialog_category_form)
         dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
 
@@ -282,5 +308,43 @@ class HomeFragment : Fragment() {
     private fun navigateToDetails(streakId: Long) {
         val args = StreakDetailFragmentArgs.Builder(streakId).build()
         findNavController().navigate(R.id.action_from_home_to_details, args.toBundle())
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            REQUEST_IMAGE_SELECTED -> {
+                val imageUri = data?.data
+                imageUri?.let { uri ->
+                    val inputStream = requireContext().contentResolver.openInputStream(uri)
+                    val outputStream = FileOutputStream(File(requireContext().cacheDir, "selected_image.jpg"))
+                    inputStream?.use { input ->
+                        outputStream.use { output ->
+                            input.copyTo(output)
+                        }
+                    }
+
+                    val file = File(requireContext().cacheDir, "selected_image.jpg")
+                    viewModel.onStreakBackgroundPictureChanged(file)
+
+                    val bitmap = BitmapFactory.decodeFile(file.path)
+                    val constraintLayout = dialog.findViewById<ConstraintLayout>(R.id.constraintLayoutBackgroundPicture)
+                    val imageView = dialog.findViewById<ImageView>(R.id.imageViewPictureTaken)
+                    imageView?.setImageBitmap(bitmap)
+                    constraintLayout.isVisible = false
+                    imageView.isVisible = true
+                }
+            }
+        }
+    }
+
+    private fun dispatchSelectPictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_PICK_IMAGES)
+        takePictureIntent.type = "image/*"
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_SELECTED)
+        } catch (e: ActivityNotFoundException) {
+            // error
+        }
     }
 }

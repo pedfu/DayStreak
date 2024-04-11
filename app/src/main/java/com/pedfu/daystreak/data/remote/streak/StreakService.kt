@@ -3,6 +3,9 @@ package com.pedfu.daystreak.data.remote.streak
 import com.pedfu.daystreak.Inject
 import com.pedfu.daystreak.data.remote.user.RemoteService
 import com.squareup.moshi.Moshi
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.HttpException
 
 class StreakService(
@@ -11,8 +14,14 @@ class StreakService(
 ): RemoteService(moshi) {
 
     suspend fun createStreak(streakRequest: StreakRequest): StreakResponse {
+        val backgroundPart = MultipartBody.Part.createFormData(
+            "background",
+            streakRequest.background.name,
+            streakRequest.background.asRequestBody("image/*".toMediaTypeOrNull()),
+        )
+
         return try {
-            streakApi.createStreak(streakRequest)
+            streakApi.createStreak(SimplifiedStreakRequest(streakRequest), backgroundPart)
         } catch (e: HttpException) {
             throw e
         }

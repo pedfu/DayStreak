@@ -48,8 +48,10 @@
     <string name="hide">Hide</string>
     <string name="streak">Streak</string>
     <string name="category">Category</string>
+    <string name="category_mandatory">Category*</string>
 
     <string name="name">Name</string>
+    <string name="name_mandatory">Name*</string>
     <string name="hour">Hour</string>
     <string name="date">Date</string>
     <string name="today">Today</string>
@@ -58,10 +60,13 @@
     <string name="number_of_days">Number of days</string>
     <string name="days">days</string>
     <string name="invited_people">Invited people:</string>
-    <string name="min_time_per_day_optional">Min. time per day (optional)</string>
     <string name="streak_goal_duration_optional">Streak goal days duration (optional)</string>
+    <string name="streak_goal_deadline">Goal deadline*</string>
+    <string name="min_time_per_day_optional">Min. timer per day</string>
     <string name="background_picture">Background picture</string>
+    <string name="background_picture_mandatory">Background picture*</string>
     <string name="description">Description</string>
+    <string name="description_mandatory">Description*</string>
     <string name="drop_or_select_your_picture">Drop or Select your picture here</string>
 
     <string name="invite_other_to_same_streak">Invite others to do the same streak with you!</string>

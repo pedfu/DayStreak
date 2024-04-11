@@ -276,7 +276,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="20dp"
-                    android:paddingRight="30dp"
+                    android:layout_marginRight="35dp"
                     android:text="@string/what_you_want_to_create"
                     android:textColor="@color/black"
                     android:textSize="16sp"
@@ -289,6 +289,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
                     android:src="@drawable/ic_close_gray"
+                    android:layout_marginRight="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
