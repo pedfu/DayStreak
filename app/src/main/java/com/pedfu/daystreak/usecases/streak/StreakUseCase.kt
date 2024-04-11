@@ -14,10 +14,13 @@ class StreakUseCase(
 ) {
     suspend fun fetchStreaks() {
         streakService.getStreaks().forEach {
-            // save category
-            val category = it.category.toCategory()
-            saveCategory(category)
             saveStreak(it.toStreak())
+        }
+    }
+
+    suspend fun fetchCategories() {
+        streakService.getCategories().forEach {
+            saveCategory(it.toCategory())
         }
     }
 

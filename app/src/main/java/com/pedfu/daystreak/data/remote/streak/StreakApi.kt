@@ -15,11 +15,14 @@ interface StreakApi {
     @GET("api/v1/streak/{id}")
     suspend fun getStreak(@Path("id") id: Long): StreakResponse?
 
-    @GET("api/v1/streaks")
+    @GET("api/v1/streaks/")
     suspend fun getStreaks(): Response<List<StreakResponse>>
 
+    @GET("api/v1/category/")
+    suspend fun getCategories(): Response<List<CategoryResponse>>
+
     @Multipart
-    @POST("api/v1/streak")
+    @POST("api/v1/streaks/")
     suspend fun createStreak(
         @Part(value = "data") streakRequest: SimplifiedStreakRequest,
         @Part backgroundPart: MultipartBody.Part

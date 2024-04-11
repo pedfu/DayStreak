@@ -27,7 +27,7 @@ import java.util.Date
 class StreakEntity(
     @PrimaryKey(autoGenerate = true) val id: Long? = null,
     val name: String,
-    val durationDays: Int,
+    val durationDays: Int?,
     val description: String?,
     val createdBy: String,
     val categoryId: Long,

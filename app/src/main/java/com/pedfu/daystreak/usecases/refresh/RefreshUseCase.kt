@@ -21,6 +21,9 @@ class RefreshUseCase(
     private val mutableRefreshingFlow = MutableStateFlow(false)
     val isRefreshingFlow = mutableRefreshingFlow.asStateFlow()
 
+    private val refreshCategoriesFlow = flow {
+        emit(fetchCategories())
+    }.shareIn(coroutineScope, SharingStarted.WhileSubscribed(replayExpirationMillis = 0))
     private val refreshStreaksFlow = flow {
         emit(fetchStreaks())
     }.shareIn(coroutineScope, SharingStarted.WhileSubscribed(replayExpirationMillis = 0))
@@ -29,8 +32,13 @@ class RefreshUseCase(
     }.shareIn(coroutineScope, SharingStarted.WhileSubscribed(replayExpirationMillis = 0))
 
     private val isRefreshing: Boolean
-        get() = isRefreshingStreak || isRefreshingNotification
+        get() = isRefreshingStreak || isRefreshingNotification || isRefreshingCategory
 
+    private var isRefreshingCategory: Boolean = false
+        set(value) {
+            field = value
+            mutableRefreshingFlow.value = isRefreshing
+        }
     private var isRefreshingStreak: Boolean = false
         set(value) {
             field = value
@@ -44,13 +52,18 @@ class RefreshUseCase(
 
     suspend fun refresh() {
         coroutineScope {
+            val categoriesAsync = async { refreshCategories() }
             val notificationsAsync = async { refreshNotification() }
             val streaksAsync = async { refreshStreaks() }
+            categoriesAsync.join()
             notificationsAsync.join()
             streaksAsync.join()
         }
     }
 
+    private suspend fun refreshCategories() {
+        refreshCategoriesFlow.firstOrNull()
+    }
     private suspend fun refreshStreaks() {
         refreshStreaksFlow.firstOrNull()
     }
@@ -67,6 +80,20 @@ class RefreshUseCase(
             return throwable
         } finally {
             isRefreshingStreak = false
+        }
+
+        return null
+    }
+
+    private suspend fun fetchCategories(): Throwable? {
+        isRefreshingCategory = true
+
+        try {
+            streakUseCase.fetchCategories()
+        } catch (throwable: Throwable) {
+            return throwable
+        } finally {
+            isRefreshingCategory = false
         }
 
         return null

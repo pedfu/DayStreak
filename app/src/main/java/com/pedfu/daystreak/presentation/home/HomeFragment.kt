@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,7 @@ import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentHomeBinding
 import com.pedfu.daystreak.domain.notification.NotificationItem
 import com.pedfu.daystreak.domain.streak.StreakCategoryItem
+import com.pedfu.daystreak.domain.streak.StreakItem
 import com.pedfu.daystreak.domain.user.User
 import com.pedfu.daystreak.presentation.MainActivity
 import com.pedfu.daystreak.presentation.MainState
@@ -97,9 +99,28 @@ class HomeFragment : Fragment() {
         mainViewModel.stateLiveData.observe(viewLifecycleOwner) { setState(it) }
 
         viewModel.userLiveData.observe(viewLifecycleOwner) { setUser(it) }
-        viewModel.streaksLiveData.observe(viewLifecycleOwner) { focusOnSelectedCategory() }
-        viewModel.categoriesLiveData.observe(viewLifecycleOwner) { focusOnSelectedCategory(it) }
-        viewModel.selectedCategoryLiveData.observe(viewLifecycleOwner) { focusOnSelectedCategory() }
+        viewModel.selectedCategoryLiveData.observe(viewLifecycleOwner) {
+            categoryAdapter.items = categoryAdapter.items.map { item ->
+                item.selected = item.id == it
+                item
+            }
+            viewModel.filterStreaks()
+        }
+        viewModel.streaksLiveData.observe(viewLifecycleOwner) { viewModel.filterStreaks() }
+        viewModel.categoriesLiveData.observe(viewLifecycleOwner) {
+            var selectedId = viewModel.selectedCategoryLiveData.value
+            if (selectedId == -1L && it.isNotEmpty()) {
+                selectedId = it.first().id
+                viewModel.onSelectCategory(selectedId)
+            }
+            categoryAdapter.items = it.map { item ->
+                item.selected = item.id == selectedId
+                item
+            }
+        }
+        viewModel.filteredStreaksLiveData.observe(viewLifecycleOwner) {
+            adapter.items = it
+        }
         viewModel.notificationsLiveData.observe(viewLifecycleOwner) { setNotifications(it) }
     }
 
@@ -125,7 +146,11 @@ class HomeFragment : Fragment() {
         progressBar.isVisible = state == MainState.REFRESHING
     }
 
-    private fun focusOnSelectedCategory(categoriesP: List<StreakCategoryItem>? = null) {
+    private fun focusOnSelectedCategory(categoriesP: List<StreakCategoryItem>? = null, streaksP: List<StreakItem>? = null) {
+        Log.i("ULTIMATETESTE", "categoria - " + categoriesP.toString() + "\n" + categoriesP?.size)
+        Log.i("ULTIMATETESTE", "categoria vm - " + viewModel.categoriesLiveData.value.toString() + "\n" + viewModel.categoriesLiveData.value?.size)
+        Log.i("ULTIMATETESTE", "streak - " + streaksP.toString() + "\n" + streaksP?.size)
+        Log.i("ULTIMATETESTE", "streak vm - " + viewModel.streaksLiveData.value.toString() + "\n" + viewModel.streaksLiveData.value?.size)
         val categories = categoriesP ?: viewModel.categoriesLiveData.value ?: emptyList()
         if (categories.isEmpty()) return
         val selectedCategory = categories.find { it.id == viewModel.selectedCategoryLiveData.value } ?: categories.first()
@@ -134,7 +159,8 @@ class HomeFragment : Fragment() {
             it
 
         }
-        adapter.items = (viewModel.streaksLiveData.value ?: emptyList()).filter { it.categoryId == selectedCategory.id }
+        Log.i("ULTIMATETESTE", "final vm - " + selectedCategory.toString() + "\n" + (streaksP ?: viewModel.streaksLiveData.value ?: emptyList()).filter { it.categoryId == selectedCategory.id }.toString())
+        adapter.items = (streaksP ?: viewModel.streaksLiveData.value ?: emptyList()).filter { it.categoryId == selectedCategory.id }
     }
 
     private fun FragmentHomeBinding.setupSwipeRefresh() {

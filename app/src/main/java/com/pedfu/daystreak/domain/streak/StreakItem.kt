@@ -18,7 +18,7 @@ enum class StreakStatus(s: String) {
 data class StreakItem(
     val id: Long?,
     val name: String,
-    val durationDays: Int,
+    val durationDays: Int?,
     val description: String?,
     val createdBy: String,
     val categoryId: Long,
