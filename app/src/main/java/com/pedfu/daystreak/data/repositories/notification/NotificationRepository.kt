@@ -4,6 +4,7 @@ import com.pedfu.daystreak.Inject
 import com.pedfu.daystreak.data.local.notification.NotificationDao
 import com.pedfu.daystreak.data.local.notification.NotificationEntity
 import com.pedfu.daystreak.domain.notification.NotificationItem
+import com.pedfu.daystreak.domain.streak.StreakItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -16,5 +17,9 @@ class NotificationRepository(
 
     suspend fun saveNotification(notification: NotificationItem) {
         notificationDao.insert(NotificationEntity(notification))
+    }
+
+    suspend fun onRefreshNotifications(notifications: List<NotificationItem>) {
+        notificationDao.refreshNotification(notifications)
     }
 }

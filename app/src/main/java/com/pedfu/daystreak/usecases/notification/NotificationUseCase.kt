@@ -10,13 +10,7 @@ class NotificationUseCase(
     private val notificationRepository: NotificationRepository = Inject.notificationRepository,
 ) {
     suspend fun fetchNotifications() {
-        notificationService.getNotifications().forEach {
-            // save notification
-            saveNotification(it.toNotification())
-        }
-    }
-
-    suspend fun saveNotification(notification: NotificationItem) {
-        notificationRepository.saveNotification(notification)
+        val notifications = notificationService.getNotifications()
+        notificationRepository.onRefreshNotifications(notifications.map { it.toNotification() })
     }
 }

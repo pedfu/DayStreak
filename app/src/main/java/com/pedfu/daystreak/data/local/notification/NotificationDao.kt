@@ -5,6 +5,9 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import com.pedfu.daystreak.data.local.category.CategoryEntity
+import com.pedfu.daystreak.domain.notification.NotificationItem
+import com.pedfu.daystreak.domain.streak.StreakCategoryItem
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -25,6 +28,22 @@ interface NotificationDao {
     suspend fun insert(notification: NotificationEntity)
 
     @Transaction
+    suspend fun refreshNotification(notifications: List<NotificationItem>) {
+        val allNotifications = getAll()
+
+        // Remove non existing (or removed) categories
+        val notificationsToRemove = allNotifications.filter { notifications.any { c -> c.id != it.id } }
+        notificationsToRemove.forEach { delete(it.id) }
+
+        // Update existing notifications
+        notifications.forEach { insert(NotificationEntity(it)) }
+    }
+
+    @Transaction
     @Query("DELETE FROM notification")
     suspend fun deleteAll()
+
+    @Transaction
+    @Query("DELETE FROM notification WHERE id = :id")
+    suspend fun delete(id: Long)
 }
