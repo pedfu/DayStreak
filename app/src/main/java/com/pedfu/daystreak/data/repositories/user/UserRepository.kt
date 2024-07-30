@@ -13,7 +13,7 @@ class UserRepository(
     val userFlow: Flow<User?> = userDao.observe().map { it?.toUser() }
 
     suspend fun getUser(): User? {
-        return userDao.findById(1L)?.toUser()
+        return userDao.get()?.toUser()
     }
 
     suspend fun saveUser(user: User) {
