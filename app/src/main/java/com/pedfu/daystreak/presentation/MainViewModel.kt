@@ -1,10 +1,13 @@
 package com.pedfu.daystreak.presentation
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.pedfu.daystreak.Inject
+import com.pedfu.daystreak.data.remote.authorization.AuthorizationManager
 import com.pedfu.daystreak.usecases.refresh.RefreshUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -16,7 +19,8 @@ enum class MainState {
     REFRESHING_SWIPE
 }
 class MainViewModel(
-    private val refreshUseCase: RefreshUseCase = Inject.refreshUseCase
+    private val refreshUseCase: RefreshUseCase = Inject.refreshUseCase,
+    private val authorizationManager: AuthorizationManager = Inject.authorizationManager
 ) : ViewModel() {
     private var state: MainState = MainState.IDLE
     private var internalState: MainState = MainState.IDLE
@@ -26,9 +30,11 @@ class MainViewModel(
         mergeState(internalState, isRefresing).also { state = it }
     }
     val stateLiveData = stateFlow.asLiveData()
+    val authorizationLiveData = MutableLiveData<String?>(null)
 
     init {
         refresh()
+        authorizationLiveData.value = authorizationManager.token
     }
 
     private fun mergeState(internalStateP: MainState, isRefreshing: Boolean): MainState {
@@ -52,5 +58,9 @@ class MainViewModel(
 
             internalState = MainState.IDLE
         }
+    }
+
+    fun signOut() {
+        authorizationManager.notifyUnauthorized()
     }
 }

@@ -1,5 +1,6 @@
 package com.pedfu.daystreak.presentation.intro
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,6 +9,7 @@ import com.pedfu.daystreak.domain.user.User
 import com.pedfu.daystreak.usecases.streak.StreakUseCase
 import com.pedfu.daystreak.usecases.user.UserUseCase
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 enum class SplashState {
     LOADING,

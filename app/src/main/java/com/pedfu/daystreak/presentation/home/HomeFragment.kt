@@ -1,5 +1,6 @@
 package com.pedfu.daystreak.presentation.home
 
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -14,8 +15,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import android.widget.DatePicker
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
@@ -28,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentHomeBinding
 import com.pedfu.daystreak.domain.notification.NotificationItem
@@ -45,8 +50,10 @@ import com.pedfu.daystreak.utils.Modals
 import com.pedfu.daystreak.utils.lazyViewModel
 import java.io.File
 import java.io.FileOutputStream
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 private const val REQUEST_IMAGE_SELECTED = 1
 
@@ -146,22 +153,22 @@ class HomeFragment : Fragment() {
         progressBar.isVisible = state == MainState.REFRESHING
     }
 
-    private fun focusOnSelectedCategory(categoriesP: List<StreakCategoryItem>? = null, streaksP: List<StreakItem>? = null) {
-        Log.i("ULTIMATETESTE", "categoria - " + categoriesP.toString() + "\n" + categoriesP?.size)
-        Log.i("ULTIMATETESTE", "categoria vm - " + viewModel.categoriesLiveData.value.toString() + "\n" + viewModel.categoriesLiveData.value?.size)
-        Log.i("ULTIMATETESTE", "streak - " + streaksP.toString() + "\n" + streaksP?.size)
-        Log.i("ULTIMATETESTE", "streak vm - " + viewModel.streaksLiveData.value.toString() + "\n" + viewModel.streaksLiveData.value?.size)
-        val categories = categoriesP ?: viewModel.categoriesLiveData.value ?: emptyList()
-        if (categories.isEmpty()) return
-        val selectedCategory = categories.find { it.id == viewModel.selectedCategoryLiveData.value } ?: categories.first()
-        categoryAdapter.items = categories.map {
-            it.selected = it.id == selectedCategory.id
-            it
-
-        }
-        Log.i("ULTIMATETESTE", "final vm - " + selectedCategory.toString() + "\n" + (streaksP ?: viewModel.streaksLiveData.value ?: emptyList()).filter { it.categoryId == selectedCategory.id }.toString())
-        adapter.items = (streaksP ?: viewModel.streaksLiveData.value ?: emptyList()).filter { it.categoryId == selectedCategory.id }
-    }
+//    private fun focusOnSelectedCategory(categoriesP: List<StreakCategoryItem>? = null, streaksP: List<StreakItem>? = null) {
+//        Log.i("ULTIMATETESTE", "categoria - " + categoriesP.toString() + "\n" + categoriesP?.size)
+//        Log.i("ULTIMATETESTE", "categoria vm - " + viewModel.categoriesLiveData.value.toString() + "\n" + viewModel.categoriesLiveData.value?.size)
+//        Log.i("ULTIMATETESTE", "streak - " + streaksP.toString() + "\n" + streaksP?.size)
+//        Log.i("ULTIMATETESTE", "streak vm - " + viewModel.streaksLiveData.value.toString() + "\n" + viewModel.streaksLiveData.value?.size)
+//        val categories = categoriesP ?: viewModel.categoriesLiveData.value ?: emptyList()
+//        if (categories.isEmpty()) return
+//        val selectedCategory = categories.find { it.id == viewModel.selectedCategoryLiveData.value } ?: categories.first()
+//        categoryAdapter.items = categories.map {
+//            it.selected = it.id == selectedCategory.id
+//            it
+//
+//        }
+//        Log.i("ULTIMATETESTE", "final vm - " + selectedCategory.toString() + "\n" + (streaksP ?: viewModel.streaksLiveData.value ?: emptyList()).filter { it.categoryId == selectedCategory.id }.toString())
+//        adapter.items = (streaksP ?: viewModel.streaksLiveData.value ?: emptyList()).filter { it.categoryId == selectedCategory.id }
+//    }
 
     private fun FragmentHomeBinding.setupSwipeRefresh() {
         swipeRefreshLayout.setOnRefreshListener {
@@ -252,20 +259,27 @@ class HomeFragment : Fragment() {
 
         // add listeners
         val editTextName = dialog.findViewById<TextInputEditText>(R.id.editTextName)
-        val editTextStreakGoalDeadline = dialog.findViewById<TextInputEditText>(R.id.editTextStreakGoalDeadline)
+        val textInputStreakGoalDeadline = dialog.findViewById<AppCompatButton>(R.id.textInputStreakGoalDeadline)
         val editTextMinTimePerDay = dialog.findViewById<TextInputEditText>(R.id.editTextStreakMinPerDay)
         val editTextCategory = dialog.findViewById<TextInputEditText>(R.id.editTextCategory)
         val editTextDescription = dialog.findViewById<TextInputEditText>(R.id.editTextDescription)
         val constraintLayoutBackgroundPicture = dialog.findViewById<ConstraintLayout>(R.id.constraintLayoutBackgroundPicture)
         val imageViewPictureTaken = dialog.findViewById<ImageView>(R.id.imageViewPictureTaken)
+        val constraintLayoutBackgroundColor = dialog.findViewById<ConstraintLayout>(R.id.constraintLayoutBackgroundColor)
+
+//        editTextStreakGoalDeadline.isEnabled = false
+        textInputStreakGoalDeadline.setOnClickListener {
+            Log.i("TESTE", "CLICADO")
+            showDatePicker(textInputStreakGoalDeadline)
+        }
 
         editTextName.addTextChangedListener { viewModel.onStreakNameChanged(it.toString()) }
-        editTextStreakGoalDeadline.addTextChangedListener { viewModel.onStreakGoalDeadlineChanged(Date(it.toString())) }
-        editTextMinTimePerDay.addTextChangedListener { viewModel.onStreakMinTimePerDayChanged(it.toString().toInt()) }
+        editTextMinTimePerDay.addTextChangedListener { viewModel.onStreakMinTimePerDayChanged(it.toString()) }
         editTextCategory.addTextChangedListener { viewModel.onStreakCategoryChanged(it.toString()) }
         editTextDescription.addTextChangedListener { viewModel.onStreakDescriptionChanged(it.toString()) }
         constraintLayoutBackgroundPicture.setOnClickListener { dispatchSelectPictureIntent() }
         imageViewPictureTaken.setOnClickListener { dispatchSelectPictureIntent() }
+        constraintLayoutBackgroundColor.setOnClickListener { showColorPicker() }
     }
 
 //    private fun setupStreakInviteForm() {
@@ -293,6 +307,28 @@ class HomeFragment : Fragment() {
 //        }
 //        editTextEmail.addTextChangedListener {  }
 //    }
+
+    private fun showDatePicker(textView: AppCompatButton) {
+        // Create a DatePickerDialog
+        val datePickerDialog = DatePickerDialog(
+            this.requireContext(), {DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(year, monthOfYear, dayOfMonth)
+                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val formattedDate = dateFormat.format(selectedDate.time)
+                textView.text = "$formattedDate"
+                viewModel.onStreakGoalDeadlineChanged(Date(formattedDate))
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        // Show the DatePicker dialog
+        datePickerDialog.show()
+    }
+
+    private fun showColorPicker() {
+    }
 
     private fun setupCreateCategoryForm() {
 //        dialog = Dialog(requireContext())

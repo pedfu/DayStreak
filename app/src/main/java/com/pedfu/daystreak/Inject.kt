@@ -3,6 +3,7 @@ package com.pedfu.daystreak
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.pedfu.daystreak.data.AppDatabase
 import com.pedfu.daystreak.data.remote.authorization.AuthorizationManager
 import com.pedfu.daystreak.data.remote.authorization.AuthorizationManagerImpl

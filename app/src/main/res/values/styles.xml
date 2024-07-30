@@ -31,8 +31,10 @@
 
     <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textColorHint">@color/gray_light</item>
+        <item name="android:textCursorDrawable">@color/gray_font</item>
+        <item name="cursorColor">@color/gray_font</item>
         <item name="boxStrokeColor">@color/gray_font</item>
-        <item name="android:textCursorDrawable">@null</item>
+        <item name="boxStrokeWidth">1dp</item>
     </style>
 
     <style name="TextInputEditText" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox.Dense">
@@ -42,5 +44,17 @@
 
     <style name="AppMaterialButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:backgroundTint">@color/material_button_disabled</item>
+    </style>
+
+    <style name="Button.DatePicker" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:background">@drawable/button_rounded_border</item>
+        <item name="android:backgroundTint">@color/gray_light</item>
+        <item name="strokeColor">@color/gray_light</item>
+
+        <item name="android:textColorHint">@color/gray_light</item>
+        <item name="android:textCursorDrawable">@color/gray_font</item>
+        <item name="cursorColor">@color/gray_font</item>
+        <item name="boxStrokeColor">@color/gray_font</item>
+        <item name="boxStrokeWidth">1dp</item>
     </style>
 </resources>

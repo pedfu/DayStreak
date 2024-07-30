@@ -2,8 +2,10 @@ package com.pedfu.daystreak.presentation
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.pedfu.daystreak.Inject
 import com.pedfu.daystreak.R
@@ -11,7 +13,6 @@ import com.pedfu.daystreak.presentation.signin.SignInActivity
 
 class MainActivity : AppCompatActivity() {
     private val mainViewModel: MainViewModel by viewModels()
-    private val authorizationManager = Inject.authorizationManager
 
     private val navController by lazy {
         findNavController(R.id.nav_host_fragment)
@@ -21,8 +22,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (authorizationManager.token == null) {
-            startSignInActivity()
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        mainViewModel.authorizationLiveData.observeForever {
+            if (mainViewModel.authorizationLiveData.value == null) startSignInActivity()
         }
     }
 
@@ -32,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     // used in settings
     fun signOutAndStartSignInActivity() {
-        authorizationManager.notifyUnauthorized()
+        mainViewModel.signOut()
         startSignInActivity()
     }
 

@@ -5,6 +5,9 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import com.pedfu.daystreak.data.local.category.CategoryEntity
+import com.pedfu.daystreak.domain.streak.StreakCategoryItem
+import com.pedfu.daystreak.domain.streak.StreakItem
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -25,6 +28,22 @@ interface StreakDao {
     suspend fun insert(streak: StreakEntity)
 
     @Transaction
+    suspend fun refreshStreaks(streaks: List<StreakItem>) {
+        val allStreaks = getAll()
+
+        // Remove non existing (or removed) streaks
+        val streaksToRemove = allStreaks.filter { streaks.any { c -> c.id != it.id } }
+        streaksToRemove.forEach { if (it.id != null) delete(it.id) }
+
+        // Update existing categories
+        streaks.forEach { insert(StreakEntity(it)) }
+    }
+
+    @Transaction
     @Query("DELETE FROM streak")
     suspend fun deleteAll()
+
+    @Transaction
+    @Query("DELETE FROM streak WHERE id = :id")
+    suspend fun delete(id: Long)
 }

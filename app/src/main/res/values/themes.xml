@@ -2,7 +2,9 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.DayStreak" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-         <item name="colorPrimary">@color/orange_primary</item>
+         <item name="colorPrimary">@color/black</item>
+         <item name="android:statusBarColor">@color/orange_primary</item>
+         <item name="colorAccent">@color/black</item>
     </style>
 
     <style name="Theme.DayStreak" parent="Base.Theme.DayStreak" />

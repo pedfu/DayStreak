@@ -34,6 +34,14 @@ class StreakRepository(
         return streakDao.getAll().map { it.toStreak() }
     }
 
+    suspend fun onRefreshStreak(streaks: List<StreakItem>) {
+        streakDao.refreshStreaks(streaks)
+    }
+
+    suspend fun onRefreshCategory(categories: List<StreakCategoryItem>) {
+        categoryDao.refreshCategories(categories)
+    }
+
     suspend fun saveStreak(streak: StreakItem) {
         streakDao.insert(StreakEntity(streak))
     }

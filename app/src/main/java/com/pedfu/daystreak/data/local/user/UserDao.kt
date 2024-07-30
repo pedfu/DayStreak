@@ -12,6 +12,9 @@ interface UserDao {
     @Query("SELECT * FROM user WHERE id = :id LIMIT 1")
     suspend fun findById(id: Long): UserEntity?
 
+    @Query("SELECT * FROM user ORDER BY id DESC LIMIT 1")
+    suspend fun get(): UserEntity?
+
     @Query("SELECT * FROM user WHERE id = :id LIMIT 1")
     fun observeById(id: Long): Flow<UserEntity?>
 

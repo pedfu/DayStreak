@@ -13,23 +13,13 @@ class StreakUseCase(
     private val streakRepository: StreakRepository = Inject.streakRepository,
 ) {
     suspend fun fetchStreaks() {
-        streakService.getStreaks().forEach {
-            saveStreak(it.toStreak())
-        }
+        val streaks = streakService.getStreaks()
+        streakRepository.onRefreshStreak(streaks.map { it.toStreak() })
     }
 
     suspend fun fetchCategories() {
-        streakService.getCategories().forEach {
-            saveCategory(it.toCategory())
-        }
-    }
-
-    suspend fun saveStreak(streak: StreakItem) {
-        streakRepository.saveStreak(streak)
-    }
-
-    suspend fun saveCategory(category: StreakCategoryItem) {
-        streakRepository.saveCategory(category)
+        val categories = streakService.getCategories()
+        streakRepository.onRefreshCategory(categories.map { it.toCategory() })
     }
 
     suspend fun createCategory(category: CategoryRequest) {

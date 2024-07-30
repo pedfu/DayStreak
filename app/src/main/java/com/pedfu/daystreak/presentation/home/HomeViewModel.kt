@@ -83,7 +83,11 @@ class HomeViewModel(
     fun onCategoryNameChanged(text: String) { newCategoryName = text }
     fun onStreakNameChanged(text: String) { newStreakName = text }
     fun onStreakGoalDeadlineChanged(endDate: Date) { newStreakGoalDeadline = endDate }
-    fun onStreakMinTimePerDayChanged(minTimePerDay: Int) { newStreakMinTimePerDay = minTimePerDay }
+    fun onStreakMinTimePerDayChanged(minTimePerDay: String) {
+        try {
+            newStreakMinTimePerDay = minTimePerDay.toInt()
+        } catch (ex: Throwable) {}
+    }
     fun onStreakBackgroundPictureChanged(backgroundPicture: File) { newStreakBackgroundPicture = backgroundPicture }
     fun onStreakDescriptionChanged(text: String) { newStreakDescription = text }
     fun onStreakCategoryChanged(text: String) { newStreakCategoryId = categoriesLiveData.value?.find { it.name == text }?.id }

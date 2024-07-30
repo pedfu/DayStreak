@@ -49,6 +49,7 @@
     <string name="streak">Streak</string>
     <string name="category">Category</string>
     <string name="category_mandatory">Category*</string>
+    <string name="in_min">In minutes</string>
 
     <string name="name">Name</string>
     <string name="name_mandatory">Name*</string>
@@ -64,10 +65,11 @@
     <string name="streak_goal_deadline">Goal deadline*</string>
     <string name="min_time_per_day_optional">Min. timer per day</string>
     <string name="background_picture">Background picture</string>
-    <string name="background_picture_mandatory">Background picture*</string>
+    <string name="background_picture_mandatory">Background picture or color*</string>
     <string name="description">Description</string>
     <string name="description_mandatory">Description*</string>
     <string name="drop_or_select_your_picture">Drop or Select your picture here</string>
+    <string name="select_color">Select color</string>
 
     <string name="invite_other_to_same_streak">Invite others to do the same streak with you!</string>
 
