@@ -20,7 +20,7 @@ data class StreakItem(
     val name: String,
     val durationDays: Int?,
     val description: String?,
-    val createdBy: String,
+    val createdBy: String?,
     val categoryId: Long,
     val userStreakId: Long,
     val status: StreakStatus = StreakStatus.PENDING,

@@ -46,6 +46,24 @@
         <item name="android:backgroundTint">@color/material_button_disabled</item>
     </style>
 
+    <style name="MaterialButton.Disabled" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/gray_font</item>
+    </style>
+
+    <style name="MaterialButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="MaterialButton.Transparent.Disabled" parent="Widget.Material3.Button.TextButton">
+        <item name="android:backgroundTint">@color/transparent</item>
+        <item name="android:textColor">@color/gray_font</item>
+    </style>
+
+    <style name="MaterialButton.Transparent" parent="Widget.Material3.Button.TextButton">
+        <item name="android:backgroundTint">@color/transparent</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="Button.DatePicker" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:background">@drawable/button_rounded_border</item>
         <item name="android:backgroundTint">@color/gray_light</item>

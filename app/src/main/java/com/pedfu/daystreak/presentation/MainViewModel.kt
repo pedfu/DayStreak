@@ -8,6 +8,8 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.pedfu.daystreak.Inject
 import com.pedfu.daystreak.data.remote.authorization.AuthorizationManager
+import com.pedfu.daystreak.data.repositories.notification.NotificationRepository
+import com.pedfu.daystreak.data.repositories.user.UserRepository
 import com.pedfu.daystreak.usecases.refresh.RefreshUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -20,7 +22,9 @@ enum class MainState {
 }
 class MainViewModel(
     private val refreshUseCase: RefreshUseCase = Inject.refreshUseCase,
-    private val authorizationManager: AuthorizationManager = Inject.authorizationManager
+    private val authorizationManager: AuthorizationManager = Inject.authorizationManager,
+    private val userRepository: UserRepository = Inject.userRepository,
+    private val notificationRepository: NotificationRepository = Inject.notificationRepository,
 ) : ViewModel() {
     private var state: MainState = MainState.IDLE
     private var internalState: MainState = MainState.IDLE
@@ -31,6 +35,7 @@ class MainViewModel(
     }
     val stateLiveData = stateFlow.asLiveData()
     val authorizationLiveData = MutableLiveData<String?>(null)
+    val notificationsLiveData = notificationRepository.notificationsFlow.asLiveData()
 
     init {
         refresh()
@@ -61,6 +66,9 @@ class MainViewModel(
     }
 
     fun signOut() {
+        viewModelScope.launch {
+            userRepository.clear()
+        }
         authorizationManager.notifyUnauthorized()
     }
 }

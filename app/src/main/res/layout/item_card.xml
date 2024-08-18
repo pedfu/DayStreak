@@ -44,7 +44,8 @@
         app:cardCornerRadius="20dp"
         app:cardElevation="0dp">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageViewCardBg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"

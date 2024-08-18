@@ -12,7 +12,7 @@ class StreakResponse (
     @Json(name = "name") val name: String,
     @Json(name = "duration_days") val durationDays: Int?,
     @Json(name = "description") val description: String,
-    @Json(name = "created_by") val createdBy: String,
+    @Json(name = "created_by") val createdBy: String?,
     @Json(name = "category") val category: CategoryResponse,
     @Json(name = "user_streak_id") val userStreakId: Long,
     @Json(name = "status") val status: String,

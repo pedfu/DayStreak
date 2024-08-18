@@ -12,12 +12,16 @@ import com.pedfu.daystreak.data.remote.streak.StreakRequest
 import com.pedfu.daystreak.data.repositories.notification.NotificationRepository
 import com.pedfu.daystreak.data.repositories.streak.StreakRepository
 import com.pedfu.daystreak.data.repositories.user.UserRepository
+import com.pedfu.daystreak.domain.streak.StreakCategoryItem
 import com.pedfu.daystreak.domain.streak.StreakItem
 import com.pedfu.daystreak.domain.user.User
 import com.pedfu.daystreak.usecases.streak.StreakUseCase
 import kotlinx.coroutines.launch
 import java.io.File
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Calendar
 import java.util.Date
@@ -69,7 +73,7 @@ class HomeViewModel(
     private var newStreakMinTimePerDay: Int = 0
     private var newStreakBackgroundPicture: File? = null
     private var newStreakDescription: String = ""
-    private var newStreakCategoryId: Long? = null
+    private var newStreakCategory: StreakCategoryItem? = null
 
     fun onSelectCategory(id: Long) {
         selectedCategory = id
@@ -90,7 +94,9 @@ class HomeViewModel(
     }
     fun onStreakBackgroundPictureChanged(backgroundPicture: File) { newStreakBackgroundPicture = backgroundPicture }
     fun onStreakDescriptionChanged(text: String) { newStreakDescription = text }
-    fun onStreakCategoryChanged(text: String) { newStreakCategoryId = categoriesLiveData.value?.find { it.name == text }?.id }
+    fun onStreakCategoryChanged(category: StreakCategoryItem) {
+        newStreakCategory = category
+    }
 
     fun onCreateCategory(closeDialog: () -> Unit) {
         if (newCategoryName.isNullOrBlank()) return
@@ -109,11 +115,11 @@ class HomeViewModel(
     fun onCreateStreak(closeDialog: () -> Unit) {
         if (
             newStreakName.isNullOrBlank() ||
-            newStreakCategoryId == null ||
+            newStreakCategory == null ||
             newStreakBackgroundPicture == null ||
             newStreakDescription.isNullOrBlank()) return
 
-        val categoryId = newStreakCategoryId ?: return
+        val categoryId = newStreakCategory?.id ?: return
 
         viewModelScope.launch {
             state = HomeState.CREATING_STREAK
@@ -126,12 +132,19 @@ class HomeViewModel(
             } else {
                 null
             }
+            val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            val goalDeadline = if (newStreakGoalDeadline != null) {
+                Instant.ofEpochMilli(newStreakGoalDeadline!!.time).atZone(ZoneId.systemDefault()).toLocalDate()
+            } else {
+                null
+            }
+            val formattedDate = goalDeadline?.format(dateFormat)
             val request = StreakRequest(
                 id = null,
                 name = newStreakName,
                 description = newStreakDescription,
                 durationDays = durationDays,
-                endDate = newStreakGoalDeadline,
+                endDate = formattedDate,
                 background = newStreakBackgroundPicture!!,
                 category = null,
                 categoryId = categoryId,

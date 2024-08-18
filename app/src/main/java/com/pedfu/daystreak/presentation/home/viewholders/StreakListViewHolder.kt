@@ -6,6 +6,7 @@ import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.ItemCardBinding
 import com.pedfu.daystreak.domain.streak.StreakItem
 import com.pedfu.daystreak.domain.streak.StreakStatus
+import com.pedfu.daystreak.utils.ImageProvider
 
 class StreakListViewHolder(
     private val binding: ItemCardBinding,
@@ -17,6 +18,7 @@ class StreakListViewHolder(
     }
 
     private fun ItemCardBinding.setupCard(streakItem: StreakItem, onClick: (streakId: Long) -> Unit) {
+        ImageProvider.loadImageFromUrl(imageViewCardBg, streakItem.backgroundPicture)
         contraintLayoutCard.setOnClickListener {
             onClick(streakItem.id ?: 0)
         }

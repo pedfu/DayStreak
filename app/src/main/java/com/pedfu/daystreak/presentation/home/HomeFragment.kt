@@ -9,16 +9,16 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
-import android.widget.DatePicker
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.TextView
+import android.widget.Spinner
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
@@ -32,12 +32,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentHomeBinding
 import com.pedfu.daystreak.domain.notification.NotificationItem
-import com.pedfu.daystreak.domain.streak.StreakCategoryItem
-import com.pedfu.daystreak.domain.streak.StreakItem
 import com.pedfu.daystreak.domain.user.User
 import com.pedfu.daystreak.presentation.MainActivity
 import com.pedfu.daystreak.presentation.MainState
@@ -70,6 +67,7 @@ class HomeFragment : Fragment() {
     private val adapter = StreakListAdapter(::navigateToDetails)
     private val categoryAdapter = StreakCategoryAdapter(::onSelectCategory)
     private val notificationAdapter = NotificationAdapter(::handleNotificationClick, ::handleShareClick, ::handleShareClick)
+
     private val calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,7 +130,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun FragmentHomeBinding.setNotifications(notifications: List<NotificationItem>) {
-        notificationAdapter.items = notifications
+//        notificationAdapter.items = notifications
         textViewNotificationQnt.text = notifications.size.toString()
         textViewNotificationQnt.isVisible = notifications.isNotEmpty()
     }
@@ -178,7 +176,8 @@ class HomeFragment : Fragment() {
 
     private fun FragmentHomeBinding.setupButtons() {
         frameLayoutBell.setOnClickListener {
-            showNotificationsDialog()
+//            showNotificationsDialog()
+            (activity as? MainActivity)?.showNotificationsDialog(requireContext())
         }
         createStreakCategoryButton.setOnClickListener {
             selectOptionModal.isVisible = true
@@ -191,6 +190,7 @@ class HomeFragment : Fragment() {
             selectOptionModal.isVisible = false
             showCreateCategoryDialog(false)
         }
+        
         buttonCategory.setOnClickListener {
             selectOptionModal.isVisible = false
             showCreateCategoryDialog(true)
@@ -232,13 +232,12 @@ class HomeFragment : Fragment() {
 
         when (isCategory) {
             true -> setupCreateCategoryForm()
-            else -> setupStreakForm()
+            else -> setupCreateStreakForm()
         }
         dialog.show()
     }
 
-    private fun setupStreakForm() {
-        // dialog = Dialog(requireContext())
+    private fun setupCreateStreakForm() {
         dialog.setContentView(R.layout.dialog_streak_form)
         dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
 
@@ -261,21 +260,28 @@ class HomeFragment : Fragment() {
         val editTextName = dialog.findViewById<TextInputEditText>(R.id.editTextName)
         val textInputStreakGoalDeadline = dialog.findViewById<AppCompatButton>(R.id.textInputStreakGoalDeadline)
         val editTextMinTimePerDay = dialog.findViewById<TextInputEditText>(R.id.editTextStreakMinPerDay)
-        val editTextCategory = dialog.findViewById<TextInputEditText>(R.id.editTextCategory)
+        val spinnerCategory = dialog.findViewById<Spinner>(R.id.spinnerCategory)
         val editTextDescription = dialog.findViewById<TextInputEditText>(R.id.editTextDescription)
         val constraintLayoutBackgroundPicture = dialog.findViewById<ConstraintLayout>(R.id.constraintLayoutBackgroundPicture)
         val imageViewPictureTaken = dialog.findViewById<ImageView>(R.id.imageViewPictureTaken)
         val constraintLayoutBackgroundColor = dialog.findViewById<ConstraintLayout>(R.id.constraintLayoutBackgroundColor)
 
-//        editTextStreakGoalDeadline.isEnabled = false
         textInputStreakGoalDeadline.setOnClickListener {
-            Log.i("TESTE", "CLICADO")
             showDatePicker(textInputStreakGoalDeadline)
+        }
+
+        // new streak - categories
+        val categories = viewModel.categoriesLiveData.value ?: emptyList()
+        spinnerCategory.adapter = ArrayAdapter(requireContext(), R.layout.category_spinner_item, R.id.textViewOption, categories.map { it.name })
+        spinnerCategory?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                viewModel.onStreakCategoryChanged(categories[position])
+            }
         }
 
         editTextName.addTextChangedListener { viewModel.onStreakNameChanged(it.toString()) }
         editTextMinTimePerDay.addTextChangedListener { viewModel.onStreakMinTimePerDayChanged(it.toString()) }
-        editTextCategory.addTextChangedListener { viewModel.onStreakCategoryChanged(it.toString()) }
         editTextDescription.addTextChangedListener { viewModel.onStreakDescriptionChanged(it.toString()) }
         constraintLayoutBackgroundPicture.setOnClickListener { dispatchSelectPictureIntent() }
         imageViewPictureTaken.setOnClickListener { dispatchSelectPictureIntent() }
@@ -296,7 +302,7 @@ class HomeFragment : Fragment() {
 //        ViewCompat.setNestedScrollingEnabled(recyclerView, true)
 //
 //        buttonBack.setOnClickListener {
-//            setupStreakForm()
+//            setupCreateStreakForm()
 //        }
 //        buttonCreate.setOnClickListener {
 //            dialog.hide()
@@ -331,7 +337,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupCreateCategoryForm() {
-//        dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.dialog_category_form)
         dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
 
@@ -341,7 +346,10 @@ class HomeFragment : Fragment() {
         val editTextName = dialog.findViewById<TextInputEditText>(R.id.editTextName)
 
         buttonCreate.setOnClickListener {
-            viewModel.onCreateCategory(dialog::hide)
+            if (!editTextName.text.toString().isNullOrBlank()) {
+                buttonCreate.isEnabled = false
+                viewModel.onCreateCategory(dialog::hide)
+            }
         }
         buttonClose.setOnClickListener {
             // clear data in view model

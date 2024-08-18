@@ -2,6 +2,7 @@ package com.pedfu.daystreak.utils
 
 import android.app.Dialog
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.DisplayMetrics
@@ -37,18 +38,28 @@ object Modals {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
 
-        val buttonClose = dialog.findViewById<ImageButton>(R.id.buttonClose)
-        buttonClose.setOnClickListener {
-            dialog.dismiss()
-        }
-
         val recyclerViewNotifications = dialog.findViewById<RecyclerView>(R.id.recyclerViewNotifications)
         recyclerViewNotifications.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         recyclerViewNotifications.adapter = notificationAdapter.apply {
-//            items = notificationItems
+            items = notificationItems
         }
-        ViewCompat.setNestedScrollingEnabled(recyclerViewNotifications, true)
 
+        val buttonClose = dialog.findViewById<ImageButton>(R.id.buttonClose)
+        val buttonClear = dialog.findViewById<MaterialButton>(R.id.buttonClear)
+        val buttonMarkAllRead = dialog.findViewById<MaterialButton>(R.id.buttonMarkAllRead)
+        val textViewNoItems = dialog.findViewById<TextView>(R.id.textViewNoItems)
+
+        buttonClose.setOnClickListener { dialog.dismiss() }
+        buttonClear.setOnClickListener { dialog.dismiss() }
+        if (notificationItems.isEmpty()) {
+            buttonClear.setTextAppearance(R.style.MaterialButton_Transparent_Disabled)
+            buttonClear.isEnabled = false
+            buttonMarkAllRead.setTextAppearance(R.style.MaterialButton_Disabled)
+            buttonMarkAllRead.isEnabled = false
+            textViewNoItems.isVisible = true
+        }
+
+        ViewCompat.setNestedScrollingEnabled(recyclerViewNotifications, true)
         dialog.show()
     }
 

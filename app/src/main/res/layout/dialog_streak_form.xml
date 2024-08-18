@@ -154,24 +154,35 @@
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/constraintLayoutStreakDuration" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputCategory"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                style="@style/TextInputLayout"
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:id="@+id/textInputCategory"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                style="@style/TextInputLayout"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/labelCategory">-->
+
+<!--&lt;!&ndash;                disabled while user cannot create category directly by here&ndash;&gt;-->
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:id="@+id/editTextCategory"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:inputType="textPersonName|textCapWords"-->
+<!--                    android:enabled="false" -->
+<!--                    android:singleLine="true" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+
+            <Spinner
+                android:id="@+id/spinnerCategory"
+                android:layout_width="match_parent"
+                android:layout_height="63dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/labelCategory">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextCategory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:inputType="textPersonName|textCapWords"
-                    android:singleLine="true" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintTop_toBottomOf="@id/labelCategory"/>
 
             <TextView
                 android:id="@+id/labelBackgroundPicture"
@@ -180,7 +191,7 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/background_picture_mandatory"
                 android:textColor="@color/black"
-                app:layout_constraintTop_toBottomOf="@id/textInputCategory" />
+                app:layout_constraintTop_toBottomOf="@id/spinnerCategory" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline2"

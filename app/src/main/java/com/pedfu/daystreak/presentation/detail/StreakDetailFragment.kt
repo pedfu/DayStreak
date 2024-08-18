@@ -11,9 +11,14 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentStreakDetailBinding
+import com.pedfu.daystreak.domain.notification.NotificationItem
 import com.pedfu.daystreak.domain.streak.StreakItem
+import com.pedfu.daystreak.domain.user.User
+import com.pedfu.daystreak.presentation.MainActivity
+import com.pedfu.daystreak.presentation.home.adapters.NotificationAdapter
 import com.pedfu.daystreak.presentation.timer.TimerFragmentArgs
 import com.pedfu.daystreak.utils.ImageProvider
 import com.pedfu.daystreak.utils.Modals
@@ -35,6 +40,7 @@ class StreakDetailFragment : Fragment() {
     }
 
     private lateinit var onBackPressedCallback: OnBackPressedCallback
+    private val notificationAdapter = NotificationAdapter(::handleNotificationClick, ::handleShareClick, ::handleShareClick)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -76,9 +82,14 @@ class StreakDetailFragment : Fragment() {
     private fun FragmentStreakDetailBinding.observeViewModel() {
         viewModel.stateLiveData.observe(viewLifecycleOwner) { setState(it) }
         viewModel.streakLiveData.observe(viewLifecycleOwner) { setStreak(it) }
+        viewModel.userLiveData.observe(viewLifecycleOwner) { setUser(it) }
+        viewModel.notificationsLiveData.observe(viewLifecycleOwner) { setNotifications(it) }
     }
 
     private fun FragmentStreakDetailBinding.setupButtons() {
+        frameLayoutBell.setOnClickListener {
+            showNotificationsDialog()
+        }
         buttonStartTimer.setOnClickListener {
             // precisa aparecer modal -> pessoa digita quantidade -> inicia timer
             val args = TimerFragmentArgs.Builder(15).build()
@@ -90,6 +101,29 @@ class StreakDetailFragment : Fragment() {
         buttonCompleteDay.setOnClickListener {
             Modals.showCompleteDayDialog(requireContext(), ::onCompleteDaySave)
         }
+        imageViewProfilePicture.setOnClickListener {
+            (activity as? MainActivity)?.signOutAndStartSignInActivity()
+        }
+    }
+
+    private fun FragmentStreakDetailBinding.setNotifications(notifications: List<NotificationItem>) {
+        notificationAdapter.items = notifications
+        textViewNotificationQnt.text = notifications.size.toString()
+        textViewNotificationQnt.isVisible = notifications.isNotEmpty()
+    }
+
+    private fun handleShareClick() {}
+    private fun handleShareClick(id: Long) {}
+    private fun handleNotificationClick(id: Long) {
+        notificationAdapter.items = notificationAdapter.items.map {
+            if (it.id == id) it.read = true
+            it
+        }
+        Modals.showBadgeDialog(requireContext(), ::handleShareClick, "Streak Master", "Reach a 10-day streak. Teste.")
+    }
+
+    private fun showNotificationsDialog() {
+        Modals.showNotificationDialog(requireContext(), notificationAdapter.items, notificationAdapter)
     }
 
     private fun FragmentStreakDetailBinding.setStreak(streak: StreakItem?) {
@@ -97,6 +131,14 @@ class StreakDetailFragment : Fragment() {
             textViewStreakTitle.text = streak.name
             textViewStreakDescription.text = streak.description
             ImageProvider.loadImageFromUrl(detailsPicture, streak.backgroundPicture)
+        }
+    }
+
+    private fun FragmentStreakDetailBinding.setUser(user: User?) {
+        if (user != null) {
+            Glide.with(requireContext())
+                .load(user.photoUrl)
+                .into(imageViewProfilePicture)
         }
     }
 

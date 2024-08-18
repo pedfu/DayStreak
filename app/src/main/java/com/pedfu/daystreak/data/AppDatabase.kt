@@ -24,7 +24,7 @@ import com.pedfu.daystreak.utils.converters.DateConverter
         NotificationEntity::class,
         BadgeEntity::class,
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(
@@ -46,11 +46,7 @@ abstract class AppDatabase : RoomDatabase() {
                     context,
                     AppDatabase::class.java,
                     "day_streak_database"
-                )
-                    .apply {
-                        fallbackToDestructiveMigration()
-                    }
-                    .build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 instance
             }

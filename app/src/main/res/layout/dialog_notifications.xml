@@ -40,12 +40,25 @@
         android:background="@color/gray_line"
         app:layout_constraintTop_toBottomOf="@+id/textViewNotifications" />
 
+    <TextView
+        android:id="@+id/textViewNoItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_notifications"
+        android:textColor="@color/gray_font"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/split_line" />
+
     <ScrollView
         android:id="@+id/scrollViewRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/split_line">
+        app:layout_constraintTop_toBottomOf="@id/textViewNoItems">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewNotifications"
@@ -64,25 +77,26 @@
         app:layout_constraintTop_toBottomOf="@+id/scrollViewRecycler">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonMarkAllRead"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:textColor="@color/black"
-            app:backgroundTint="@null"
             android:paddingHorizontal="10dp"
             android:paddingVertical="0dp"
             android:layout_marginRight="10dp"
             android:textSize="12sp"
-            android:background="@drawable/background_rounded_sm_lightgray"
+            style="@style/MaterialButton"
+            android:background="@drawable/background_button_rounded_sm_lightgray"
+            app:backgroundTint="@null"
             android:text="@string/mark_all_as_read"/>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonClear"
             android:layout_width="60dp"
             android:layout_height="30dp"
-            app:backgroundTint="@null"
-            android:background="@color/transparent"
+            style="@style/MaterialButton.Transparent"
+            android:background="@drawable/background_button_transparent"
             android:padding="0dp"
             android:textSize="12sp"
-            android:textColor="@color/black"
             android:text="@string/clear"/>
     </LinearLayout>
 
