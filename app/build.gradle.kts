@@ -54,6 +54,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-service:2.7.0")
     implementation("androidx.lifecycle:lifecycle-common-java8:2.7.0")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -91,4 +92,7 @@ dependencies {
 
     // glide - render image from url
     implementation("com.github.bumptech.glide:glide:4.12.0")
+
+    // Loading Button
+    implementation("com.github.razir.progressbutton:progressbutton:2.1.0")
 }

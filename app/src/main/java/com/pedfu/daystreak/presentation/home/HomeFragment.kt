@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
@@ -39,6 +40,8 @@ import com.pedfu.daystreak.domain.user.User
 import com.pedfu.daystreak.presentation.MainActivity
 import com.pedfu.daystreak.presentation.MainState
 import com.pedfu.daystreak.presentation.MainViewModel
+import com.pedfu.daystreak.presentation.category.OnItemCreatedListener
+import com.pedfu.daystreak.presentation.category.SelectCreateTypeDialogFragment
 import com.pedfu.daystreak.presentation.detail.StreakDetailFragmentArgs
 import com.pedfu.daystreak.presentation.home.adapters.NotificationAdapter
 import com.pedfu.daystreak.presentation.home.adapters.StreakCategoryAdapter
@@ -151,23 +154,6 @@ class HomeFragment : Fragment() {
         progressBar.isVisible = state == MainState.REFRESHING
     }
 
-//    private fun focusOnSelectedCategory(categoriesP: List<StreakCategoryItem>? = null, streaksP: List<StreakItem>? = null) {
-//        Log.i("ULTIMATETESTE", "categoria - " + categoriesP.toString() + "\n" + categoriesP?.size)
-//        Log.i("ULTIMATETESTE", "categoria vm - " + viewModel.categoriesLiveData.value.toString() + "\n" + viewModel.categoriesLiveData.value?.size)
-//        Log.i("ULTIMATETESTE", "streak - " + streaksP.toString() + "\n" + streaksP?.size)
-//        Log.i("ULTIMATETESTE", "streak vm - " + viewModel.streaksLiveData.value.toString() + "\n" + viewModel.streaksLiveData.value?.size)
-//        val categories = categoriesP ?: viewModel.categoriesLiveData.value ?: emptyList()
-//        if (categories.isEmpty()) return
-//        val selectedCategory = categories.find { it.id == viewModel.selectedCategoryLiveData.value } ?: categories.first()
-//        categoryAdapter.items = categories.map {
-//            it.selected = it.id == selectedCategory.id
-//            it
-//
-//        }
-//        Log.i("ULTIMATETESTE", "final vm - " + selectedCategory.toString() + "\n" + (streaksP ?: viewModel.streaksLiveData.value ?: emptyList()).filter { it.categoryId == selectedCategory.id }.toString())
-//        adapter.items = (streaksP ?: viewModel.streaksLiveData.value ?: emptyList()).filter { it.categoryId == selectedCategory.id }
-//    }
-
     private fun FragmentHomeBinding.setupSwipeRefresh() {
         swipeRefreshLayout.setOnRefreshListener {
             mainViewModel.refresh(true)
@@ -176,25 +162,21 @@ class HomeFragment : Fragment() {
 
     private fun FragmentHomeBinding.setupButtons() {
         frameLayoutBell.setOnClickListener {
-//            showNotificationsDialog()
             (activity as? MainActivity)?.showNotificationsDialog(requireContext())
         }
         createStreakCategoryButton.setOnClickListener {
-            selectOptionModal.isVisible = true
-            selectOptionModal.layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
+            val createItemDialog = SelectCreateTypeDialogFragment()
+            createItemDialog.setOnItemCreatedListener(object : OnItemCreatedListener {
+                override fun onItemCreated(itemType: String) {
+                    Toast.makeText(requireContext(), "$itemType created!", Toast.LENGTH_SHORT).show()
+                }
+            })
+            createItemDialog.show(childFragmentManager, "CreateItemDialog")
         }
         imageViewProfilePicture.setOnClickListener {
             (activity as? MainActivity)?.signOutAndStartSignInActivity()
         }
-        buttonStreak.setOnClickListener {
-            selectOptionModal.isVisible = false
-            showCreateCategoryDialog(false)
-        }
-        
-        buttonCategory.setOnClickListener {
-            selectOptionModal.isVisible = false
-            showCreateCategoryDialog(true)
-        }
+
         buttonClose.setOnClickListener {
             selectOptionModal.isVisible = false
             dialog.hide()
@@ -222,19 +204,6 @@ class HomeFragment : Fragment() {
 
     private fun showNotificationsDialog() {
         Modals.showNotificationDialog(requireContext(), notificationAdapter.items, notificationAdapter)
-    }
-
-    private fun showCreateCategoryDialog(isCategory: Boolean) {
-        dialog = Dialog(requireContext())
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.setCancelable(true)
-
-        when (isCategory) {
-            true -> setupCreateCategoryForm()
-            else -> setupCreateStreakForm()
-        }
-        dialog.show()
     }
 
     private fun setupCreateStreakForm() {
@@ -334,34 +303,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun showColorPicker() {
-    }
-
-    private fun setupCreateCategoryForm() {
-        dialog.setContentView(R.layout.dialog_category_form)
-        dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
-
-        val buttonClose = dialog.findViewById<ImageButton>(R.id.buttonClose)
-        val buttonBack = dialog.findViewById<MaterialButton>(R.id.buttonBack)
-        val buttonCreate = dialog.findViewById<MaterialButton>(R.id.buttonCreate)
-        val editTextName = dialog.findViewById<TextInputEditText>(R.id.editTextName)
-
-        buttonCreate.setOnClickListener {
-            if (!editTextName.text.toString().isNullOrBlank()) {
-                buttonCreate.isEnabled = false
-                viewModel.onCreateCategory(dialog::hide)
-            }
-        }
-        buttonClose.setOnClickListener {
-            // clear data in view model
-            viewModel.onCategoryNameChanged("")
-            dialog.hide()
-        }
-        buttonBack.setOnClickListener {
-            // clear data in view model
-            viewModel.onCategoryNameChanged("")
-            dialog.hide()
-        }
-        editTextName.addTextChangedListener { viewModel.onCategoryNameChanged(it.toString()) }
     }
 
     private fun handleShareClick() {}

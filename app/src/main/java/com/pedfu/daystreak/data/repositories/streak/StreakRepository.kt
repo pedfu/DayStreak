@@ -34,6 +34,10 @@ class StreakRepository(
         return streakDao.getAll().map { it.toStreak() }
     }
 
+    suspend fun getAllCategories(): List<StreakCategoryItem> {
+        return categoryDao.getAll().map { it.toCategory() }
+    }
+
     suspend fun onRefreshStreak(streaks: List<StreakItem>) {
         streakDao.refreshStreaks(streaks)
     }

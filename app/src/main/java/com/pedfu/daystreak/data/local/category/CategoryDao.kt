@@ -18,6 +18,9 @@ interface CategoryDao {
     @Query("SELECT * FROM category")
     suspend fun getAllCategories(): List<CategoryEntity>
 
+    @Query("SELECT * FROM category")
+    suspend fun getAll(): List<CategoryEntity>
+
     @Query("SELECT * FROM category WHERE id = :id LIMIT 1")
     fun observeById(id: Long): Flow<CategoryEntity?>
 
