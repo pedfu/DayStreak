@@ -1,24 +1,17 @@
-package com.pedfu.daystreak.presentation.category
+package com.pedfu.daystreak.presentation.creation.category
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams
-import android.widget.ImageButton
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputEditText
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentCategoryCreationDialogBinding
-import com.pedfu.daystreak.databinding.FragmentHomeBinding
-import com.pedfu.daystreak.presentation.MainViewModel
+import com.pedfu.daystreak.presentation.creation.OnItemCreatedListener
 import com.pedfu.daystreak.presentation.home.HomeViewModel
 import com.pedfu.daystreak.utils.lazyViewModel
 
@@ -33,9 +26,8 @@ class CategoryCreationDialogFragment(
     private var _binding: FragmentCategoryCreationDialogBinding? = null
     private val binding: FragmentCategoryCreationDialogBinding get() = _binding!!
 
-    private val homeViewModel by viewModels<HomeViewModel>(::requireActivity)
     private val viewModel: CategoryCreationDialogViewModel by lazyViewModel {
-        CategoryCreationDialogViewModel(homeViewModel)
+        CategoryCreationDialogViewModel()
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +50,7 @@ class CategoryCreationDialogFragment(
                 dismiss()
                 viewModel.resetData()
             }
-            buttonBack.setOnClickListener {
+            buttonCancel.setOnClickListener {
                 dismiss()
                 viewModel.resetData()
             }

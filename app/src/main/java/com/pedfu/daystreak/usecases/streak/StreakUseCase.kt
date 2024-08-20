@@ -28,7 +28,7 @@ class StreakUseCase(
     }
 
     suspend fun createStreak(streak: StreakRequest) {
-        val streakResponse = streakService.createStreak(streak)
+        val streakResponse = streakService.createStreak(streak) ?: return
         streakRepository.saveStreak(streakResponse.toStreak())
     }
 }

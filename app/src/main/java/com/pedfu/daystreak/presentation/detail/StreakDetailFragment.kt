@@ -130,7 +130,7 @@ class StreakDetailFragment : Fragment() {
         if (streak != null) {
             textViewStreakTitle.text = streak.name
             textViewStreakDescription.text = streak.description
-            ImageProvider.loadImageFromUrl(detailsPicture, streak.backgroundPicture)
+            if (streak.backgroundPicture != null) ImageProvider.loadImageFromUrl(detailsPicture, streak.backgroundPicture)
         }
     }
 

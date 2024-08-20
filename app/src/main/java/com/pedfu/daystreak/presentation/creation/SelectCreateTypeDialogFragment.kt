@@ -1,7 +1,6 @@
-package com.pedfu.daystreak.presentation.category
+package com.pedfu.daystreak.presentation.creation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,8 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.button.MaterialButton
 import com.pedfu.daystreak.R
+import com.pedfu.daystreak.presentation.creation.category.CategoryCreationDialogFragment
+import com.pedfu.daystreak.presentation.creation.streak.StreakCreationDialogFragment
 
 class SelectCreateTypeDialogFragment : DialogFragment() {
     private var onItemCreatedListener: OnItemCreatedListener? = null
@@ -46,10 +47,17 @@ class SelectCreateTypeDialogFragment : DialogFragment() {
                 dismiss()
             }
         })
-        categoryCreationDialog.show(childFragmentManager, "CreateItemDialog")
+        categoryCreationDialog.show(childFragmentManager, "CreateCategoryDialog")
     }
 
     private fun showStreakCreationModal() {
-
+        val steakCreationDialog = StreakCreationDialogFragment(::dismiss)
+        steakCreationDialog.setOnItemCreatedListener(object : OnItemCreatedListener {
+            override fun onItemCreated(itemType: String) {
+                onItemCreatedListener?.onItemCreated(itemType)
+                dismiss()
+            }
+        })
+        steakCreationDialog.show(childFragmentManager, "CreateStreakDialog")
     }
 }

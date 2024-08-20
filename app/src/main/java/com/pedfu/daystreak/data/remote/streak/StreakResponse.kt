@@ -15,8 +15,8 @@ class StreakResponse (
     @Json(name = "created_by") val createdBy: String?,
     @Json(name = "category") val category: CategoryResponse,
     @Json(name = "user_streak_id") val userStreakId: Long,
-    @Json(name = "status") val status: String,
-    @Json(name = "background_picture") val backgroundPicture: String,
+    @Json(name = "status") val status: String?,
+    @Json(name = "background_picture") val backgroundPicture: String?,
 //    @Json(name = "created_at") val createdAt: Date,
     @Json(name = "max_streak") val maxStreak: Int?,
 ) {

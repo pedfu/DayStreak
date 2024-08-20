@@ -13,12 +13,12 @@ class StreakService(
     private val moshi: Moshi = Inject.moshi
 ): RemoteService(moshi) {
 
-    suspend fun createStreak(streakRequest: StreakRequest): StreakResponse {
-        val backgroundPart = MultipartBody.Part.createFormData(
+    suspend fun createStreak(streakRequest: StreakRequest): StreakResponse? {
+        val backgroundPart = if (streakRequest.background != null) MultipartBody.Part.createFormData(
             "background",
             streakRequest.background.name,
             streakRequest.background.asRequestBody("image/*".toMediaTypeOrNull()),
-        )
+        ) else null
 
         return try {
             streakApi.createStreak(SimplifiedStreakRequest(streakRequest), backgroundPart)

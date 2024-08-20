@@ -1,4 +1,4 @@
-package com.pedfu.daystreak.presentation.category
+package com.pedfu.daystreak.presentation.creation
 
 interface OnItemCreatedListener {
     fun onItemCreated(itemType: String)

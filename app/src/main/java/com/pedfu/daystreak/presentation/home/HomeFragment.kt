@@ -5,14 +5,11 @@ import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -40,8 +37,8 @@ import com.pedfu.daystreak.domain.user.User
 import com.pedfu.daystreak.presentation.MainActivity
 import com.pedfu.daystreak.presentation.MainState
 import com.pedfu.daystreak.presentation.MainViewModel
-import com.pedfu.daystreak.presentation.category.OnItemCreatedListener
-import com.pedfu.daystreak.presentation.category.SelectCreateTypeDialogFragment
+import com.pedfu.daystreak.presentation.creation.OnItemCreatedListener
+import com.pedfu.daystreak.presentation.creation.SelectCreateTypeDialogFragment
 import com.pedfu.daystreak.presentation.detail.StreakDetailFragmentArgs
 import com.pedfu.daystreak.presentation.home.adapters.NotificationAdapter
 import com.pedfu.daystreak.presentation.home.adapters.StreakCategoryAdapter

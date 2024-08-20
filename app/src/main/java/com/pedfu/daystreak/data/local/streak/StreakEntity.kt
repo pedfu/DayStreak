@@ -33,7 +33,7 @@ class StreakEntity(
     val categoryId: Long,
     val userStreakId: Long,
     val status: String,
-    val backgroundPicture: String,
+    val backgroundPicture: String?,
     val createdAt: Date,
     val maxStreak: Int,
 ) {

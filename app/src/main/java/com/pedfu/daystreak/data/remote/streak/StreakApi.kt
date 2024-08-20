@@ -25,8 +25,8 @@ interface StreakApi {
     @POST("api/v1/streaks/")
     suspend fun createStreak(
         @Part(value = "data") streakRequest: SimplifiedStreakRequest,
-        @Part backgroundPart: MultipartBody.Part
-    ): StreakResponse
+        @Part backgroundPart: MultipartBody.Part?
+    ): StreakResponse?
 
     @POST("api/v1/category/")
     suspend fun createCategory(@Body streakRequest: CategoryRequest): CategoryResponse

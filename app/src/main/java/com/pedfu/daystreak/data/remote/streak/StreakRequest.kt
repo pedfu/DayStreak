@@ -5,6 +5,7 @@ import com.squareup.moshi.JsonClass
 import java.io.File
 import java.time.LocalDate
 import java.util.Date
+import kotlin.math.min
 
 @JsonClass(generateAdapter = true)
 class StreakRequest (
@@ -13,11 +14,31 @@ class StreakRequest (
     @Json(name = "description") val description: String,
     @Json(name = "duration_days") val durationDays: Long?, // duration days
     @Json(name = "end_date") val endDate: String?, // duration days
-    @Json(name = "background") val background: File,
+    @Json(name = "background") val background: File?,
     @Json(name = "category") val category: CategoryRequest?,
     @Json(name = "category_id") val categoryId: Long?,
     @Json(name = "min_time_per_day") val minTimePerDay: Int?, // minutes
-)
+) {
+    constructor(
+        name: String,
+        description: String,
+        durationDays: Long?,
+        endDate: String?,
+        background: File?,
+        categoryId: Long?,
+        minTimePerDay: Int?
+    ): this(
+        null,
+        name,
+        description,
+        durationDays,
+        endDate,
+        background,
+        null,
+        categoryId,
+        minTimePerDay
+    )
+}
 
 @JsonClass(generateAdapter = true)
 class SimplifiedStreakRequest (

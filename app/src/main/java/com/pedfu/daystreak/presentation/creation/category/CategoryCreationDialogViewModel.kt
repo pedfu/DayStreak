@@ -1,4 +1,4 @@
-package com.pedfu.daystreak.presentation.category
+package com.pedfu.daystreak.presentation.creation.category
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,7 +23,6 @@ enum class CategoryCreationState {
 }
 
 class CategoryCreationDialogViewModel(
-    private val homeViewModel: HomeViewModel,
     private val streakRepository: StreakRepository = Inject.streakRepository,
     private val streakUseCase: StreakUseCase = Inject.streakUseCase,
 ) : ViewModel() {

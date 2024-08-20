@@ -18,7 +18,7 @@ class StreakListViewHolder(
     }
 
     private fun ItemCardBinding.setupCard(streakItem: StreakItem, onClick: (streakId: Long) -> Unit) {
-        ImageProvider.loadImageFromUrl(imageViewCardBg, streakItem.backgroundPicture)
+        if (streakItem.backgroundPicture != null) ImageProvider.loadImageFromUrl(imageViewCardBg, streakItem.backgroundPicture)
         contraintLayoutCard.setOnClickListener {
             onClick(streakItem.id ?: 0)
         }

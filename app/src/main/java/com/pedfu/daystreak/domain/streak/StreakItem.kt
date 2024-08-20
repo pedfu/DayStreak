@@ -9,7 +9,8 @@ enum class StreakStatus(s: String) {
 
     companion object {
         // Function to map a string to the corresponding enum value
-        fun fromString(status: String): StreakStatus? {
+        fun fromString(status: String?): StreakStatus? {
+            if (status == null) return null
             return values().find { it.name.lowercase() == status }
         }
     }
@@ -24,7 +25,7 @@ data class StreakItem(
     val categoryId: Long,
     val userStreakId: Long,
     val status: StreakStatus = StreakStatus.PENDING,
-    val backgroundPicture: String,
+    val backgroundPicture: String?,
     val createdAt: Date,
     val maxStreak: Int = 0,
 )

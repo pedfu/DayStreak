@@ -67,9 +67,9 @@
     <string name="invited_people">Invited people:</string>
     <string name="streak_goal_duration_optional">Streak goal days duration (optional)</string>
     <string name="streak_goal_deadline">Goal deadline*</string>
-    <string name="min_time_per_day_optional">Min. timer per day</string>
+    <string name="min_time_per_day_optional">Min. time per day</string>
     <string name="background_picture">Background picture</string>
-    <string name="background_picture_mandatory">Background picture or color*</string>
+    <string name="background_picture_mandatory">Background picture</string>
     <string name="description">Description</string>
     <string name="description_mandatory">Description*</string>
     <string name="drop_or_select_your_picture">Drop or Select your picture here</string>
