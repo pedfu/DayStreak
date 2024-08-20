@@ -4,6 +4,8 @@ import android.app.DatePickerDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -22,6 +24,7 @@ import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentStreakCreationDialogBinding
 import com.pedfu.daystreak.domain.streak.StreakCategoryItem
 import com.pedfu.daystreak.presentation.creation.OnItemCreatedListener
+import com.pedfu.daystreak.presentation.reusable.showErrorSnackbar
 import com.pedfu.daystreak.utils.lazyViewModel
 import java.io.File
 import java.io.FileOutputStream
@@ -60,6 +63,7 @@ class StreakCreationDialogFragment(
         super.onViewCreated(view, savedInstanceState)
 
         dialog?.window?.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         binding.run {
             buttonCreate.setOnClickListener {
                 viewModel.onFinish()
@@ -143,6 +147,9 @@ class StreakCreationDialogFragment(
             errors.contains(StreakCreationFields.NAME) -> {
 //                textViewErrorName.text = getString(R.string.name_cannot_be_empty)
 //                textViewErrorName.isVisible = true
+            }
+            errors.contains(StreakCreationFields.NETWORK) -> {
+                showErrorSnackbar(root, R.string.are_you_sure_want_delete)
             }
             else -> {
 //                textViewErrorName.isVisible = false

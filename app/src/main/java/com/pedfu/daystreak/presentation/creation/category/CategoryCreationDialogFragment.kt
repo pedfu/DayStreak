@@ -1,22 +1,29 @@
 package com.pedfu.daystreak.presentation.creation.category
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams
+import android.widget.FrameLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentCategoryCreationDialogBinding
 import com.pedfu.daystreak.presentation.creation.OnItemCreatedListener
 import com.pedfu.daystreak.presentation.home.HomeViewModel
+import com.pedfu.daystreak.presentation.reusable.showErrorSnackbar
 import com.pedfu.daystreak.utils.lazyViewModel
 
 class CategoryCreationDialogFragment(
-    val dismissParent: () -> Unit
+    val dismissParent: () -> Unit,
+    private val parentRoot: SwipeRefreshLayout
 ) : DialogFragment() {
     private var onItemCreatedListener: OnItemCreatedListener? = null
     fun setOnItemCreatedListener(listener: OnItemCreatedListener) {
@@ -41,6 +48,7 @@ class CategoryCreationDialogFragment(
         super.onViewCreated(view, savedInstanceState)
 
         dialog?.window?.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         binding.run {
             buttonCreate.setOnClickListener {
                 viewModel.onFinish()
@@ -98,6 +106,9 @@ class CategoryCreationDialogFragment(
             EXISTING_NAME -> {
                 textViewErrorName.text = getString(R.string.category_name_already_exists)
                 textViewErrorName.isVisible = true
+            }
+            NETWORK -> {
+                showErrorSnackbar(parentRoot, R.string.are_you_sure_want_delete)
             }
             else -> {
                 textViewErrorName.isVisible = false

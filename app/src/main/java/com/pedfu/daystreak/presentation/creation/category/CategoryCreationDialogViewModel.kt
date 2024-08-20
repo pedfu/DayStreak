@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 
 const val EMPTY_NAME = "empty_name"
 const val EXISTING_NAME = "existing_name"
+const val NETWORK = "network"
 
 enum class CategoryCreationState {
     IDLE,
@@ -76,10 +77,15 @@ class CategoryCreationDialogViewModel(
 
         // create category
         viewModelScope.launch {
-            state = CategoryCreationState.LOADING
-            streakUseCase.createCategory(CategoryRequest(categoryName))
-            categoryName = ""
-            state = CategoryCreationState.DONE
+            try {
+                throw Exception("teste")
+                state = CategoryCreationState.LOADING
+                streakUseCase.createCategory(CategoryRequest(categoryName))
+                categoryName = ""
+                state = CategoryCreationState.DONE
+            } catch (ex: Throwable) {
+                errorLiveData.value = NETWORK
+            }
         }
     }
 

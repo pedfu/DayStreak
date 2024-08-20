@@ -162,7 +162,7 @@ class HomeFragment : Fragment() {
             (activity as? MainActivity)?.showNotificationsDialog(requireContext())
         }
         createStreakCategoryButton.setOnClickListener {
-            val createItemDialog = SelectCreateTypeDialogFragment()
+            val createItemDialog = SelectCreateTypeDialogFragment(root)
             createItemDialog.setOnItemCreatedListener(object : OnItemCreatedListener {
                 override fun onItemCreated(itemType: String) {
                     Toast.makeText(requireContext(), "$itemType created!", Toast.LENGTH_SHORT).show()

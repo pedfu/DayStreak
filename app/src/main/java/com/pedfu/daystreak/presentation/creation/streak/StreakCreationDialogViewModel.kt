@@ -37,7 +37,8 @@ enum class StreakCreationFields {
     CATEGORY,
     BACKGROUND_IMAGE,
     BACKGROUND_COLOR,
-    DESCRIPTION
+    DESCRIPTION,
+    NETWORK,
 }
 
 class StreakCreationDialogViewModel(
@@ -150,36 +151,40 @@ class StreakCreationDialogViewModel(
 
         // create category
         viewModelScope.launch {
-            state = StreakCreationState.LOADING
-            val durationDays: Long? = if (streakGoalDeadline != null) {
-                val today = Calendar.getInstance()
-                val deadline = Calendar.getInstance().apply { time = streakGoalDeadline }
-                val todayLocalDate = LocalDate.of(today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1, today.get(
-                    Calendar.DAY_OF_MONTH))
-                val deadlineLocalDate = LocalDate.of(deadline.get(Calendar.YEAR), deadline.get(
-                    Calendar.MONTH) + 1, deadline.get(Calendar.DAY_OF_MONTH))
-                ChronoUnit.DAYS.between(todayLocalDate, deadlineLocalDate)
-            } else {
-                null
+            try {
+                state = StreakCreationState.LOADING
+                val durationDays: Long? = if (streakGoalDeadline != null) {
+                    val today = Calendar.getInstance()
+                    val deadline = Calendar.getInstance().apply { time = streakGoalDeadline }
+                    val todayLocalDate = LocalDate.of(today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1, today.get(
+                        Calendar.DAY_OF_MONTH))
+                    val deadlineLocalDate = LocalDate.of(deadline.get(Calendar.YEAR), deadline.get(
+                        Calendar.MONTH) + 1, deadline.get(Calendar.DAY_OF_MONTH))
+                    ChronoUnit.DAYS.between(todayLocalDate, deadlineLocalDate)
+                } else {
+                    null
+                }
+                val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val goalDeadline = if (streakGoalDeadline != null) {
+                    Instant.ofEpochMilli(streakGoalDeadline!!.time).atZone(ZoneId.systemDefault()).toLocalDate()
+                } else {
+                    null
+                }
+                val formattedDate = goalDeadline?.format(dateFormat)
+                val request = StreakRequest(
+                    streakName,
+                    streakDescription,
+                    durationDays,
+                    formattedDate,
+                    streakBackgroundImage,
+                    streakCategory?.id,
+                    streakMinTimePerDayInMinutes,
+                )
+                streakUseCase.createStreak(request)
+                state = StreakCreationState.DONE
+            } catch (ex: Throwable) {
+                errorLiveData.value = listOf(StreakCreationFields.NETWORK)
             }
-            val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-            val goalDeadline = if (streakGoalDeadline != null) {
-                Instant.ofEpochMilli(streakGoalDeadline!!.time).atZone(ZoneId.systemDefault()).toLocalDate()
-            } else {
-                null
-            }
-            val formattedDate = goalDeadline?.format(dateFormat)
-            val request = StreakRequest(
-                streakName,
-                streakDescription,
-                durationDays,
-                formattedDate,
-                streakBackgroundImage,
-                streakCategory?.id,
-                streakMinTimePerDayInMinutes,
-            )
-            streakUseCase.createStreak(request)
-            state = StreakCreationState.DONE
         }
     }
 

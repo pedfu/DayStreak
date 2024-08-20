@@ -1,46 +1,57 @@
 package com.pedfu.daystreak.presentation.creation
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
-import com.google.android.material.button.MaterialButton
-import com.pedfu.daystreak.R
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.pedfu.daystreak.databinding.FragmentSelectCreateTypeDialogBinding
 import com.pedfu.daystreak.presentation.creation.category.CategoryCreationDialogFragment
 import com.pedfu.daystreak.presentation.creation.streak.StreakCreationDialogFragment
 
-class SelectCreateTypeDialogFragment : DialogFragment() {
+class SelectCreateTypeDialogFragment(
+    private val parentRoot: SwipeRefreshLayout
+) : DialogFragment() {
     private var onItemCreatedListener: OnItemCreatedListener? = null
     fun setOnItemCreatedListener(listener: OnItemCreatedListener) {
         this.onItemCreatedListener = listener
+    }
+
+    private var _binding: FragmentSelectCreateTypeDialogBinding? = null
+    private val binding: FragmentSelectCreateTypeDialogBinding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentSelectCreateTypeDialogBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         dialog?.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
-        val buttonCategory = view.findViewById<MaterialButton>(R.id.buttonCategory)
-        val buttonStreak = view.findViewById<MaterialButton>(R.id.buttonStreak)
-
-        buttonCategory.setOnClickListener {
-            showCategoryCreationModal()
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        binding.run {
+            buttonCategory.setOnClickListener {
+                showCategoryCreationModal()
+            }
+            buttonStreak.setOnClickListener {
+                showStreakCreationModal()
+            }
+            buttonClose.setOnClickListener {
+                dismiss()
+            }
         }
-        buttonStreak.setOnClickListener {
-            showStreakCreationModal()
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_select_create_type_dialog, container, false)
     }
 
     private fun showCategoryCreationModal() {
-        val categoryCreationDialog = CategoryCreationDialogFragment(::dismiss)
+        val categoryCreationDialog = CategoryCreationDialogFragment(::dismiss, parentRoot)
         categoryCreationDialog.setOnItemCreatedListener(object : OnItemCreatedListener {
             override fun onItemCreated(itemType: String) {
                 onItemCreatedListener?.onItemCreated(itemType)
