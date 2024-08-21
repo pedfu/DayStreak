@@ -45,9 +45,6 @@ class MainActivity : AppCompatActivity() {
     private fun setNotifications(notifications: List<NotificationItem>) {
         notificationAdapter.items = notifications
     }
-    fun showNotificationsDialog(context: Context) {
-        Modals.showNotificationDialog(context, notificationAdapter.items, notificationAdapter)
-    }
     private fun handleNotificationClick(id: Long) {
         notificationAdapter.items = notificationAdapter.items.map {
             if (it.id == id) it.read = true

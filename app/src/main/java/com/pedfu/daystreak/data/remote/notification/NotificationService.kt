@@ -10,7 +10,7 @@ class NotificationService(
         return try {
             val response = notificationApi.getNotifications()
             response.body() ?: emptyList()
-        } catch (e: HttpException) {
+        } catch (e: Throwable) {
             throw e
         }
     }

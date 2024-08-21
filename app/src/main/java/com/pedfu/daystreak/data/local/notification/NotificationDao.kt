@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.pedfu.daystreak.data.local.category.CategoryEntity
 import com.pedfu.daystreak.domain.notification.NotificationItem
 import com.pedfu.daystreak.domain.streak.StreakCategoryItem
@@ -26,6 +27,12 @@ interface NotificationDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(notification: NotificationEntity)
+
+    @Query("UPDATE notification SET read = 1")
+    suspend fun markAllAsRead()
+
+    @Query("UPDATE notification SET read = 1 WHERE id = :id")
+    suspend fun markAsRead(id: Long)
 
     @Transaction
     suspend fun refreshNotification(notifications: List<NotificationItem>) {

@@ -13,9 +13,9 @@ class NotificationViewHolder(
         setupCard(notificationItem)
         setupText(notificationItem)
     }
-    fun bind(notificationItem: NotificationItem, onConfirm: (notificationId: Long) -> Unit, onDecline: (notificationId: Long) -> Unit) = binding.run {
+    fun bind(notificationItem: NotificationItem, onConfirm: (notificationId: Long) -> Unit, onDecline: (notificationId: Long) -> Unit, onClick: (notificationId: Long) -> Unit) = binding.run {
         setupText(notificationItem)
-        setupCard(notificationItem, onConfirm, onDecline)
+        setupCard(notificationItem, onConfirm, onDecline, onClick)
         setupCard(notificationItem)
     }
 
@@ -29,9 +29,12 @@ class NotificationViewHolder(
             onClick(notificationItem.id)
         }
     }
-    private fun ItemNotificationBinding.setupCard(notificationItem: NotificationItem, onConfirm: (notificationId: Long) -> Unit, onDecline: (notificationId: Long) -> Unit) {
+    private fun ItemNotificationBinding.setupCard(notificationItem: NotificationItem, onConfirm: (notificationId: Long) -> Unit, onDecline: (notificationId: Long) -> Unit, onClick: (streakId: Long) -> Unit) {
         buttonAccept.setOnClickListener { onConfirm(notificationItem.id) }
         buttonDecline.setOnClickListener { onDecline(notificationItem.id) }
+        contraintLayoutItem.setOnClickListener {
+            onClick(notificationItem.id)
+        }
     }
 
     private fun ItemNotificationBinding.setupText(notificationItem: NotificationItem) {

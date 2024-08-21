@@ -28,7 +28,7 @@ class NotificationAdapter(
         val notificationItem = items[position]
 
         if (notificationItem.type == "confirm") {
-            holder.bind(notificationItem, onConfirm, onDecline)
+            holder.bind(notificationItem, onConfirm, onDecline, onClick)
         } else {
             holder.bind(notificationItem, onClick)
         }

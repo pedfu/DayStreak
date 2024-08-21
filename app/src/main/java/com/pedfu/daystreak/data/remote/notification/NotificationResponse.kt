@@ -13,7 +13,7 @@ class NotificationResponse (
     @Json(name = "message") val message: String?,
     @Json(name = "type") val type: String?,
     @Json(name = "read") val read: Boolean,
-    @Json(name = "created_at") val createdAt: Date,
+    @Json(name = "created_at") val createdAt: Date?,
     @Json(name = "badge") val badge: BadgeResponse?,
     @Json(name = "streak") val streak: StreakResponse?,
 ) {
@@ -23,7 +23,7 @@ class NotificationResponse (
         message,
         type,
         read,
-        createdAt,
+        createdAt = Date(),
         badge?.toBadge(),
         streak?.id,
     )
