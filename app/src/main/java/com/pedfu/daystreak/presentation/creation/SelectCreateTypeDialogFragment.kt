@@ -13,9 +13,7 @@ import com.pedfu.daystreak.databinding.FragmentSelectCreateTypeDialogBinding
 import com.pedfu.daystreak.presentation.creation.category.CategoryCreationDialogFragment
 import com.pedfu.daystreak.presentation.creation.streak.StreakCreationDialogFragment
 
-class SelectCreateTypeDialogFragment(
-    private val parentRoot: SwipeRefreshLayout
-) : DialogFragment() {
+class SelectCreateTypeDialogFragment : DialogFragment() {
     private var onItemCreatedListener: OnItemCreatedListener? = null
     fun setOnItemCreatedListener(listener: OnItemCreatedListener) {
         this.onItemCreatedListener = listener
@@ -51,7 +49,7 @@ class SelectCreateTypeDialogFragment(
     }
 
     private fun showCategoryCreationModal() {
-        val categoryCreationDialog = CategoryCreationDialogFragment(::dismiss, parentRoot)
+        val categoryCreationDialog = CategoryCreationDialogFragment(::dismiss)
         categoryCreationDialog.setOnItemCreatedListener(object : OnItemCreatedListener {
             override fun onItemCreated(itemType: String) {
                 onItemCreatedListener?.onItemCreated(itemType)

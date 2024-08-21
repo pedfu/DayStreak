@@ -78,7 +78,6 @@ class CategoryCreationDialogViewModel(
         // create category
         viewModelScope.launch {
             try {
-                throw Exception("teste")
                 state = CategoryCreationState.LOADING
                 streakUseCase.createCategory(CategoryRequest(categoryName))
                 categoryName = ""

@@ -149,7 +149,8 @@ class StreakCreationDialogFragment(
 //                textViewErrorName.isVisible = true
             }
             errors.contains(StreakCreationFields.NETWORK) -> {
-                showErrorSnackbar(root, R.string.are_you_sure_want_delete)
+                val rootView = requireActivity().findViewById<View>(android.R.id.content)
+                showErrorSnackbar(rootView, R.string.network_error)
             }
             else -> {
 //                textViewErrorName.isVisible = false

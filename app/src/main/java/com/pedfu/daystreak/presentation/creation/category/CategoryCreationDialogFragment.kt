@@ -18,12 +18,12 @@ import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentCategoryCreationDialogBinding
 import com.pedfu.daystreak.presentation.creation.OnItemCreatedListener
 import com.pedfu.daystreak.presentation.home.HomeViewModel
+import com.pedfu.daystreak.presentation.reusable.showErrorModalSnackbar
 import com.pedfu.daystreak.presentation.reusable.showErrorSnackbar
 import com.pedfu.daystreak.utils.lazyViewModel
 
 class CategoryCreationDialogFragment(
     val dismissParent: () -> Unit,
-    private val parentRoot: SwipeRefreshLayout
 ) : DialogFragment() {
     private var onItemCreatedListener: OnItemCreatedListener? = null
     fun setOnItemCreatedListener(listener: OnItemCreatedListener) {
@@ -108,7 +108,8 @@ class CategoryCreationDialogFragment(
                 textViewErrorName.isVisible = true
             }
             NETWORK -> {
-                showErrorSnackbar(parentRoot, R.string.are_you_sure_want_delete)
+                val rootView = requireActivity().findViewById<View>(android.R.id.content)
+                showErrorModalSnackbar(rootView, R.string.network_error)
             }
             else -> {
                 textViewErrorName.isVisible = false

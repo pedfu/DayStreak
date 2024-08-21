@@ -10,6 +10,7 @@
     <!-- Errors -->
     <string name="name_cannot_be_empty">Name can\'t be empty</string>
     <string name="category_name_already_exists">There is already a category with the same name</string>
+    <string name="network_error">A network error occurred!</string>
 
     <!-- Home -->
     <string name="hi_username">Hi, %s!</string>
