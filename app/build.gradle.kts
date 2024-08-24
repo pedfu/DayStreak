@@ -95,4 +95,7 @@ dependencies {
 
     // Loading Button
     implementation("com.github.razir.progressbutton:progressbutton:2.1.0")
+
+    // CardView
+    implementation("androidx.cardview:cardview:1.0.0")
 }

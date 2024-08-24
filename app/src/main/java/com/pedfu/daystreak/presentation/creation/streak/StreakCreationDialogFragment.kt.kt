@@ -24,6 +24,7 @@ import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentStreakCreationDialogBinding
 import com.pedfu.daystreak.domain.streak.StreakCategoryItem
 import com.pedfu.daystreak.presentation.creation.OnItemCreatedListener
+import com.pedfu.daystreak.presentation.reusable.ModalBottomSheetDialog
 import com.pedfu.daystreak.presentation.reusable.showErrorSnackbar
 import com.pedfu.daystreak.utils.lazyViewModel
 import java.io.File
@@ -100,6 +101,10 @@ class StreakCreationDialogFragment(
         }
         editTextDescription.addTextChangedListener { viewModel.onStreakDescriptionChanged(it.toString()) }
         constraintLayoutBackgroundPicture.setOnClickListener { dispatchSelectPictureIntent() }
+        constraintLayoutBackgroundPictureLocal.setOnClickListener {
+            val modal = ModalBottomSheetDialog()
+            modal.show(parentFragmentManager, ModalBottomSheetDialog.TAG)
+        }
         imageViewPictureTaken.setOnClickListener { dispatchSelectPictureIntent() }
         textInputStreakGoalDeadline.setOnClickListener {
             showDatePicker(textInputStreakGoalDeadline)

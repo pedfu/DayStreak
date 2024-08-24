@@ -5,19 +5,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.google.android.material.imageview.ShapeableImageView
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentStreakDetailBinding
 import com.pedfu.daystreak.domain.notification.NotificationItem
 import com.pedfu.daystreak.domain.streak.StreakItem
 import com.pedfu.daystreak.domain.user.User
 import com.pedfu.daystreak.presentation.MainActivity
+import com.pedfu.daystreak.presentation.header.notification.NotificationDialogFragment
 import com.pedfu.daystreak.presentation.home.adapters.NotificationAdapter
 import com.pedfu.daystreak.presentation.timer.TimerFragmentArgs
 import com.pedfu.daystreak.utils.ImageProvider
@@ -87,8 +91,12 @@ class StreakDetailFragment : Fragment() {
     }
 
     private fun FragmentStreakDetailBinding.setupButtons() {
-        frameLayoutBell.setOnClickListener {
-            showNotificationsDialog()
+        view?.findViewById<ConstraintLayout>(R.id.frameLayoutBell)?.setOnClickListener {
+            val notificationDialog = NotificationDialogFragment()
+            notificationDialog.show(childFragmentManager, "NotificationModalDialog")
+        }
+        view?.findViewById<ShapeableImageView>(R.id.imageViewProfilePicture)?.setOnClickListener {
+            (activity as? MainActivity)?.signOutAndStartSignInActivity()
         }
         buttonStartTimer.setOnClickListener {
             // precisa aparecer modal -> pessoa digita quantidade -> inicia timer
@@ -101,15 +109,13 @@ class StreakDetailFragment : Fragment() {
         buttonCompleteDay.setOnClickListener {
             Modals.showCompleteDayDialog(requireContext(), ::onCompleteDaySave)
         }
-        imageViewProfilePicture.setOnClickListener {
-            (activity as? MainActivity)?.signOutAndStartSignInActivity()
-        }
     }
 
-    private fun FragmentStreakDetailBinding.setNotifications(notifications: List<NotificationItem>) {
-        notificationAdapter.items = notifications
-        textViewNotificationQnt.text = notifications.size.toString()
-        textViewNotificationQnt.isVisible = notifications.isNotEmpty()
+    private fun setNotifications(notifications: List<NotificationItem>) {
+        val textView = view?.findViewById<TextView>(R.id.textViewNotificationQnt)
+        if (textView != null) {
+            textView.text = notifications.size.toString()
+        }
     }
 
     private fun handleShareClick() {}
@@ -122,23 +128,24 @@ class StreakDetailFragment : Fragment() {
         Modals.showBadgeDialog(requireContext(), ::handleShareClick, "Streak Master", "Reach a 10-day streak. Teste.")
     }
 
-    private fun showNotificationsDialog() {
-        Modals.showNotificationDialog(requireContext(), notificationAdapter.items, notificationAdapter)
-    }
-
     private fun FragmentStreakDetailBinding.setStreak(streak: StreakItem?) {
         if (streak != null) {
             textViewStreakTitle.text = streak.name
             textViewStreakDescription.text = streak.description
             if (streak.backgroundPicture != null) ImageProvider.loadImageFromUrl(detailsPicture, streak.backgroundPicture)
+
+            detailsPicture.setImageResource(ImageProvider.loadLocalImage("bg_food.jpg", requireContext()))
         }
     }
 
-    private fun FragmentStreakDetailBinding.setUser(user: User?) {
+    private fun setUser(user: User?) {
         if (user != null) {
-            Glide.with(requireContext())
-                .load(user.photoUrl)
-                .into(imageViewProfilePicture)
+            val imageViewProfilePicture = view?.findViewById<ShapeableImageView>(R.id.imageViewProfilePicture)
+            if (imageViewProfilePicture != null) {
+                Glide.with(requireContext())
+                    .load(user.photoUrl)
+                    .into(imageViewProfilePicture)
+            }
         }
     }
 
@@ -163,7 +170,7 @@ class StreakDetailFragment : Fragment() {
             ::onOptionClicked,
             getString(R.string.are_you_sure_want_delete),
             getString(R.string.cancel),
-            getString(R.string.hide),
+            getString(R.string.only_hide),
             getString(R.string.delete),
             getString(R.string.confirm_delete_or_hide)
         )

@@ -38,6 +38,8 @@ class NotificationViewHolder(
     }
 
     private fun ItemNotificationBinding.setupText(notificationItem: NotificationItem) {
-        textViewPrimary.text = notificationItem.message
+        val textSize = notificationItem.message?.length ?: 0
+        val text = if (textSize > 150) notificationItem.message?.substring(0, 150) else notificationItem.message
+        textViewPrimary.text = text
     }
 }

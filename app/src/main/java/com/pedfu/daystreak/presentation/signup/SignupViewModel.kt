@@ -61,6 +61,7 @@ class SignupViewModel(
     val usernameLiveData = MutableLiveData(username)
     val passwordLiveData = MutableLiveData(password)
     val emailErrorLiveData = MutableLiveData<Boolean>(false)
+    val passwordErrorLiveData = MutableLiveData<Boolean>(false)
 
     fun onEmailChanged(text: String) {
         email = text
@@ -85,6 +86,9 @@ class SignupViewModel(
 
     private fun checkDataState() {
         if (isValidEmail(email)) emailErrorLiveData.value = false
+
+        val passwordValid = isSafePassword()
+        if (passwordValid) passwordErrorLiveData.value = false
         val ready =
             !email.isNullOrBlank() &&
             !firstName.isNullOrBlank() &&
@@ -102,6 +106,10 @@ class SignupViewModel(
             emailErrorLiveData.value = true
             return
         }
+        if (!isSafePassword()) {
+            passwordErrorLiveData.value = true
+            return
+        }
         if (state < SignupState.READY) return
         viewModelScope.launch {
             state = SignupState.LOADING
@@ -112,5 +120,11 @@ class SignupViewModel(
 
     private fun isValidEmail(target: CharSequence?): Boolean {
         return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches()
+    }
+    private fun isSafePassword(): Boolean {
+        val hasUppercase = password != password.lowercase()
+        val regex = "[^a-zA-Z0-9]".toRegex()
+        val hasSpecialChars = regex.containsMatchIn(password)
+        return password.length > 11 && hasUppercase && hasSpecialChars
     }
 }

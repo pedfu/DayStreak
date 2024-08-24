@@ -128,6 +128,7 @@ class HomeFragment : Fragment() {
         }
         viewModel.filteredStreaksLiveData.observe(viewLifecycleOwner) {
             adapter.items = it
+            textViewNoStreaks.isVisible = it.isEmpty()
         }
         viewModel.notificationsLiveData.observe(viewLifecycleOwner) { setNotifications(it) }
     }
@@ -183,14 +184,6 @@ class HomeFragment : Fragment() {
                 }
             })
             createItemDialog.show(childFragmentManager, "CreateItemDialog")
-        }
-
-        buttonClose.setOnClickListener {
-            selectOptionModal.isVisible = false
-            dialog.hide()
-        }
-        selectOptionModal.setOnClickListener {
-            selectOptionModal.isVisible = false
         }
     }
 

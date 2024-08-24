@@ -19,7 +19,6 @@ import com.pedfu.daystreak.utils.Modals
 
 class MainActivity : AppCompatActivity() {
     private val mainViewModel: MainViewModel by viewModels()
-    private val notificationAdapter = NotificationAdapter(::handleNotificationClick, ::handleShareClick, ::handleShareClick)
 
     private val navController by lazy {
         findNavController(R.id.nav_host_fragment)
@@ -35,25 +34,11 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.authorizationLiveData.observeForever {
             if (mainViewModel.authorizationLiveData.value == null) startSignInActivity()
         }
-        mainViewModel.notificationsLiveData.observeForever { setNotifications(it) }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return super.onSupportNavigateUp()
     }
-
-    private fun setNotifications(notifications: List<NotificationItem>) {
-        notificationAdapter.items = notifications
-    }
-    private fun handleNotificationClick(id: Long) {
-        notificationAdapter.items = notificationAdapter.items.map {
-            if (it.id == id) it.read = true
-            it
-        }
-        Modals.showBadgeDialog(this.baseContext, ::handleShareClick, "Streak Master", "Reach a 10-day streak. Teste.")
-    }
-    private fun handleShareClick() {}
-    private fun handleShareClick(id: Long) {}
 
     // used in settings
     fun signOutAndStartSignInActivity() {

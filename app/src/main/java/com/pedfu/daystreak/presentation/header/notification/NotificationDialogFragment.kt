@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.core.view.ViewCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ import com.pedfu.daystreak.domain.notification.NotificationItem
 import com.pedfu.daystreak.presentation.creation.category.CategoryCreationDialogFragment
 import com.pedfu.daystreak.presentation.creation.streak.StreakCreationDialogFragment
 import com.pedfu.daystreak.presentation.home.adapters.NotificationAdapter
+import com.pedfu.daystreak.utils.Modals
 import com.pedfu.daystreak.utils.lazyViewModel
 
 class NotificationDialogFragment : DialogFragment() {
@@ -89,10 +91,14 @@ class NotificationDialogFragment : DialogFragment() {
             items = notifications
         }
         ViewCompat.setNestedScrollingEnabled(recyclerViewNotifications, true)
+
+        textViewNoItems.isVisible = notifications.isEmpty()
     }
 
     private fun onItemClick(id: Long) {
         viewModel.markItemRead(id)
+        // open badge (if not confirm type)
+//        Modals.showBadgeDialog(requireContext(), ::handleShareClick, "Streak Master", "Reach a 10-day streak. Teste.")
     }
     private fun onAcceptChallenge(id: Long) {
         viewModel.onAcceptChallenge(id)

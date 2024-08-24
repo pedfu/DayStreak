@@ -38,6 +38,7 @@ class SignupFragment : Fragment() {
     private fun FragmentSignupBinding.observeViewModel() {
         viewModel.stateLiveData.observe(viewLifecycleOwner) { setState(it) }
         viewModel.emailErrorLiveData.observe(viewLifecycleOwner) { setEmailError(it) }
+        viewModel.passwordErrorLiveData.observe(viewLifecycleOwner) { setPasswordError(it) }
     }
 
     private fun FragmentSignupBinding.setupButtons() {
@@ -71,6 +72,13 @@ class SignupFragment : Fragment() {
         when (showError) {
             true -> editTextEmail.error = "Please enter a valid email address"
             else -> editTextEmail.error = null
+        }
+    }
+
+    private fun FragmentSignupBinding.setPasswordError(showError: Boolean) {
+        when (showError) {
+            true -> editTextPassword.error = "Your password must have at least 11 characters, an uppercase and a special character"
+            else -> editTextPassword.error = null
         }
     }
 

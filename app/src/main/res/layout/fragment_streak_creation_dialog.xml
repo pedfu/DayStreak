@@ -197,13 +197,54 @@
                     app:layout_constraintTop_toBottomOf="@id/labelCategory" />
 
                 <TextView
-                    android:id="@+id/labelBackgroundPicture"
+                    android:id="@+id/labelBackgroundPictureLocal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="@string/background_picture_mandatory"
                     android:textColor="@color/black"
                     app:layout_constraintTop_toBottomOf="@id/spinnerCategory" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayoutBackgroundPictureLocal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/background_dashed_rounded_black"
+                    android:padding="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/labelBackgroundPictureLocal">
+
+                    <ImageView
+                        android:id="@+id/imageViewInsertPictureLocal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_picture_sample"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/choose_bg_between_options"
+                        android:textAlignment="center"
+                        android:textColor="@color/gray_font"
+                        app:layout_constraintTop_toBottomOf="@+id/imageViewInsertPictureLocal" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/labelBackgroundPicture"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/background_picture_mandatory"
+                    android:textColor="@color/black"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/constraintLayoutBackgroundPictureLocal" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline2"
@@ -220,6 +261,7 @@
                     android:layout_marginEnd="5dp"
                     android:background="@drawable/background_dashed_rounded_black"
                     android:padding="20dp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/labelBackgroundPicture">
