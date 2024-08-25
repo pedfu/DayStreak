@@ -4,6 +4,7 @@ import com.pedfu.daystreak.data.remote.user.UserResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -30,4 +31,7 @@ interface StreakApi {
 
     @POST("api/v1/category/")
     suspend fun createCategory(@Body streakRequest: CategoryRequest): CategoryResponse
+
+    @DELETE("api/v1/category/{id}")
+    suspend fun deleteCategory(@Path("id") id: Long)
 }

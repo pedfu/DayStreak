@@ -34,8 +34,16 @@ class StreakRepository(
         return streakDao.getAll().map { it.toStreak() }
     }
 
+    suspend fun getStreaksByCategory(categoryId: Long): List<StreakItem> {
+        return streakDao.getByCategoryId(categoryId).map { it.toStreak() }
+    }
+
     suspend fun getAllCategories(): List<StreakCategoryItem> {
         return categoryDao.getAll().map { it.toCategory() }
+    }
+
+    suspend fun getCategory(id: Long): StreakCategoryItem? {
+        return categoryDao.getCategory(id)?.toCategory()
     }
 
     suspend fun onRefreshStreak(streaks: List<StreakItem>) {
@@ -54,7 +62,13 @@ class StreakRepository(
         categoryDao.insert(CategoryEntity(category.id, category.name))
     }
 
+    suspend fun deleteCategory(id: Long) {
+        streakDao.deleteByCategoryId(id)
+        categoryDao.delete(id)
+    }
+
     suspend fun clear() {
         streakDao.deleteAll()
+        categoryDao.deleteAll()
     }
 }

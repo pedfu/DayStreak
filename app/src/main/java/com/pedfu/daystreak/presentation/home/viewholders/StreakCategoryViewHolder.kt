@@ -1,5 +1,6 @@
 package com.pedfu.daystreak.presentation.home.viewholders
 
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pedfu.daystreak.R
@@ -9,11 +10,15 @@ import com.pedfu.daystreak.domain.streak.StreakCategoryItem
 class StreakCategoryViewHolder(
     private val binding: ItemStreakCategoryBinding,
 ) : ViewHolder(binding.root) {
-    fun bind(streakCategoryItem: StreakCategoryItem, onClick: (categoryId: Long) -> Unit) = binding.run {
+    fun bind(streakCategoryItem: StreakCategoryItem, onClick: (categoryId: Long) -> Unit, showPopupMenu: (View, Long) -> Unit) = binding.run {
         setupText(streakCategoryItem)
 
-        contraintLayoutCard.setOnClickListener {
+        constraintLayoutCard.setOnClickListener {
             onClick(streakCategoryItem.id)
+        }
+        constraintLayoutCard.setOnLongClickListener {
+            showPopupMenu(it, streakCategoryItem.id)
+            true
         }
     }
 

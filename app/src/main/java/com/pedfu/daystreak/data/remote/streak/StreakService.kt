@@ -27,6 +27,14 @@ class StreakService(
         }
     }
 
+    suspend fun deleteCategory(categoryId: Long) {
+        try {
+            streakApi.deleteCategory(categoryId)
+        } catch (e: HttpException) {
+            throw e
+        }
+    }
+
     suspend fun createCategory(categoryRequest: CategoryRequest): CategoryResponse {
         return try {
             streakApi.createCategory(categoryRequest)

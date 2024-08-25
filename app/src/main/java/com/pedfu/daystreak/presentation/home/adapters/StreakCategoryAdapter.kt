@@ -1,6 +1,7 @@
 package com.pedfu.daystreak.presentation.home.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.pedfu.daystreak.databinding.ItemStreakCategoryBinding
@@ -8,7 +9,8 @@ import com.pedfu.daystreak.domain.streak.StreakCategoryItem
 import com.pedfu.daystreak.presentation.home.viewholders.StreakCategoryViewHolder
 
 class StreakCategoryAdapter(
-    private val onClick: (streakId: Long) -> Unit
+    private val onClick: (streakId: Long) -> Unit,
+    private val showPopupMenu: (View, Long) -> Unit,
 ) : Adapter<StreakCategoryViewHolder>() {
     var items: List<StreakCategoryItem> = emptyList()
         set(value) {
@@ -24,7 +26,7 @@ class StreakCategoryAdapter(
 
     override fun onBindViewHolder(holder: StreakCategoryViewHolder, position: Int) {
         val streakCategoryItem = items[position]
-        holder.bind(streakCategoryItem, onClick)
+        holder.bind(streakCategoryItem, onClick, showPopupMenu)
     }
 
     override fun getItemCount(): Int = items.size

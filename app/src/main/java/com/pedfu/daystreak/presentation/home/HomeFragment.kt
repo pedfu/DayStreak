@@ -8,6 +8,9 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -15,11 +18,13 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -46,6 +51,8 @@ import com.pedfu.daystreak.presentation.header.notification.NotificationDialogFr
 import com.pedfu.daystreak.presentation.home.adapters.NotificationAdapter
 import com.pedfu.daystreak.presentation.home.adapters.StreakCategoryAdapter
 import com.pedfu.daystreak.presentation.home.adapters.StreakListAdapter
+import com.pedfu.daystreak.presentation.home.dialogs.confirmDeleteCategory.ConfirmDeleteDialogFragment
+import com.pedfu.daystreak.presentation.reusable.localBackgroundBottomSheet.ModalBottomSheetDialog
 import com.pedfu.daystreak.utils.Modals
 import com.pedfu.daystreak.utils.lazyViewModel
 import java.io.File
@@ -68,7 +75,7 @@ class HomeFragment : Fragment() {
     private val mainViewModel: MainViewModel by viewModels()
 
     private val adapter = StreakListAdapter(::navigateToDetails)
-    private val categoryAdapter = StreakCategoryAdapter(::onSelectCategory)
+    private val categoryAdapter = StreakCategoryAdapter(::onSelectCategory, ::showPopupMenu)
     private val notificationAdapter = NotificationAdapter(::handleNotificationClick, ::handleShareClick, ::handleShareClick)
 
     private val calendar = Calendar.getInstance()
@@ -228,6 +235,48 @@ class HomeFragment : Fragment() {
 //        }
 //        editTextEmail.addTextChangedListener {  }
 //    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_edit_or_delete, menu)
+
+        // Customize each menu item
+        for (i in 0 until menu.size()) {
+            val menuItem = menu.getItem(i)
+            val customView = LayoutInflater.from(requireContext()).inflate(R.layout.menu_item_layout, null)
+            val textView = customView.findViewById<TextView>(R.id.menu_item_text)
+
+            // Set the menu title text
+            textView.text = menuItem.title
+
+            // Apply custom color based on the menu item ID
+            when (menuItem.itemId) {
+                R.id.edit -> textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_font))
+                R.id.delete -> textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_font))
+            }
+
+            menuItem.actionView = customView
+        }
+    }
+
+    private fun showPopupMenu(view: View, id: Long) {
+        val popupMenu = PopupMenu(requireContext(), view)
+        popupMenu.menuInflater.inflate(R.menu.menu_edit_or_delete, popupMenu.menu)
+        popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+                R.id.edit -> {
+                    Toast.makeText(requireContext(), "Editado", Toast.LENGTH_SHORT).show()
+                    true
+                }
+                R.id.delete -> {
+                    val modal = ConfirmDeleteDialogFragment(id)
+                    modal.show(parentFragmentManager, "ConfirmDeleteDialogFragment")
+                    true
+                }
+                else -> false
+            }
+        }
+        popupMenu.show()
+    }
 
     private fun handleShareClick() {}
     private fun handleShareClick(id: Long) {}

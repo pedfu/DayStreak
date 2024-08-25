@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="popupMenuStyle">@style/CustomMenu</item>
+        <item name="android:itemBackground">@color/google_red</item>
+    </style>
+
+
     <style name="SemiboldText" parent="android:TextAppearance">
         <item name="android:fontFamily">@font/inter_normal</item>
         <item name="android:textStyle">bold</item>
@@ -74,5 +80,9 @@
         <item name="cursorColor">@color/gray_font</item>
         <item name="boxStrokeColor">@color/gray_font</item>
         <item name="boxStrokeWidth">1dp</item>
+    </style>
+
+    <style name="CustomMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/white</item>
     </style>
 </resources>

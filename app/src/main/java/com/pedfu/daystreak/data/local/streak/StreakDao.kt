@@ -15,6 +15,9 @@ interface StreakDao {
     @Query("SELECT * FROM streak")
     suspend fun getAll(): List<StreakEntity>
 
+    @Query("SELECT * FROM streak WHERE categoryId = :categoryId")
+    suspend fun getByCategoryId(categoryId: Long): List<StreakEntity>
+
     @Query("SELECT * FROM streak WHERE id = :id LIMIT 1")
     suspend fun findById(id: Long): StreakEntity?
 
@@ -46,4 +49,8 @@ interface StreakDao {
     @Transaction
     @Query("DELETE FROM streak WHERE id = :id")
     suspend fun delete(id: Long)
+
+    @Transaction
+    @Query("DELETE FROM streak WHERE categoryId = :categoryId")
+    suspend fun deleteByCategoryId(categoryId: Long)
 }
