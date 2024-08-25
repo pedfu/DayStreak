@@ -1,5 +1,6 @@
 package com.pedfu.daystreak.presentation.creation.streak
 
+import android.graphics.drawable.Drawable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,6 +9,7 @@ import com.pedfu.daystreak.data.remote.streak.CategoryRequest
 import com.pedfu.daystreak.data.remote.streak.StreakRequest
 import com.pedfu.daystreak.data.repositories.streak.StreakRepository
 import com.pedfu.daystreak.domain.streak.StreakCategoryItem
+import com.pedfu.daystreak.presentation.creation.streak.backgroundOptions.BackgroundOption
 import com.pedfu.daystreak.presentation.home.HomeViewModel
 import com.pedfu.daystreak.usecases.streak.StreakUseCase
 import kotlinx.coroutines.launch
@@ -87,6 +89,12 @@ class StreakCreationDialogViewModel(
             streakBackgroundColorLiveData.value = value
             validateFields()
         }
+    private var streakBackgroundLocal: BackgroundOption? = null
+        set(value) {
+            field = value
+            streakBackgroundLocalLiveData.value = value
+            validateFields()
+        }
     private var streakDescription: String = ""
         set(value) {
             field = value
@@ -101,6 +109,7 @@ class StreakCreationDialogViewModel(
     val streakCategoryLiveData = MutableLiveData(streakCategory)
     val streakBackgroundImageLiveData = MutableLiveData(streakBackgroundImage)
     val streakBackgroundColorLiveData = MutableLiveData(streakBackgroundColor)
+    val streakBackgroundLocalLiveData = MutableLiveData(streakBackgroundLocal)
     val streakDescriptionLiveData = MutableLiveData(streakDescription)
 
     val stateLiveData = MutableLiveData(state)
@@ -119,6 +128,9 @@ class StreakCreationDialogViewModel(
     fun onStreakBackgroundImageChanged(backgroundPicture: File) = run { streakBackgroundImage = backgroundPicture }
     fun onStreakBackgroundColorChanged(color: String) = run { streakBackgroundColor = color }
     fun onStreakDescriptionChanged(description: String) = run { streakDescription = description }
+    fun onSelectLocalImage(name: String, imageRes: Int) = run {
+        streakBackgroundLocal = BackgroundOption(name, imageRes)
+    }
 
 
     private fun validateFields() {
@@ -179,6 +191,7 @@ class StreakCreationDialogViewModel(
                     streakBackgroundImage,
                     streakCategory?.id,
                     streakMinTimePerDayInMinutes,
+                    streakBackgroundLocal?.name
                 )
                 streakUseCase.createStreak(request)
                 state = StreakCreationState.DONE
@@ -196,5 +209,6 @@ class StreakCreationDialogViewModel(
         streakBackgroundImage = null
         streakBackgroundColor = null
         streakDescription = ""
+        streakBackgroundLocal = null
     }
 }

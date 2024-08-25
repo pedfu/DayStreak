@@ -18,6 +18,9 @@
             android:layout_height="150dp"
             android:id="@+id/image"
             android:scaleType="centerCrop"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="@drawable/background_ripple_lightgray"
             tools:src="@drawable/bg_background"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

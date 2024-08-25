@@ -28,4 +28,22 @@ data class StreakItem(
     val backgroundPicture: String?,
     val createdAt: Date,
     val maxStreak: Int = 0,
-)
+    val localBackgroundPicture: String? = null,
+    val localBackgroundPictureRes: Int? = null,
+) {
+    constructor(item: StreakItem, localBackgroundPictureRes: Int?) : this(
+        item.id,
+        item.name,
+        item.durationDays,
+        item.description,
+        item.createdBy,
+        item.categoryId,
+        item.userStreakId,
+        item.status,
+        item.backgroundPicture,
+        item.createdAt,
+        item.maxStreak,
+        item.localBackgroundPicture,
+        localBackgroundPictureRes
+    )
+}

@@ -133,8 +133,7 @@ class StreakDetailFragment : Fragment() {
             textViewStreakTitle.text = streak.name
             textViewStreakDescription.text = streak.description
             if (streak.backgroundPicture != null) ImageProvider.loadImageFromUrl(detailsPicture, streak.backgroundPicture)
-
-            detailsPicture.setImageResource(ImageProvider.loadLocalImage("bg_food.jpg", requireContext()))
+            if (streak.localBackgroundPicture != null) detailsPicture.setImageResource(ImageProvider.loadLocalImage(streak.localBackgroundPicture, requireContext()))
         }
     }
 

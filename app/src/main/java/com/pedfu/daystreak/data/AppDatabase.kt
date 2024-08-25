@@ -24,7 +24,7 @@ import com.pedfu.daystreak.utils.converters.DateConverter
         NotificationEntity::class,
         BadgeEntity::class,
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(

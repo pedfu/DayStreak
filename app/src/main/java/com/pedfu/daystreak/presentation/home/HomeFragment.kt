@@ -63,7 +63,7 @@ class HomeFragment : Fragment() {
     private lateinit var dialog: Dialog
 
     private val viewModel: HomeViewModel by lazyViewModel {
-        HomeViewModel()
+        HomeViewModel(requireContext())
     }
     private val mainViewModel: MainViewModel by viewModels()
 

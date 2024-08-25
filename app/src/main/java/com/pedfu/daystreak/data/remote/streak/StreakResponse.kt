@@ -2,6 +2,7 @@ package com.pedfu.daystreak.data.remote.streak
 
 import com.pedfu.daystreak.domain.streak.StreakItem
 import com.pedfu.daystreak.domain.streak.StreakStatus
+import com.pedfu.daystreak.utils.ImageProvider
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.util.Date
@@ -19,6 +20,7 @@ class StreakResponse (
     @Json(name = "background_picture") val backgroundPicture: String?,
 //    @Json(name = "created_at") val createdAt: Date,
     @Json(name = "max_streak") val maxStreak: Int?,
+    @Json(name = "local_background_picture") val localBackgroundPicture: String?,
 ) {
     fun toStreak(): StreakItem = StreakItem(
         id = id,
@@ -32,5 +34,6 @@ class StreakResponse (
         backgroundPicture = backgroundPicture,
         createdAt = Date(),
         maxStreak = maxStreak ?: 0,
+        localBackgroundPicture = localBackgroundPicture,
     )
 }

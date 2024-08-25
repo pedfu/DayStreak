@@ -24,7 +24,7 @@ import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentStreakCreationDialogBinding
 import com.pedfu.daystreak.domain.streak.StreakCategoryItem
 import com.pedfu.daystreak.presentation.creation.OnItemCreatedListener
-import com.pedfu.daystreak.presentation.reusable.ModalBottomSheetDialog
+import com.pedfu.daystreak.presentation.reusable.localBackgroundBottomSheet.ModalBottomSheetDialog
 import com.pedfu.daystreak.presentation.reusable.showErrorSnackbar
 import com.pedfu.daystreak.utils.lazyViewModel
 import java.io.File
@@ -89,7 +89,14 @@ class StreakCreationDialogFragment(
         viewModel.errorLiveData.observe(viewLifecycleOwner) { setError(it) }
         viewModel.categoriesLiveData.observe(viewLifecycleOwner) { setCategoriesSpinner(it) }
         viewModel.streakCategoryLiveData.observe(viewLifecycleOwner) {
-//            spinnerCategory.setTextext = it.name
+//            spinnerCategory.setText = it.name
+        }
+        viewModel.streakBackgroundLocalLiveData.observe(viewLifecycleOwner) {
+            constraintLayoutBackgroundPictureLocal.isVisible = it?.image == null
+            imageViewLocalPicture.isVisible = it?.image != null
+            if (it?.image != null) {
+                imageViewLocalPicture.setImageResource(it.image!!)
+            }
         }
     }
 
@@ -102,7 +109,11 @@ class StreakCreationDialogFragment(
         editTextDescription.addTextChangedListener { viewModel.onStreakDescriptionChanged(it.toString()) }
         constraintLayoutBackgroundPicture.setOnClickListener { dispatchSelectPictureIntent() }
         constraintLayoutBackgroundPictureLocal.setOnClickListener {
-            val modal = ModalBottomSheetDialog()
+            val modal = ModalBottomSheetDialog(::onSelectLocalImage)
+            modal.show(parentFragmentManager, ModalBottomSheetDialog.TAG)
+        }
+        imageViewLocalPicture.setOnClickListener {
+            val modal = ModalBottomSheetDialog(::onSelectLocalImage)
             modal.show(parentFragmentManager, ModalBottomSheetDialog.TAG)
         }
         imageViewPictureTaken.setOnClickListener { dispatchSelectPictureIntent() }
@@ -182,6 +193,10 @@ class StreakCreationDialogFragment(
 
         // Show the DatePicker dialog
         datePickerDialog.show()
+    }
+
+    private fun onSelectLocalImage(name: String, imageRes: Int) {
+        viewModel.onSelectLocalImage(name, imageRes)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

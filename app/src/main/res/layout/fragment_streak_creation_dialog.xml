@@ -324,6 +324,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayoutBackgroundPicture" />
 
+                <ImageView
+                    android:id="@+id/imageViewLocalPicture"
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_transparent_border"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewPictureTaken" />
+
                 <TextView
                     android:id="@+id/labelDescription"
                     android:layout_width="match_parent"
@@ -331,7 +343,7 @@
                     android:layout_marginTop="20dp"
                     android:text="@string/description_mandatory"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/imageViewPictureTaken" />
+                    app:layout_constraintTop_toBottomOf="@id/imageViewLocalPicture" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputDescription"

@@ -1,14 +1,12 @@
-package com.pedfu.daystreak.presentation.reusable
+package com.pedfu.daystreak.presentation.reusable.localBackgroundBottomSheet
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.ItemBottomSheetBinding
@@ -16,11 +14,17 @@ import com.pedfu.daystreak.presentation.creation.streak.backgroundOptions.Backgr
 import com.pedfu.daystreak.presentation.creation.streak.backgroundOptions.BackgroundOptionsAdapter
 import com.pedfu.daystreak.utils.BACKGROUND_OPTIONS
 import com.pedfu.daystreak.utils.ImageProvider
+import com.pedfu.daystreak.utils.lazyViewModel
 
-class ModalBottomSheetDialog : BottomSheetDialogFragment() {
+class ModalBottomSheetDialog(
+    private val onSelectImage: (String, Int) -> Unit
+) : BottomSheetDialogFragment() {
     private lateinit var binding: ItemBottomSheetBinding
 
     private lateinit var backgroundOptionsAdapter: BackgroundOptionsAdapter
+    private val viewModel by lazyViewModel {
+        ModalLocalBackgroundBottomSheetViewModel(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,29 +41,25 @@ class ModalBottomSheetDialog : BottomSheetDialogFragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView?.let {
             recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-            backgroundOptionsAdapter = BackgroundOptionsAdapter(requireContext())
+            backgroundOptionsAdapter = BackgroundOptionsAdapter(requireContext(), ::onSelectImageAndDismiss)
             recyclerView.adapter = backgroundOptionsAdapter
-
-            val options = BACKGROUND_OPTIONS.map { option ->
-                BackgroundOption(option, ImageProvider.loadLocalImage(option, requireContext()))
-            }
-            backgroundOptionsAdapter.items = options
         }
 
-        dialog?.setOnShowListener { it ->
-//            val d = it as BottomSheetDialog
-//            val bottomSheet = d.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-//            bottomSheet?.let {
-//                val behavior = BottomSheetBehavior.from(it)
-//                behavior.state = BottomSheetBehavior.STATE_EXPANDED
-//            }
-
-
+        binding.run {
+            observeViewModel()
         }
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return super.onCreateDialog(savedInstanceState)
+    private fun ItemBottomSheetBinding.observeViewModel() {
+        viewModel.backgroundOptionsLiveData.observe(viewLifecycleOwner) {
+            backgroundOptionsAdapter.items = it
+            progressBar.isVisible = false
+        }
+    }
+
+    private fun onSelectImageAndDismiss(name: String, imageRes: Int) {
+        onSelectImage(name, imageRes)
+        dismiss()
     }
 
     companion object {

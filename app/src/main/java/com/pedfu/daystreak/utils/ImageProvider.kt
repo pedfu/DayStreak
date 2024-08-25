@@ -23,12 +23,9 @@ object ImageProvider {
         return context.resources.getIdentifier(resourceName, "drawable", context.packageName)
     }
 
-    fun loadCompressedImage(resourceId: Int, context: Context): Bitmap {
-        val options = BitmapFactory.Options().apply {
-            inSampleSize = 20
-            inPreferredConfig = Bitmap.Config.RGB_565
-        }
-        return BitmapFactory.decodeResource(context.resources, resourceId, options)
+    fun loadOptimizedLocalImage(imageName: String, context: Context): Int {
+        val resourceName = imageName.substringBeforeLast(".") + "_optimized_50"
+        return context.resources.getIdentifier(resourceName, "drawable", context.packageName)
     }
 }
 

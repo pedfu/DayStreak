@@ -36,6 +36,7 @@ class StreakEntity(
     val backgroundPicture: String?,
     val createdAt: Date,
     val maxStreak: Int,
+    val localBackgroundPicture: String?,
 ) {
     constructor(streak: StreakItem): this(
         id = streak.id,
@@ -49,6 +50,7 @@ class StreakEntity(
         backgroundPicture = streak.backgroundPicture,
         createdAt = streak.createdAt,
         maxStreak = streak.maxStreak,
+        localBackgroundPicture = streak.localBackgroundPicture,
     )
 
     fun toStreak(): StreakItem = StreakItem(
@@ -63,5 +65,6 @@ class StreakEntity(
         backgroundPicture = backgroundPicture,
         createdAt = createdAt,
         maxStreak = maxStreak,
+        localBackgroundPicture = localBackgroundPicture,
     )
 }
