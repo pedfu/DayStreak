@@ -32,6 +32,6 @@ interface StreakApi {
     @POST("api/v1/category/")
     suspend fun createCategory(@Body streakRequest: CategoryRequest): CategoryResponse
 
-    @DELETE("api/v1/category/{id}")
-    suspend fun deleteCategory(@Path("id") id: Long)
+    @POST("api/v1/category/{id}/delete/")
+    suspend fun deleteCategory(@Path("id") id: Long): Boolean
 }

@@ -27,8 +27,8 @@ class StreakService(
         }
     }
 
-    suspend fun deleteCategory(categoryId: Long) {
-        try {
+    suspend fun deleteCategory(categoryId: Long): Boolean {
+        return try {
             streakApi.deleteCategory(categoryId)
         } catch (e: HttpException) {
             throw e

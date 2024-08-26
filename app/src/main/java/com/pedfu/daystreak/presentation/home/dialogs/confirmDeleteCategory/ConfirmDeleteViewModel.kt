@@ -44,6 +44,10 @@ class ConfirmDeleteViewModel(
             categoryLiveData.value = streakRepository.getCategory(id)
             if (categoryLiveData.value?.id != null) {
                 streakLiveData.value = streakRepository.getStreaksByCategory(categoryLiveData.value!!.id)
+                state = when {
+                    streakLiveData.value!!.isEmpty() -> ConfirmDeleteState.READY
+                    else -> ConfirmDeleteState.IDLE
+                }
             }
         }
     }
