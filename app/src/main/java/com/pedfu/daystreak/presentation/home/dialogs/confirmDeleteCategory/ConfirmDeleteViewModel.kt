@@ -19,6 +19,7 @@ enum class ConfirmDeleteState {
 
 class ConfirmDeleteViewModel(
     private val id: Long,
+    private val type: ConfirmDeleteType,
     private val streakRepository: StreakRepository = Inject.streakRepository,
     private val streakUseCase: StreakUseCase = Inject.streakUseCase,
 ) : ViewModel() {
@@ -35,17 +36,26 @@ class ConfirmDeleteViewModel(
 
     val categoryLiveData = MutableLiveData<StreakCategoryItem?>(null)
     val streakLiveData = MutableLiveData<List<StreakItem>?>(null)
+    val singleStreakLiveData = MutableLiveData<StreakItem?>(null)
     val typedCategoryNameLiveData = MutableLiveData(typedCategoryName)
     val stateLiveData = MutableLiveData(state)
     val errorLiveData = MutableLiveData<Boolean?>(null)
 
     init {
         viewModelScope.launch {
-            categoryLiveData.value = streakRepository.getCategory(id)
-            if (categoryLiveData.value?.id != null) {
-                streakLiveData.value = streakRepository.getStreaksByCategory(categoryLiveData.value!!.id)
+            if (type == ConfirmDeleteType.CATEGORY) {
+                categoryLiveData.value = streakRepository.getCategory(id)
+                if (categoryLiveData.value?.id != null) {
+                    streakLiveData.value = streakRepository.getStreaksByCategory(categoryLiveData.value!!.id)
+                    state = when {
+                        streakLiveData.value!!.isEmpty() -> ConfirmDeleteState.READY
+                        else -> ConfirmDeleteState.IDLE
+                    }
+                }
+            } else {
+                singleStreakLiveData.value = streakRepository.getStreak(id)
                 state = when {
-                    streakLiveData.value!!.isEmpty() -> ConfirmDeleteState.READY
+                    singleStreakLiveData.value != null -> ConfirmDeleteState.READY
                     else -> ConfirmDeleteState.IDLE
                 }
             }
@@ -59,7 +69,7 @@ class ConfirmDeleteViewModel(
 
     private fun validateFields() {
         state = when {
-            streakLiveData.value?.isEmpty() == true -> ConfirmDeleteState.READY
+            streakLiveData.value?.isEmpty() == true || type == ConfirmDeleteType.STREAK -> ConfirmDeleteState.READY
             typedCategoryName == categoryLiveData.value?.name -> ConfirmDeleteState.READY
             else -> ConfirmDeleteState.IDLE
         }
@@ -71,7 +81,12 @@ class ConfirmDeleteViewModel(
         viewModelScope.launch {
             try {
                 state = ConfirmDeleteState.LOADING
-                streakUseCase.deleteCategory(id)
+
+                when (type) {
+                    ConfirmDeleteType.CATEGORY -> streakUseCase.deleteCategory(id)
+                    ConfirmDeleteType.STREAK -> streakUseCase.deleteStreak(id)
+                }
+
                 state = ConfirmDeleteState.DONE
             } catch (ex: Throwable) {
                 errorLiveData.value = true

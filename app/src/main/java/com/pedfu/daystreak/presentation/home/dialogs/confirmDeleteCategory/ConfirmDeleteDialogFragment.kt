@@ -20,12 +20,20 @@ import com.pedfu.daystreak.databinding.FragmentConfirmDeleteDialogBinding
 import com.pedfu.daystreak.presentation.reusable.showErrorModalSnackbar
 import com.pedfu.daystreak.utils.lazyViewModel
 
-class ConfirmDeleteDialogFragment(id: Long) : DialogFragment() {
+enum class ConfirmDeleteType {
+    CATEGORY,
+    STREAK
+}
+
+class ConfirmDeleteDialogFragment(
+    id: Long,
+    private val type: ConfirmDeleteType = ConfirmDeleteType.CATEGORY
+) : DialogFragment() {
     private var _binding: FragmentConfirmDeleteDialogBinding? = null
     private val binding: FragmentConfirmDeleteDialogBinding get() = _binding!!
 
     private val viewModel by lazyViewModel {
-        ConfirmDeleteViewModel(id)
+        ConfirmDeleteViewModel(id, type)
     }
 
     override fun onCreateView(
@@ -49,6 +57,11 @@ class ConfirmDeleteDialogFragment(id: Long) : DialogFragment() {
             buttonDelete.setOnClickListener { viewModel.onDelete() }
             editTextName.addTextChangedListener { viewModel.onTypeChanged(it.toString()) }
 
+            if (type == ConfirmDeleteType.STREAK) {
+                textViewTitle.text = getString(R.string.are_you_sure_want_to_delete_streak)
+                textViewMessage.text = getString(R.string.by_deleting_streak_will_be_lost)
+            }
+
             observeViewModel()
         }
     }
@@ -67,6 +80,12 @@ class ConfirmDeleteDialogFragment(id: Long) : DialogFragment() {
         viewModel.streakLiveData.observe(viewLifecycleOwner) {
             labelCategoryName.isVisible = it?.isNotEmpty() == true
             textInputCategoryName.isVisible = it?.isNotEmpty() == true
+        }
+        viewModel.singleStreakLiveData.observe(viewLifecycleOwner) {
+            if (it != null) {
+                labelCategoryName.isVisible = false
+                textInputCategoryName.isVisible = false
+            }
         }
         viewModel.stateLiveData.observe(viewLifecycleOwner) { setState(it) }
         viewModel.errorLiveData.observe(viewLifecycleOwner) {

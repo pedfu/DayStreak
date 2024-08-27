@@ -34,4 +34,7 @@ interface StreakApi {
 
     @POST("api/v1/category/{id}/delete/")
     suspend fun deleteCategory(@Path("id") id: Long): Boolean
+
+    @POST("api/v1/streak/{id}/delete/")
+    suspend fun deleteStreak(@Path("id") id: Long): Boolean
 }

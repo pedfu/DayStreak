@@ -68,4 +68,12 @@ class StreakService(
             throw e
         }
     }
+
+    suspend fun deleteStreak(streakId: Long): Boolean {
+        return try {
+            streakApi.deleteStreak(streakId)
+        } catch (e: HttpException) {
+            throw e
+        }
+    }
 }

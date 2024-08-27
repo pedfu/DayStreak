@@ -52,6 +52,7 @@ import com.pedfu.daystreak.presentation.home.adapters.NotificationAdapter
 import com.pedfu.daystreak.presentation.home.adapters.StreakCategoryAdapter
 import com.pedfu.daystreak.presentation.home.adapters.StreakListAdapter
 import com.pedfu.daystreak.presentation.home.dialogs.confirmDeleteCategory.ConfirmDeleteDialogFragment
+import com.pedfu.daystreak.presentation.home.dialogs.confirmDeleteCategory.ConfirmDeleteType
 import com.pedfu.daystreak.presentation.reusable.localBackgroundBottomSheet.ModalBottomSheetDialog
 import com.pedfu.daystreak.utils.Modals
 import com.pedfu.daystreak.utils.lazyViewModel
@@ -74,7 +75,7 @@ class HomeFragment : Fragment() {
     }
     private val mainViewModel: MainViewModel by viewModels()
 
-    private val adapter = StreakListAdapter(::navigateToDetails)
+    private val adapter = StreakListAdapter(::navigateToDetails, ::showPopupMenu)
     private val categoryAdapter = StreakCategoryAdapter(::onSelectCategory, ::showPopupMenu)
     private val notificationAdapter = NotificationAdapter(::handleNotificationClick, ::handleShareClick, ::handleShareClick)
 
@@ -258,21 +259,36 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun showPopupMenu(view: View, id: Long) {
+    private fun showPopupMenu(view: View, id: Long, type: ConfirmDeleteType = ConfirmDeleteType.CATEGORY) {
         val popupMenu = PopupMenu(requireContext(), view)
-        popupMenu.menuInflater.inflate(R.menu.menu_edit_or_delete, popupMenu.menu)
-        popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
-            when (menuItem.itemId) {
-                R.id.edit -> {
-                    Toast.makeText(requireContext(), "Editado", Toast.LENGTH_SHORT).show()
-                    true
+
+        if (type == ConfirmDeleteType.STREAK) {
+            popupMenu.menuInflater.inflate(R.menu.menu_delete, popupMenu.menu)
+            popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
+                when (menuItem.itemId) {
+                    R.id.delete -> {
+                        val modal = ConfirmDeleteDialogFragment(id, ConfirmDeleteType.STREAK)
+                        modal.show(parentFragmentManager, "ConfirmDeleteDialogFragment")
+                        true
+                    }
+                    else -> false
                 }
-                R.id.delete -> {
-                    val modal = ConfirmDeleteDialogFragment(id)
-                    modal.show(parentFragmentManager, "ConfirmDeleteDialogFragment")
-                    true
+            }
+        } else {
+            popupMenu.menuInflater.inflate(R.menu.menu_edit_or_delete, popupMenu.menu)
+            popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
+                when (menuItem.itemId) {
+                    R.id.edit -> {
+                        Toast.makeText(requireContext(), "Editado", Toast.LENGTH_SHORT).show()
+                        true
+                    }
+                    R.id.delete -> {
+                        val modal = ConfirmDeleteDialogFragment(id)
+                        modal.show(parentFragmentManager, "ConfirmDeleteDialogFragment")
+                        true
+                    }
+                    else -> false
                 }
-                else -> false
             }
         }
         popupMenu.show()

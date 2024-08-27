@@ -36,4 +36,9 @@ class StreakUseCase(
         val result = streakService.deleteCategory(categoryId)
         if (result) streakRepository.deleteCategory(categoryId)
     }
+
+    suspend fun deleteStreak(streakId: Long) {
+        val result = streakService.deleteStreak(streakId)
+        if (result) streakRepository.deleteStreak(streakId)
+    }
 }

@@ -1,27 +1,33 @@
 package com.pedfu.daystreak.presentation.home.viewholders
 
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.ItemCardBinding
 import com.pedfu.daystreak.domain.streak.StreakItem
 import com.pedfu.daystreak.domain.streak.StreakStatus
+import com.pedfu.daystreak.presentation.home.dialogs.confirmDeleteCategory.ConfirmDeleteType
 import com.pedfu.daystreak.utils.ImageProvider
 
 class StreakListViewHolder(
     private val binding: ItemCardBinding,
 ) : ViewHolder(binding.root) {
-    fun bind(streakItem: StreakItem, onClick: (streakId: Long) -> Unit) = binding.run {
-        setupCard(streakItem, onClick)
+    fun bind(streakItem: StreakItem, onClick: (streakId: Long) -> Unit, showPopupMenu: (View, Long, ConfirmDeleteType) -> Unit) = binding.run {
+        setupCard(streakItem, onClick, showPopupMenu)
         setupTag(streakItem)
         setupText(streakItem)
     }
 
-    private fun ItemCardBinding.setupCard(streakItem: StreakItem, onClick: (streakId: Long) -> Unit) {
+    private fun ItemCardBinding.setupCard(streakItem: StreakItem, onClick: (streakId: Long) -> Unit, showPopupMenu: (View, Long, ConfirmDeleteType) -> Unit) {
         if (streakItem.backgroundPicture != null) ImageProvider.loadImageFromUrl(imageViewCardBg, streakItem.backgroundPicture)
         if (streakItem.localBackgroundPictureRes != null) imageViewCardBg.setImageResource(streakItem.localBackgroundPictureRes)
         contraintLayoutCard.setOnClickListener {
             onClick(streakItem.id ?: 0)
+        }
+        contraintLayoutCard.setOnLongClickListener {
+            if (streakItem.id != null) showPopupMenu(it, streakItem.id, ConfirmDeleteType.STREAK)
+            true
         }
     }
 

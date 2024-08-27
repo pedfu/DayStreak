@@ -67,6 +67,10 @@ class StreakRepository(
         categoryDao.delete(id)
     }
 
+    suspend fun deleteStreak(id: Long) {
+        streakDao.delete(id)
+    }
+
     suspend fun clear() {
         streakDao.deleteAll()
         categoryDao.deleteAll()
