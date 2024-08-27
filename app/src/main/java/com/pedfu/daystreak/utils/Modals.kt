@@ -127,8 +127,8 @@ object Modals {
         val buttonClose = dialog.findViewById<ImageButton>(R.id.buttonClose)
         val buttonFirstOption = dialog.findViewById<MaterialButton>(R.id.buttonFirstOption)
         buttonFirstOption.text = firstOptionText
-        val buttonSecondOption = dialog.findViewById<MaterialButton>(R.id.buttonSecondOption)
-        buttonSecondOption.text = secondOptionText
+//        val buttonSecondOption = dialog.findViewById<MaterialButton>(R.id.buttonSecondOption)
+//        buttonSecondOption.text = secondOptionText
         val buttonThirdOption = dialog.findViewById<MaterialButton>(R.id.buttonThirdOption)
         buttonThirdOption.text = thirdOptionText
         buttonClose.setOnClickListener {
@@ -137,9 +137,9 @@ object Modals {
         buttonFirstOption.setOnClickListener {
             onClick(1, dialog)
         }
-        buttonSecondOption.setOnClickListener {
-            onClick(2, dialog)
-        }
+//        buttonSecondOption.setOnClickListener {
+//            onClick(2, dialog)
+//        }
         buttonThirdOption.setOnClickListener {
             onClick(3, dialog)
         }

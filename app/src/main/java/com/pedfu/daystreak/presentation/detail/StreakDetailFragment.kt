@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -149,6 +150,25 @@ class StreakDetailFragment : Fragment() {
     }
 
     private fun FragmentStreakDetailBinding.setState(state: StreakDetailState) {
+        when (state) {
+            StreakDetailState.DELETING -> {
+                imageButtonDelete.isEnabled = false
+                buttonStartTimer.isEnabled = false
+                buttonCompleteDay.isEnabled = false
+            }
+            StreakDetailState.DELETED -> {
+                // navigate back
+                Toast.makeText(requireContext(), "Streak deleted!", Toast.LENGTH_SHORT).show()
+                findNavController().navigateUp()
+            }
+            StreakDetailState.IDLE -> {
+                imageButtonDelete.isEnabled = true
+                buttonStartTimer.isEnabled = true
+                buttonCompleteDay.isEnabled = true
+            }
+            else -> {}
+        }
+
         swipeRefreshLayout.isRefreshing = state == StreakDetailState.LOADING
         progressBar.isVisible = state != StreakDetailState.IDLE
     }
@@ -158,8 +178,8 @@ class StreakDetailFragment : Fragment() {
     private fun onOptionClicked(option: Int, dialog: Dialog) {
         when (option) {
             CANCEL -> dialog.hide()
-            HIDE -> dialog.hide()
-            CANCEL -> dialog.hide()
+//            HIDE -> dialog.hide()
+            DELETE -> viewModel.onDeleteStreak(dialog)
         }
     }
 

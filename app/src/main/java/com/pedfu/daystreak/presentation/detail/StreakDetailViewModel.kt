@@ -1,5 +1,7 @@
 package com.pedfu.daystreak.presentation.detail
 
+import android.app.Dialog
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,12 +13,15 @@ import com.pedfu.daystreak.data.repositories.streak.StreakRepository
 import com.pedfu.daystreak.data.repositories.user.UserRepository
 import com.pedfu.daystreak.domain.streak.StreakItem
 import com.pedfu.daystreak.domain.user.User
+import com.pedfu.daystreak.presentation.home.dialogs.confirmDeleteCategory.ConfirmDeleteType
 import com.pedfu.daystreak.usecases.streak.StreakUseCase
 import kotlinx.coroutines.launch
 
 enum class StreakDetailState {
     IDLE,
+    DELETING,
     LOADING,
+    DELETED,
 }
 
 class StreakDetailViewModel(
@@ -24,6 +29,7 @@ class StreakDetailViewModel(
     private val streakRepository: StreakRepository = Inject.streakRepository,
     private val userRepository: UserRepository = Inject.userRepository,
     private val notificationRepository: NotificationRepository = Inject.notificationRepository,
+    private val streakUseCase: StreakUseCase = Inject.streakUseCase
 ): ViewModel() {
     private var state = StreakDetailState.IDLE
         set(value) {
@@ -52,6 +58,15 @@ class StreakDetailViewModel(
             state = StreakDetailState.LOADING
             streak = streakRepository.getStreak(streakId)
             state = StreakDetailState.IDLE
+        }
+    }
+
+    fun onDeleteStreak(dialog: Dialog) {
+        viewModelScope.launch {
+            state = StreakDetailState.DELETING
+            streakUseCase.deleteStreak(streakId)
+            state = StreakDetailState.DELETED
+            dialog.hide()
         }
     }
 }
