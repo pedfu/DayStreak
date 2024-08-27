@@ -33,6 +33,7 @@ class NotificationViewModel(
     val stateLiveData = MutableLiveData(state)
 
     fun markAllAsRead() {
+        if (notificationsLiveData.value?.none { !it.read } == true) return
         viewModelScope.launch {
             state = NotificationState.MARKING_READ
             notificationUseCase.markAllNotificationsAsRead()
@@ -41,6 +42,7 @@ class NotificationViewModel(
     }
 
     fun cleanAll() {
+        if (notificationsLiveData.value?.isEmpty() == true) return
         viewModelScope.launch {
             state = NotificationState.CLEARING
             notificationUseCase.clearAllNotifications()
@@ -49,6 +51,9 @@ class NotificationViewModel(
     }
 
     fun markItemRead(id: Long) {
+        val notification = notificationsLiveData.value?.find { it.id == id }
+        if (notification == null || (notification != null && notification.read)) return
+
         viewModelScope.launch {
             state = NotificationState.MARKING_READ
             notificationUseCase.markNotificationAsRead(id)
