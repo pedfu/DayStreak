@@ -13,4 +13,19 @@ class NotificationUseCase(
         val notifications = notificationService.getNotifications()
         notificationRepository.onRefreshNotifications(notifications.map { it.toNotification() })
     }
+
+    suspend fun markNotificationAsRead(id: Long) {
+        val result = notificationService.markAsRead(id)
+        if (result) notificationRepository.markAsRead(id)
+    }
+
+    suspend fun markAllNotificationsAsRead() {
+        val result = notificationService.markAllAsRead()
+        if (result) notificationRepository.markAllAsRead()
+    }
+
+    suspend fun clearAllNotifications() {
+        val result = notificationService.clearAll()
+        if (result) notificationRepository.clearAll()
+    }
 }

@@ -26,16 +26,13 @@ class NotificationRepository(
 
     suspend fun markAllAsRead() {
         notificationDao.markAllAsRead()
-        // call API
     }
 
     suspend fun markAsRead(id: Long) {
         notificationDao.markAsRead(id)
-        // call API
     }
 
-    suspend fun removeAll() {
+    suspend fun clearAll() {
         notificationDao.deleteAll()
-        // call API
     }
 }

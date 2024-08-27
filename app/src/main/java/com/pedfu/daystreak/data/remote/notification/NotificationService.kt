@@ -14,4 +14,31 @@ class NotificationService(
             throw e
         }
     }
+
+    suspend fun markAsRead(id: Long): Boolean {
+        return try {
+            notificationApi.markAsRead(id)
+            true
+        } catch (e: Throwable) {
+            false
+        }
+    }
+
+    suspend fun markAllAsRead(): Boolean {
+        return try {
+            notificationApi.markAllAsRead()
+            true
+        } catch (e: Throwable) {
+            false
+        }
+    }
+
+    suspend fun clearAll(): Boolean {
+        return try {
+            notificationApi.clearAll()
+            true
+        } catch (e: Throwable) {
+            false
+        }
+    }
 }

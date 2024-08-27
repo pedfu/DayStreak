@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.pedfu.daystreak.Inject
 import com.pedfu.daystreak.data.repositories.notification.NotificationRepository
 import com.pedfu.daystreak.domain.notification.NotificationItem
+import com.pedfu.daystreak.usecases.notification.NotificationUseCase
 import kotlinx.coroutines.launch
 
 enum class NotificationState {
@@ -19,7 +20,8 @@ enum class NotificationState {
 }
 
 class NotificationViewModel(
-    private val notificationRepository: NotificationRepository = Inject.notificationRepository
+    private val notificationUseCase: NotificationUseCase = Inject.notificationUseCase,
+    private val notificationRepository: NotificationRepository = Inject.notificationRepository,
 ) : ViewModel() {
 
     private var state: NotificationState = NotificationState.IDLE
@@ -33,7 +35,7 @@ class NotificationViewModel(
     fun markAllAsRead() {
         viewModelScope.launch {
             state = NotificationState.MARKING_READ
-            notificationRepository.markAllAsRead()
+            notificationUseCase.markAllNotificationsAsRead()
             state = NotificationState.IDLE
         }
     }
@@ -41,7 +43,7 @@ class NotificationViewModel(
     fun cleanAll() {
         viewModelScope.launch {
             state = NotificationState.CLEARING
-            notificationRepository.removeAll()
+            notificationUseCase.clearAllNotifications()
             state = NotificationState.IDLE
         }
     }
@@ -49,7 +51,7 @@ class NotificationViewModel(
     fun markItemRead(id: Long) {
         viewModelScope.launch {
             state = NotificationState.MARKING_READ
-            notificationRepository.markAsRead(id)
+            notificationUseCase.markNotificationAsRead(id)
             state = NotificationState.IDLE
         }
     }
