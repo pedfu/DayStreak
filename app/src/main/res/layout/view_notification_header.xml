@@ -70,6 +70,7 @@
                 android:padding="1dp"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginVertical="2dp"
+                android:visibility="gone"
                 android:text="9+"
                 android:textSize="8sp"
                 android:textColor="@color/white"
