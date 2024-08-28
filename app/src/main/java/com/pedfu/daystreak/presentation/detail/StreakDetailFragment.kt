@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -20,6 +21,7 @@ import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentStreakDetailBinding
 import com.pedfu.daystreak.domain.notification.NotificationItem
 import com.pedfu.daystreak.domain.streak.StreakItem
+import com.pedfu.daystreak.domain.streak.StreakStatus
 import com.pedfu.daystreak.domain.user.User
 import com.pedfu.daystreak.presentation.MainActivity
 import com.pedfu.daystreak.presentation.creation.OnItemCreatedListener
@@ -148,6 +150,31 @@ class StreakDetailFragment : Fragment() {
             textViewStreakDescription.text = streak.description
             if (streak.backgroundPicture != null) ImageProvider.loadImageFromUrl(detailsPicture, streak.backgroundPicture)
             if (streak.localBackgroundPicture != null) detailsPicture.setImageResource(ImageProvider.loadLocalImage(streak.localBackgroundPicture, requireContext()))
+
+            cardTag.isVisible = true
+            imageViewCardTag.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this.root.context,
+                    when (streak.status) {
+                        StreakStatus.PENDING -> R.drawable.ic_bell
+                        StreakStatus.STREAK_OVER -> R.drawable.ic_pencil
+                        StreakStatus.DAY_DONE -> R.drawable.ic_check
+                    }
+                )
+            )
+            textViewCardTag.text = this.root.context.getString(when(streak.status) {
+                StreakStatus.PENDING -> R.string.pending
+                StreakStatus.STREAK_OVER -> R.string.over
+                StreakStatus.DAY_DONE -> R.string.done
+            })
+            cardTag.background = ContextCompat.getDrawable(
+                this.root.context,
+                when (streak.status) {
+                    StreakStatus.PENDING -> R.drawable.background_rounded_blue
+                    StreakStatus.STREAK_OVER -> R.drawable.background_rounded_red
+                    StreakStatus.DAY_DONE -> R.drawable.background_rounded_green
+                }
+            )
         }
     }
 
