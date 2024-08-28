@@ -22,6 +22,8 @@ import com.pedfu.daystreak.domain.notification.NotificationItem
 import com.pedfu.daystreak.domain.streak.StreakItem
 import com.pedfu.daystreak.domain.user.User
 import com.pedfu.daystreak.presentation.MainActivity
+import com.pedfu.daystreak.presentation.creation.OnItemCreatedListener
+import com.pedfu.daystreak.presentation.creation.streak.StreakCreationDialogFragment
 import com.pedfu.daystreak.presentation.header.notification.NotificationDialogFragment
 import com.pedfu.daystreak.presentation.home.adapters.NotificationAdapter
 import com.pedfu.daystreak.presentation.timer.TimerFragmentArgs
@@ -110,7 +112,18 @@ class StreakDetailFragment : Fragment() {
         buttonCompleteDay.setOnClickListener {
             Modals.showCompleteDayDialog(requireContext(), ::onCompleteDaySave)
         }
+        buttonEdit.setOnClickListener {
+            val steakEditDialog = StreakCreationDialogFragment(::close, args.streakId)
+            steakEditDialog.setOnItemCreatedListener(object : OnItemCreatedListener {
+                override fun onItemCreated(itemType: String) {
+                    viewModel.refreshDetails()
+                }
+            })
+            steakEditDialog.show(childFragmentManager, "EditStreakDialog")
+        }
     }
+
+    private fun close() {}
 
     private fun setNotifications(notifications: List<NotificationItem>) {
         val textView = view?.findViewById<TextView>(R.id.textViewNotificationQnt)

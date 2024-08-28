@@ -31,7 +31,7 @@ class RetrofitBuilder(
         clientBuilder.addNetworkInterceptor(httpLoggingInterceptor)
 
         return Retrofit.Builder()
-            .baseUrl("https://fa6f-189-123-97-138.ngrok-free.app/") // BASE URL FROM CONFIG
+            .baseUrl("https://25bd-189-123-97-138.ngrok-free.app/") // BASE URL FROM CONFIG
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(clientBuilder.build())
             .build()

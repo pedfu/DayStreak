@@ -20,6 +20,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
+import com.bumptech.glide.load.model.UnitModelLoader
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentStreakCreationDialogBinding
 import com.pedfu.daystreak.domain.streak.StreakCategoryItem
@@ -37,7 +38,8 @@ import java.util.Locale
 private const val REQUEST_IMAGE_SELECTED = 1
 
 class StreakCreationDialogFragment(
-    val dismissParent: () -> Unit
+    val dismissParent: () -> Unit,
+    private val streakId: Long? = null
 ) : DialogFragment() {
     private var onItemCreatedListener: OnItemCreatedListener? = null
     fun setOnItemCreatedListener(listener: OnItemCreatedListener) {
@@ -50,7 +52,7 @@ class StreakCreationDialogFragment(
     private val calendar = Calendar.getInstance()
 
     private val viewModel: StreakCreationDialogViewModel by lazyViewModel {
-        StreakCreationDialogViewModel()
+        StreakCreationDialogViewModel(streakId, requireContext())
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -96,6 +98,23 @@ class StreakCreationDialogFragment(
             imageViewLocalPicture.isVisible = it?.image != null
             if (it?.image != null) {
                 imageViewLocalPicture.setImageResource(it.image!!)
+            }
+        }
+
+        viewModel.streakLiveData.observe(viewLifecycleOwner) {
+            if (it != null) {
+                editTextName.setText(it.name)
+//                editTextStreakMinPerDay.setText(it.)
+                editTextDescription.setText(it.description)
+//                streakBackgroundImage
+//                streakBackgroundColor
+                val index = viewModel.categoriesLiveData.value?.indexOfFirst { t -> t.id == it.categoryId }
+                if (index != null) spinnerCategory.setSelection(index)
+//                if (it.goalDeadline != null) {
+//                    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+//                    val formattedDate = dateFormat.format(it.time)
+//                    textInputStreakGoalDeadline.text = "$formattedDate"
+//                }
             }
         }
     }

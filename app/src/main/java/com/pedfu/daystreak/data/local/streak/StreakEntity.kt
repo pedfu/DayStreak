@@ -38,8 +38,8 @@ class StreakEntity(
     val maxStreak: Int,
     val localBackgroundPicture: String?,
 ) {
-    constructor(streak: StreakItem): this(
-        id = streak.id,
+    constructor(streak: StreakItem, id: Long? = null): this(
+        id = id ?: streak.id,
         name = streak.name,
         durationDays = streak.durationDays,
         description = streak.description,

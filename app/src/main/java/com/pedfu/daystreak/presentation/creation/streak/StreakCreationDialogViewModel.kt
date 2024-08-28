@@ -1,5 +1,6 @@
 package com.pedfu.daystreak.presentation.creation.streak
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,9 +10,11 @@ import com.pedfu.daystreak.data.remote.streak.CategoryRequest
 import com.pedfu.daystreak.data.remote.streak.StreakRequest
 import com.pedfu.daystreak.data.repositories.streak.StreakRepository
 import com.pedfu.daystreak.domain.streak.StreakCategoryItem
+import com.pedfu.daystreak.domain.streak.StreakItem
 import com.pedfu.daystreak.presentation.creation.streak.backgroundOptions.BackgroundOption
 import com.pedfu.daystreak.presentation.home.HomeViewModel
 import com.pedfu.daystreak.usecases.streak.StreakUseCase
+import com.pedfu.daystreak.utils.ImageProvider
 import kotlinx.coroutines.launch
 import java.io.File
 import java.time.Instant
@@ -44,6 +47,8 @@ enum class StreakCreationFields {
 }
 
 class StreakCreationDialogViewModel(
+    private val streakId: Long? = null,
+    private val context: Context? = null,
     private val streakRepository: StreakRepository = Inject.streakRepository,
     private val streakUseCase: StreakUseCase = Inject.streakUseCase,
 ) : ViewModel() {
@@ -112,12 +117,30 @@ class StreakCreationDialogViewModel(
     val streakBackgroundLocalLiveData = MutableLiveData(streakBackgroundLocal)
     val streakDescriptionLiveData = MutableLiveData(streakDescription)
 
+    val streakLiveData = MutableLiveData<StreakItem?>(null)
+
     val stateLiveData = MutableLiveData(state)
     val errorLiveData = MutableLiveData<List<StreakCreationFields>>(emptyList())
 
     init {
         viewModelScope.launch {
-            categoriesLiveData.value = streakRepository.getAllCategories()
+            val categories = streakRepository.getAllCategories()
+            categoriesLiveData.value = categories
+            if (streakId != null) {
+                val streak = streakRepository.getStreak(streakId)
+                streakLiveData.value = streak
+                if (streak != null) {
+                    streakName = streak.name
+//                    streakGoalDeadline = streak.e
+//                    streakMinTimePerDayInMinutes = streak.
+
+                    streakCategory = categories.find { it.id == streak.categoryId }
+//                    streakBackgroundImage = streak.backgroundPicture
+//                    streakBackgroundColor = streak.color
+                    streakBackgroundLocal = if (streak.localBackgroundPicture != null && context != null) BackgroundOption(streak.localBackgroundPicture, ImageProvider.loadLocalImage(streak.localBackgroundPicture, context)) else null
+                    streakDescription = streak.description ?: ""
+                }
+            }
         }
     }
 
@@ -193,7 +216,9 @@ class StreakCreationDialogViewModel(
                     streakMinTimePerDayInMinutes,
                     streakBackgroundLocal?.name
                 )
-                streakUseCase.createStreak(request)
+
+                if (streakId != null) streakUseCase.updateStreak(streakId, request)
+                else streakUseCase.createStreak(request)
                 state = StreakCreationState.DONE
             } catch (ex: Throwable) {
                 errorLiveData.value = listOf(StreakCreationFields.NETWORK)

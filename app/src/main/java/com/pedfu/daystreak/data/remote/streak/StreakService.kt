@@ -27,6 +27,20 @@ class StreakService(
         }
     }
 
+    suspend fun updateStreak(id: Long, streakRequest: StreakRequest): StreakResponse? {
+        val backgroundPart = if (streakRequest.background != null) MultipartBody.Part.createFormData(
+            "background",
+            streakRequest.background.name,
+            streakRequest.background.asRequestBody("image/*".toMediaTypeOrNull()),
+        ) else null
+
+        return try {
+            streakApi.updateStreak(id, SimplifiedStreakRequest(streakRequest), backgroundPart)
+        } catch (e: HttpException) {
+            throw e
+        }
+    }
+
     suspend fun deleteCategory(categoryId: Long): Boolean {
         return try {
             streakApi.deleteCategory(categoryId)
