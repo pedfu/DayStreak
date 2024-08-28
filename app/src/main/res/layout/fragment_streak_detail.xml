@@ -107,6 +107,7 @@
                         android:layout_margin="10dp"
                         android:backgroundTint="@color/transparent"
                         android:src="@drawable/ic_pencil"
+                        app:layout_constraintBottom_toBottomOf="@+id/cardViewTitleInfo"
                         app:layout_constraintEnd_toEndOf="@+id/cardViewTitleInfo"
                         app:layout_constraintTop_toTopOf="@+id/cardViewTitleInfo" />
 

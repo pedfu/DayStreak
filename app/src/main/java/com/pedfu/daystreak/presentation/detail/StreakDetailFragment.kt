@@ -130,7 +130,7 @@ class StreakDetailFragment : Fragment() {
     private fun setNotifications(notifications: List<NotificationItem>) {
         val textView = view?.findViewById<TextView>(R.id.textViewNotificationQnt)
         if (textView != null) {
-            textView.text = notifications.size.toString()
+            textView.text = notifications.filter { !it.read }.size.toString()
         }
     }
 
