@@ -2,6 +2,7 @@ package com.pedfu.daystreak.usecases.streak
 
 import com.pedfu.daystreak.Inject
 import com.pedfu.daystreak.data.remote.streak.CategoryRequest
+import com.pedfu.daystreak.data.remote.streak.CompleteDayRequest
 import com.pedfu.daystreak.data.remote.streak.StreakRequest
 import com.pedfu.daystreak.data.remote.streak.StreakService
 import com.pedfu.daystreak.data.repositories.streak.StreakRepository
@@ -25,6 +26,11 @@ class StreakUseCase(
     suspend fun createCategory(category: CategoryRequest) {
         val categoryResponse = streakService.createCategory(category)
         streakRepository.saveCategory(categoryResponse.toCategory())
+    }
+
+    suspend fun completeStreakDay(completeDay: CompleteDayRequest) {
+        val streakResponse = streakService.completeDay(completeDay)
+        streakRepository.updateStreak(completeDay.id, streakResponse.toStreak())
     }
 
     suspend fun createStreak(streak: StreakRequest) {

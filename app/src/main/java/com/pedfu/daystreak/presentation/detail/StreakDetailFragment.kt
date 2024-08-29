@@ -25,6 +25,7 @@ import com.pedfu.daystreak.domain.streak.StreakStatus
 import com.pedfu.daystreak.domain.user.User
 import com.pedfu.daystreak.presentation.MainActivity
 import com.pedfu.daystreak.presentation.creation.OnItemCreatedListener
+import com.pedfu.daystreak.presentation.creation.completeDay.CompleteDayCreationDialogFragment
 import com.pedfu.daystreak.presentation.creation.streak.StreakCreationDialogFragment
 import com.pedfu.daystreak.presentation.header.notification.NotificationDialogFragment
 import com.pedfu.daystreak.presentation.home.adapters.NotificationAdapter
@@ -112,7 +113,13 @@ class StreakDetailFragment : Fragment() {
             showConfirmationAdvancedModal()
         }
         buttonCompleteDay.setOnClickListener {
-            Modals.showCompleteDayDialog(requireContext(), ::onCompleteDaySave)
+            val completeDayDialog = CompleteDayCreationDialogFragment(args.streakId)
+            completeDayDialog.setOnItemCreatedListener(object : OnItemCreatedListener {
+                override fun onItemCreated(itemType: String) {
+                    viewModel.refreshDetails()
+                }
+            })
+            completeDayDialog.show(childFragmentManager, "CompleteDayCreationDialog")
         }
         buttonEdit.setOnClickListener {
             val steakEditDialog = StreakCreationDialogFragment(::close, args.streakId)

@@ -41,6 +41,7 @@
         <item name="cursorColor">@color/gray_font</item>
         <item name="boxStrokeColor">@color/gray_font</item>
         <item name="boxStrokeWidth">1dp</item>
+        <item name="hintTextColor">@color/gray_font</item>
     </style>
 
     <style name="TextInputEditText" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox.Dense">

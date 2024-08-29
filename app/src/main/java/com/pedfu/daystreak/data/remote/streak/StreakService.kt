@@ -57,6 +57,14 @@ class StreakService(
         }
     }
 
+    suspend fun completeDay(completeDay: CompleteDayRequest): StreakResponse {
+        return try {
+            streakApi.completeDay(completeDay.id, completeDay)
+        } catch (e: HttpException) {
+            throw e
+        }
+    }
+
     suspend fun getStreaks(): List<StreakResponse> {
         return try {
             val response = streakApi.getStreaks()

@@ -66,6 +66,7 @@
 
     <string name="name">Name</string>
     <string name="name_mandatory">Name*</string>
+    <string name="hour_mandatory">Hour*</string>
     <string name="hour">Hour</string>
     <string name="date">Date</string>
     <string name="today">Today</string>

@@ -41,6 +41,9 @@ interface StreakApi {
     @POST("api/v1/category/")
     suspend fun createCategory(@Body streakRequest: CategoryRequest): CategoryResponse
 
+    @POST("api/v1/streak/{id}/complete-day")
+    suspend fun completeDay(@Path("id") id: Long, @Body completeDay: CompleteDayRequest): StreakResponse
+
     @POST("api/v1/category/{id}/delete/")
     suspend fun deleteCategory(@Path("id") id: Long): Boolean
 
