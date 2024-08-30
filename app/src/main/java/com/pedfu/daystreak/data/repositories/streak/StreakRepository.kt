@@ -59,7 +59,7 @@ class StreakRepository(
     }
 
     suspend fun updateStreak(id: Long, streak: StreakItem) {
-        streakDao.insert(StreakEntity(streak, id))
+        streakDao.update(StreakEntity(streak, id))
     }
 
     suspend fun saveCategory(category: StreakCategoryItem) {
