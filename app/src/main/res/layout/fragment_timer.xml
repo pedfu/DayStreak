@@ -65,6 +65,7 @@
         android:textSize="90sp"
         android:textAlignment="center"
         android:textColor="@color/white"
+        tools:text="15:00"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

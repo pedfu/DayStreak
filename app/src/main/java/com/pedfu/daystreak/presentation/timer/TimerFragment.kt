@@ -78,7 +78,16 @@ class TimerFragment : Fragment() {
     private fun FragmentTimerBinding.updateTimerText() {
         val minutes = TimeUnit.MILLISECONDS.toMinutes(timeLeft)
         val seconds = TimeUnit.MILLISECONDS.toSeconds(timeLeft) % 60
-        timerText.setText(String.format("%02d:%02d", minutes, seconds))
+
+        // Convert minutes and seconds to strings
+        val minutesStr = if (minutes < 10) "0$minutes" else minutes.toString().substring(0, 2)
+        val secondsStr = if (seconds < 10) "0$seconds" else seconds.toString().substring(0, 2)
+
+        // Combine them into the desired format
+        val formatted = "$minutesStr:$secondsStr"
+
+        // Set the formatted string to the timer text
+        timerText.setText(formatted)
     }
 
     private fun FragmentTimerBinding.setupButtons() {
@@ -130,6 +139,10 @@ class TimerFragment : Fragment() {
         updateCountDownTimer(timeLeft)
         viewModel.startTimer()
         countDownTimer.start()
+
+        timerText.isClickable = false
+        timerText.isActivated = false
+        timerText.isEnabled = false
     }
 
     private fun FragmentTimerBinding.pauseTimer() {
@@ -141,12 +154,16 @@ class TimerFragment : Fragment() {
                 R.drawable.ic_unpause_black
             )
         )
+
+        timerText.isClickable = true
+        timerText.isActivated = true
+        timerText.isEnabled = true
     }
 
     private fun FragmentTimerBinding.resetTimer() {
         countDownTimer.cancel()
-        timeLeft = TimeUnit.MINUTES.toMillis(viewModel.timeLeft)
-        viewModel.updateTimeLeft(timeLeft / 1000)
+//        timeLeft = TimeUnit.MILLISECONDS.toSeconds(viewModel.timeLeft)
+        viewModel.updateTimeLeft(900)
         viewModel.startTimer()
         isRunning = false
         updateTimerText()
@@ -156,6 +173,10 @@ class TimerFragment : Fragment() {
                 R.drawable.ic_unpause_black
             )
         )
+
+        timerText.isClickable = true
+        timerText.isActivated = true
+        timerText.isEnabled = true
     }
 
     private fun FragmentTimerBinding.updateCountDownTimer(milliSec: Long) {

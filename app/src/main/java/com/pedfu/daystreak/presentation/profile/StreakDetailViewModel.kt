@@ -1,4 +1,4 @@
-package com.pedfu.daystreak.presentation.detail
+package com.pedfu.daystreak.presentation.profile
 
 import android.app.Dialog
 import android.widget.Toast
