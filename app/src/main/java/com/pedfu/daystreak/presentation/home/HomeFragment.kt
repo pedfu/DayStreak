@@ -32,6 +32,7 @@ import com.pedfu.daystreak.presentation.MainViewModel
 import com.pedfu.daystreak.presentation.creation.OnItemCreatedListener
 import com.pedfu.daystreak.presentation.creation.SelectCreateTypeDialogFragment
 import com.pedfu.daystreak.presentation.detail.StreakDetailFragmentArgs
+import com.pedfu.daystreak.presentation.header.HeaderViewModel
 import com.pedfu.daystreak.presentation.header.notification.NotificationDialogFragment
 import com.pedfu.daystreak.presentation.home.adapters.NotificationAdapter
 import com.pedfu.daystreak.presentation.home.adapters.StreakCategoryAdapter
