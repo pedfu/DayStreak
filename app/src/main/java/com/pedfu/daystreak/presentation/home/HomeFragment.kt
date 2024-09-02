@@ -156,12 +156,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun FragmentHomeBinding.setupButtons() {
-        view?.findViewById<ConstraintLayout>(R.id.frameLayoutBell)?.setOnClickListener {
+        notificationHeaderView.setShowNotificationsModal {
             val notificationDialog = NotificationDialogFragment()
             notificationDialog.show(childFragmentManager, "NotificationModalDialog")
         }
-        view?.findViewById<ShapeableImageView>(R.id.imageViewProfilePicture)?.setOnClickListener {
-            (activity as? MainActivity)?.signOutAndStartSignInActivity()
+        notificationHeaderView.setNavigateToAction {
+            findNavController().navigate(R.id.action_from_home_to_profile)
         }
 
         createStreakCategoryButton.setOnClickListener {

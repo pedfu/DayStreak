@@ -62,6 +62,9 @@
         <action
             android:id="@+id/action_from_home_to_details"
             app:destination="@id/streakDetailsFragment"/>
+        <action
+            android:id="@+id/action_from_home_to_profile"
+            app:destination="@id/profileFragment"/>
     </fragment>
 
     <fragment
@@ -76,6 +79,9 @@
         <action
             android:id="@+id/action_from_details_to_timer"
             app:destination="@id/timerFragment"/>
+        <action
+            android:id="@+id/action_from_details_to_profile"
+            app:destination="@id/profileFragment"/>
     </fragment>
 
     <fragment
@@ -96,5 +102,10 @@
             android:id="@+id/action_from_emailsent_to_login"
             app:destination="@id/loginFragment"/>
     </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.pedfu.daystreak.presentation.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 
 </navigation>

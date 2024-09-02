@@ -97,13 +97,14 @@ class StreakDetailFragment : Fragment() {
     }
 
     private fun FragmentStreakDetailBinding.setupButtons() {
-        view?.findViewById<ConstraintLayout>(R.id.frameLayoutBell)?.setOnClickListener {
+        notificationHeaderView.setShowNotificationsModal {
             val notificationDialog = NotificationDialogFragment()
             notificationDialog.show(childFragmentManager, "NotificationModalDialog")
         }
-        view?.findViewById<ShapeableImageView>(R.id.imageViewProfilePicture)?.setOnClickListener {
-            (activity as? MainActivity)?.signOutAndStartSignInActivity()
+        notificationHeaderView.setNavigateToAction {
+            findNavController().navigate(R.id.action_from_details_to_profile)
         }
+
         buttonStartTimer.setOnClickListener {
             // precisa aparecer modal -> pessoa digita quantidade -> inicia timer
             val args = TimerFragmentArgs.Builder(15).build()

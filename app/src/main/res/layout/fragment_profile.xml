@@ -115,6 +115,39 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/split_line3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="30dp"
+        android:background="@color/gray_line"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutOptions2" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutOptions3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="30dp"
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/split_line3"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_privacy"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="16sp"
+            android:layout_marginLeft="20dp"
+            android:text="@string/privacy_policy"/>
+
+    </LinearLayout>
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
