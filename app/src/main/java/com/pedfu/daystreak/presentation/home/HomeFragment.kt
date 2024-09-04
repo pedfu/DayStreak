@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
@@ -20,25 +19,23 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentHomeBinding
 import com.pedfu.daystreak.domain.notification.NotificationItem
 import com.pedfu.daystreak.domain.user.User
-import com.pedfu.daystreak.presentation.MainActivity
 import com.pedfu.daystreak.presentation.MainState
 import com.pedfu.daystreak.presentation.MainViewModel
 import com.pedfu.daystreak.presentation.creation.OnItemCreatedListener
 import com.pedfu.daystreak.presentation.creation.SelectCreateTypeDialogFragment
 import com.pedfu.daystreak.presentation.detail.StreakDetailFragmentArgs
-import com.pedfu.daystreak.presentation.header.HeaderViewModel
 import com.pedfu.daystreak.presentation.header.notification.NotificationDialogFragment
 import com.pedfu.daystreak.presentation.home.adapters.NotificationAdapter
 import com.pedfu.daystreak.presentation.home.adapters.StreakCategoryAdapter
 import com.pedfu.daystreak.presentation.home.adapters.StreakListAdapter
 import com.pedfu.daystreak.presentation.home.dialogs.confirmDeleteCategory.ConfirmDeleteDialogFragment
 import com.pedfu.daystreak.presentation.home.dialogs.confirmDeleteCategory.ConfirmDeleteType
+import com.pedfu.daystreak.utils.ImageProvider
 import com.pedfu.daystreak.utils.Modals
 import com.pedfu.daystreak.utils.lazyViewModel
 import java.util.Calendar
@@ -134,9 +131,7 @@ class HomeFragment : Fragment() {
         if (user != null) {
             val imageViewProfilePicture = view?.findViewById<ShapeableImageView>(R.id.imageViewProfilePicture)
             if (imageViewProfilePicture != null) {
-                Glide.with(requireContext())
-                    .load(user.photoUrl)
-                    .into(imageViewProfilePicture)
+                ImageProvider.loadImageFromUrl(imageViewProfilePicture, user.photoUrl.toString())
             }
 
 

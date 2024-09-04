@@ -14,7 +14,8 @@ object ImageProvider {
     fun loadImageFromUrl(imageView: ShapeableImageView, imageUrl: String) {
         Glide.with(imageView.context)
             .load(imageUrl)
-            .placeholder(R.drawable.img_gray)
+            .error(R.drawable.img_error_loading_image)
+            .placeholder(R.drawable.img_default_user)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(imageView)
     }

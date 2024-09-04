@@ -191,10 +191,8 @@ class StreakDetailFragment : Fragment() {
     private fun setUser(user: User?) {
         if (user != null) {
             val imageViewProfilePicture = view?.findViewById<ShapeableImageView>(R.id.imageViewProfilePicture)
-            if (imageViewProfilePicture != null) {
-                Glide.with(requireContext())
-                    .load(user.photoUrl)
-                    .into(imageViewProfilePicture)
+            if (imageViewProfilePicture != null && user.photoUrl != null) {
+                ImageProvider.loadImageFromUrl(imageViewProfilePicture, user.photoUrl.toString())
             }
         }
     }
