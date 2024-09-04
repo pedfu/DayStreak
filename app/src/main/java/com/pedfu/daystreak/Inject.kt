@@ -3,7 +3,6 @@ package com.pedfu.daystreak
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import com.pedfu.daystreak.data.AppDatabase
 import com.pedfu.daystreak.data.remote.authorization.AuthorizationManager
 import com.pedfu.daystreak.data.remote.authorization.AuthorizationManagerImpl
@@ -11,6 +10,8 @@ import com.pedfu.daystreak.data.remote.login.LoginApi
 import com.pedfu.daystreak.data.remote.login.LoginService
 import com.pedfu.daystreak.data.remote.notification.NotificationApi
 import com.pedfu.daystreak.data.remote.notification.NotificationService
+import com.pedfu.daystreak.data.remote.setting.SettingApi
+import com.pedfu.daystreak.data.remote.setting.SettingService
 import com.pedfu.daystreak.data.remote.signup.SignupApi
 import com.pedfu.daystreak.data.remote.signup.SignupService
 import com.pedfu.daystreak.data.remote.streak.StreakApi
@@ -34,7 +35,6 @@ import com.pedfu.daystreak.usecases.user.UserUseCase
 import com.squareup.moshi.Moshi
 import retrofit2.Retrofit
 import retrofit2.create
-import java.lang.reflect.Constructor
 
 object Inject {
     lateinit var appContext: Context
@@ -83,6 +83,9 @@ object Inject {
     val loginApi by lazy { unauthorizedRetrofit.create<LoginApi>() }
     val loginService by lazy { LoginService() }
     val loginUseCase by lazy { LoginUseCase() }
+
+    val settingApi by lazy { authorizedRetrofit.create<SettingApi>() }
+    val settingService by lazy { SettingService() }
 
     val refreshUseCase by lazy { RefreshUseCase() }
 

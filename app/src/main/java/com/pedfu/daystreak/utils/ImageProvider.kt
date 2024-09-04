@@ -3,11 +3,12 @@ package com.pedfu.daystreak.utils
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.imageview.ShapeableImageView
 import com.pedfu.daystreak.R
-import com.pedfu.daystreak.presentation.creation.streak.backgroundOptions.BackgroundOption
+import java.io.ByteArrayOutputStream
 
 object ImageProvider {
     fun loadImageFromUrl(imageView: ShapeableImageView, imageUrl: String) {
@@ -26,6 +27,18 @@ object ImageProvider {
     fun loadOptimizedLocalImage(imageName: String, context: Context): Int {
         val resourceName = imageName.substringBeforeLast(".") + "_optimized_50"
         return context.resources.getIdentifier(resourceName, "drawable", context.packageName)
+    }
+
+    fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
+        return context.contentResolver.openInputStream(uri)?.use {
+            BitmapFactory.decodeStream(it)
+        }
+    }
+
+    fun compressBitmap(bitmap: Bitmap, quality: Int = 80): ByteArray {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream)
+        return byteArrayOutputStream.toByteArray()
     }
 }
 
