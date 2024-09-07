@@ -9,9 +9,9 @@ class UserService(
     private val moshi: Moshi = Inject.moshi
 ): RemoteService(moshi) {
 
-    suspend fun createOrUpdate(userRequest: UserRequest): UserResponse {
+    suspend fun fetchUser(): UserResponse {
         return try {
-            userApi.createOrUpdateUser(userRequest)
+            userApi.fetchUser()
         } catch (e: HttpException) {
             throw e
         }

@@ -3,6 +3,7 @@ package com.pedfu.daystreak.usecases.refresh
 import com.pedfu.daystreak.Inject
 import com.pedfu.daystreak.usecases.notification.NotificationUseCase
 import com.pedfu.daystreak.usecases.streak.StreakUseCase
+import com.pedfu.daystreak.usecases.user.UserUseCase
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -16,11 +17,15 @@ import kotlinx.coroutines.flow.shareIn
 class RefreshUseCase(
     private val streakUseCase: StreakUseCase = Inject.streakUseCase,
     private val notificationsUseCase: NotificationUseCase = Inject.notificationUseCase,
+    private val userUseCase: UserUseCase = Inject.userUseCase,
 ) {
     private val coroutineScope = MainScope()
     private val mutableRefreshingFlow = MutableStateFlow(false)
     val isRefreshingFlow = mutableRefreshingFlow.asStateFlow()
 
+    private val refreshUserFlow = flow {
+        emit(fetchUser())
+    }.shareIn(coroutineScope, SharingStarted.WhileSubscribed(replayExpirationMillis = 0))
     private val refreshCategoriesFlow = flow {
         emit(fetchCategories())
     }.shareIn(coroutineScope, SharingStarted.WhileSubscribed(replayExpirationMillis = 0))
@@ -34,6 +39,11 @@ class RefreshUseCase(
     private val isRefreshing: Boolean
         get() = isRefreshingStreak || isRefreshingNotification || isRefreshingCategory
 
+    private var isRefreshingUser: Boolean = false
+        set(value) {
+            field = value
+            mutableRefreshingFlow.value = isRefreshing
+        }
     private var isRefreshingCategory: Boolean = false
         set(value) {
             field = value
@@ -52,15 +62,20 @@ class RefreshUseCase(
 
     suspend fun refresh() {
         coroutineScope {
+            val userAsync = async { refreshUser() }
             val categoriesAsync = async { refreshCategories() }
             val notificationsAsync = async { refreshNotification() }
             val streaksAsync = async { refreshStreaks() }
+            userAsync.join()
             categoriesAsync.join()
             notificationsAsync.join()
             streaksAsync.join()
         }
     }
 
+    private suspend fun refreshUser() {
+        refreshUserFlow.firstOrNull()
+    }
     private suspend fun refreshCategories() {
         refreshCategoriesFlow.firstOrNull()
     }
@@ -94,6 +109,20 @@ class RefreshUseCase(
             return throwable
         } finally {
             isRefreshingCategory = false
+        }
+
+        return null
+    }
+
+    private suspend fun fetchUser(): Throwable? {
+        isRefreshingUser = true
+
+        try {
+            userUseCase.fetchUser()
+        } catch (throwable: Throwable) {
+            return throwable
+        } finally {
+            isRefreshingUser = false
         }
 
         return null

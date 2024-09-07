@@ -11,8 +11,14 @@ import com.pedfu.daystreak.domain.user.User
 
 class UserUseCase(
     private val userRepository: UserRepository = Inject.userRepository,
+    private val userService: UserService = Inject.userService,
 ) {
     suspend fun getUser(): User? {
         return userRepository.getUser()
+    }
+
+    suspend fun fetchUser() {
+        val user = userService.fetchUser()
+        userRepository.saveUser(user.toUser())
     }
 }

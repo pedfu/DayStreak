@@ -62,7 +62,7 @@ object Inject {
 //    val categoryRepository by lazy { CategoryRepository() }
 
     // APIs
-    val userApi by lazy { unauthorizedRetrofit.create<UserApi>() }
+    val userApi by lazy { authorizedRetrofit.create<UserApi>() }
     val userService by lazy { UserService() }
     val userUseCase by lazy { UserUseCase() }
 

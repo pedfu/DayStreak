@@ -13,6 +13,6 @@ interface UserApi {
     @POST("api/v1/create-user/")
     suspend fun createOrUpdateUser(@Body request: UserRequest): UserResponse
 
-    @POST("api/v1/user/{id}/")
-    suspend fun updateUser(@Path("id") userId: Long, request: UserRequest): UserResponse
+    @GET("api/v1/user/")
+    suspend fun fetchUser(): UserResponse
 }
