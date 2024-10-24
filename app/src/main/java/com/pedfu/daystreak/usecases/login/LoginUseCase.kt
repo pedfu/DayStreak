@@ -12,14 +12,18 @@ class LoginUseCase(
     private val userRepository: UserRepository = Inject.userRepository,
 ) {
     suspend fun login(usernameOrEmail: String, password: String): Boolean {
-        val request = LoginRequest(usernameOrEmail, password)
-        val response = loginService.login(request)
-        if (response != null) {
-            authorizationManager.token = response.tokenKey
-            val user = response.user.toUser()
-            userRepository.saveUser(user)
-            return true
+        try {
+            val request = LoginRequest(usernameOrEmail, password)
+            val response = loginService.login(request)
+            if (response != null) {
+                authorizationManager.token = response.tokenKey
+                val user = response.user.toUser()
+                userRepository.saveUser(user)
+                return true
+            }
+            return false
+        } catch (ex: Exception) {
+            return false
         }
-        return false
     }
 }

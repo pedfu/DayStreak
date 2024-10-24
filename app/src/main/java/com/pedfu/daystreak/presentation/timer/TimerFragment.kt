@@ -38,7 +38,6 @@ class TimerFragment : Fragment() {
 
         binding.run {
             setupButtons()
-            setupTimeText()
             updateTimerText()
             observeViewModel()
         }
@@ -73,6 +72,7 @@ class TimerFragment : Fragment() {
         val totalTime = TimeUnit.SECONDS.toMillis(timeInSeconds)
         timeLeft = totalTime * 1000
         updateCountDownTimer(timeLeft)
+        updateTimerText()
     }
 
     private fun FragmentTimerBinding.updateTimerText() {
@@ -108,14 +108,6 @@ class TimerFragment : Fragment() {
         }
     }
 
-    private fun FragmentTimerBinding.setupTimeText() {
-        timerText.addTextChangedListener {
-            val formatter = SimpleDateFormat("mm:ss")
-            val date = formatter.parse(it.toString())
-            viewModel.updateTotalTimer(date.time / 1000)
-        }
-    }
-
     private fun openConfirmationModal() {
         Modals.showConfirmationDialog(
             requireContext(),
@@ -129,6 +121,7 @@ class TimerFragment : Fragment() {
     }
 
     private fun FragmentTimerBinding.startTimer() {
+        viewModel.startTimer()
         imageButtonPause.setImageDrawable(
             ContextCompat.getDrawable(
                 this.root.context,
@@ -137,7 +130,6 @@ class TimerFragment : Fragment() {
         )
         isRunning = true
         updateCountDownTimer(timeLeft)
-        viewModel.startTimer()
         countDownTimer.start()
 
         timerText.isClickable = false
@@ -160,20 +152,32 @@ class TimerFragment : Fragment() {
         timerText.isEnabled = true
     }
 
-    private fun FragmentTimerBinding.resetTimer() {
-        countDownTimer.cancel()
-//        timeLeft = TimeUnit.MILLISECONDS.toSeconds(viewModel.timeLeft)
-        viewModel.updateTimeLeft(900)
-        viewModel.startTimer()
-        isRunning = false
-        updateTimerText()
-        imageButtonPause.setImageDrawable(
-            ContextCompat.getDrawable(
-                this.root.context,
-                R.drawable.ic_unpause_black
-            )
-        )
+//    private fun FragmentTimerBinding.resetTimer() {
+//        countDownTimer.cancel()
+////        timeLeft = TimeUnit.MILLISECONDS.toSeconds(viewModel.timeLeft)
+//        viewModel.updateTimeLeft(900)
+//        viewModel.startTimer()
+//        isRunning = false
+//        updateTimerText()
+//        imageButtonPause.setImageDrawable(
+//            ContextCompat.getDrawable(
+//                this.root.context,
+//                R.drawable.ic_unpause_black
+//            )
+//        )
+//
+//        timerText.isClickable = true
+//        timerText.isActivated = true
+//        timerText.isEnabled = true
+//    }
 
+    private fun FragmentTimerBinding.resetTimer() {
+        pauseTimer()
+
+        // restart timer
+        setTimer(viewModel.totalTimer)
+
+        // Habilita a interação com o campo de texto do timer
         timerText.isClickable = true
         timerText.isActivated = true
         timerText.isEnabled = true

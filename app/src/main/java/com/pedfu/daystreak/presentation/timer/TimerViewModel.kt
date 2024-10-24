@@ -1,5 +1,6 @@
 package com.pedfu.daystreak.presentation.timer
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,10 +22,12 @@ class TimerViewModel(
 ): ViewModel() {
     private var state: TimerState = TimerState.IDLE
 
+    private var first = true
     private var startTime: Date = Date()
     private var endTime: Date = Date()
     private var durationInSec: Long = 0
-    private var totalTimer: Long = minutes * 60
+    var totalTimer: Long = minutes * 60
+        private set
     var timeLeft: Long = totalTimer
         private set
 

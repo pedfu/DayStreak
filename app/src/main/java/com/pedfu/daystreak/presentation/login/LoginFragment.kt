@@ -54,9 +54,9 @@ class LoginFragment : Fragment() {
     }
 
     private fun FragmentLoginBinding.setState(state: LoginState) {
-        signInButton.isClickable = state == LoginState.READY
-        signInButton.isEnabled = state == LoginState.READY
-//        signInButton.error = if (state == LoginState.ERROR) "Wrong user or password" else null
+        signInButton.isClickable = state == LoginState.READY || state == LoginState.ERROR
+        signInButton.isEnabled = state == LoginState.READY || state == LoginState.ERROR
+        signInButton.error = if (state == LoginState.ERROR) "Wrong user or password" else null
 
         if (state == LoginState.LOGGED_IN) {
             navigateToHome()
