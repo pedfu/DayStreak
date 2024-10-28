@@ -9,5 +9,5 @@ import retrofit2.http.Part
 interface SettingApi {
     @Multipart
     @PUT("api/v1/user/profile-picture/")
-    suspend fun updateProfilePicture(@Part image: MultipartBody.Part)
+    suspend fun updateProfilePicture(@Part image: MultipartBody.Part): ProfilePictureResponse
 }

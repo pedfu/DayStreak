@@ -10,7 +10,7 @@ class User (
     val lastName: String,
     val username: String,
     val role: String,
-    val photoUrl: Uri?,
+    var photoUrl: Uri?,
     val uuid: String,
     val maxStreak: Int
 )

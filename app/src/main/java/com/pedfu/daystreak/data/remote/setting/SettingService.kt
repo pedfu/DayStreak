@@ -9,15 +9,14 @@ import java.io.File
 class SettingService(
     private val settingApi: SettingApi = Inject.settingApi
 ) {
-
-    suspend fun updateProfilePicture(file: File): Boolean {
+    suspend fun updateProfilePicture(file: File): String? {
         return try {
             val requestBody = RequestBody.create("image/jpeg".toMediaTypeOrNull(), file)
             val imagePart = MultipartBody.Part.createFormData("profile_picture", file.name, requestBody)
-            settingApi.updateProfilePicture(imagePart)
-            true
+            val path = settingApi.updateProfilePicture(imagePart).profilePicturePath
+            return path
         } catch (e: Throwable) {
-            false
+            return null
         }
     }
 }
