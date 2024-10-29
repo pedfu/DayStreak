@@ -74,7 +74,10 @@ class ProfileFragment : Fragment() {
     private fun FragmentProfileBinding.observeViewModel() {
         viewModel.stateLiveData.observe(viewLifecycleOwner) { setState(it) }
         viewModel.userLiveData.observe(viewLifecycleOwner) { setUser(it) }
-        viewModel.newImageProfileLiveData.observe(viewLifecycleOwner) { if (it != null) imageViewProfilePicture.setImageURI(it) }
+        viewModel.newImageProfileLiveData.observe(viewLifecycleOwner) {
+            if (it != null)
+                imageViewProfilePicture.setImageURI(it)
+        }
     }
 
     private fun FragmentProfileBinding.setState(state: ProfileState) {

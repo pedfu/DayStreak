@@ -4,8 +4,6 @@ import android.net.Uri
 import com.pedfu.daystreak.domain.user.User
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import java.net.URL
-import java.util.UUID
 
 @JsonClass(generateAdapter = true)
 class UserJson(
@@ -15,7 +13,7 @@ class UserJson(
     @Json(name = "last_name") val lastName: String,
     @Json(name = "username") val username: String,
     @Json(name = "role") val role: String,
-    @Json(name = "profile_picture") val photoUrl: String?,
+    @Json(name = "profile_picture_path") val photoUrl: String?,
     @Json(name = "uuid") val uuid: String,
     @Json(name = "max_streak") val maxStreak: Int?,
 ) {
@@ -26,7 +24,7 @@ class UserJson(
         user.lastName,
         user.username,
         user.role,
-        user.photoUrl.toString(),
+        if (user.photoUrl != null) user.photoUrl.toString() else null,
         user.uuid,
         user.maxStreak
     )

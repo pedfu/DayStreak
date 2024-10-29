@@ -19,7 +19,7 @@ class UserRepository(
     suspend fun updateProfilePicture(file: File) {
         val path = settingService.updateProfilePicture(file)
         val user = getUser()
-        if (user != null) {
+        if (user != null && path != null) {
             user.photoUrl = Uri.parse(path)
             saveUser(user)
         }

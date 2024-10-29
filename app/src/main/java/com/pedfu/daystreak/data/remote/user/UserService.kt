@@ -16,4 +16,12 @@ class UserService(
             throw e
         }
     }
+
+    suspend fun sendNotificationToken(token: String) {
+        return try {
+            userApi.sendNotificationToken(NotificationTokenRequest(token))
+        } catch (e: HttpException) {
+            throw e
+        }
+    }
 }

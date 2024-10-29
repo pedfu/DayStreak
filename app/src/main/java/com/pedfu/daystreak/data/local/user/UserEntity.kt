@@ -24,7 +24,7 @@ class UserEntity(
         user.lastName,
         user.username,
         user.role,
-        user.photoUrl.toString(),
+        if (user.photoUrl != null) user.photoUrl.toString() else null,
         user.uuid,
         user.maxStreak,
     )
@@ -36,7 +36,7 @@ class UserEntity(
         lastName,
         username,
         role,
-        Uri.parse(photoUri),
+        if (photoUri != null) Uri.parse(photoUri) else null,
         uuid,
         maxStreak,
     )

@@ -14,8 +14,8 @@ class UserResponse(
     @Json(name = "username") val username: String?,
     @Json(name = "role") val role: String?,
     @Json(name = "uuid") val uuid: String?,
-    @Json(name = "maxStreak") val maxStreak: Int?,
-    @Json(name = "photoUrl") val photoUrl: String?,
+    @Json(name = "max_streak") val maxStreak: Int?,
+    @Json(name = "profile_picture_path") val photoUrl: String?,
 ) {
     fun toUser(): User {
         return User(
