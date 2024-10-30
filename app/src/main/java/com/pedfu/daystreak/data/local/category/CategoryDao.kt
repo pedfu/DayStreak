@@ -41,7 +41,7 @@ interface CategoryDao {
         val allCategories = getAllCategories()
 
         // Remove non existing (or removed) categories
-        val categoriesToRemove = allCategories.filter { categories.any { c -> c.id != it.id } }
+        val categoriesToRemove = if (categories.isEmpty()) allCategories else allCategories.filter {categories.any { c -> c.id != it.id }}
         categoriesToRemove.forEach { delete(it.id) }
 
         // Update existing categories

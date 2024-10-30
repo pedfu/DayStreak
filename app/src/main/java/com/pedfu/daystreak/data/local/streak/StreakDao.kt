@@ -1,5 +1,6 @@
 package com.pedfu.daystreak.data.local.streak
 
+import android.database.sqlite.SQLiteConstraintException
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -42,7 +43,9 @@ interface StreakDao {
         streaksToRemove.forEach { if (it.id != null) delete(it.id) }
 
         // Update existing categories
-        streaks.forEach { insert(StreakEntity(it)) }
+        streaks.forEach {
+            runCatching { insert(StreakEntity(it)) }
+        }
     }
 
     @Transaction

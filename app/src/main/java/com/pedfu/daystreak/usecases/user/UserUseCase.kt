@@ -19,7 +19,6 @@ class UserUseCase(
 
     suspend fun fetchUser() {
         val user = userService.fetchUser()
-        val uri = if (user.photoUrl != null) Uri.parse(user.photoUrl) else null
         userRepository.saveUser(user.toUser())
     }
 }
