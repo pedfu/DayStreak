@@ -8,10 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentSelectCreateTypeDialogBinding
+import com.pedfu.daystreak.presentation.MainViewModel
 import com.pedfu.daystreak.presentation.creation.category.CategoryCreationDialogFragment
 import com.pedfu.daystreak.presentation.creation.streak.StreakCreationDialogFragment
+import com.pedfu.daystreak.presentation.home.HomeViewModel
+import com.pedfu.daystreak.utils.lazyViewModel
 
 class SelectCreateTypeDialogFragment : DialogFragment() {
     private var onItemCreatedListener: OnItemCreatedListener? = null
@@ -21,6 +26,8 @@ class SelectCreateTypeDialogFragment : DialogFragment() {
 
     private var _binding: FragmentSelectCreateTypeDialogBinding? = null
     private val binding: FragmentSelectCreateTypeDialogBinding get() = _binding!!
+
+    private val viewModel: SelectCreateTypeViewModel by lazyViewModel { SelectCreateTypeViewModel() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +43,16 @@ class SelectCreateTypeDialogFragment : DialogFragment() {
         dialog?.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         binding.run {
+            viewModel.categoriesLiveData.observe(viewLifecycleOwner) {
+                if (it.isEmpty()) {
+                    buttonStreak.setTextAppearance(R.style.MaterialButton_Disabled)
+                    buttonStreak.isEnabled = false
+                } else {
+                    buttonStreak.setTextAppearance(R.style.MaterialButton)
+                    buttonStreak.isEnabled = true
+                }
+            }
+
             buttonCategory.setOnClickListener {
                 showCategoryCreationModal()
             }
