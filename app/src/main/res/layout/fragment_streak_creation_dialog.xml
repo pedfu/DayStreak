@@ -131,27 +131,22 @@
                     <!--                    app:layout_constraintStart_toStartOf="parent"-->
                     <!--                    app:layout_constraintTop_toBottomOf="@id/labelStreakDuration" />-->
 
-                    <com.google.android.material.textfield.TextInputLayout
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/textInputStreakMinPerDay"
-                        style="@style/TextInputLayout"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="63dp"
                         android:layout_marginStart="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/textInputStreakGoalDeadline"
-                        app:layout_constraintTop_toBottomOf="@id/labelStreakMinTimePerDay">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextStreakMinPerDay"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/in_min"
-                            android:inputType="number"
-                            android:singleLine="true"
-                            android:textColor="@color/black" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
+                        app:layout_constraintTop_toBottomOf="@id/labelStreakMinTimePerDay"
+                        android:text="00:00"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:backgroundTint="@color/transparent"
+                        app:cornerRadius="4dp"
+                        app:strokeColor="@color/gray_font"
+                        app:strokeWidth="1dp" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView

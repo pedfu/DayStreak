@@ -6,8 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.pedfu.daystreak.data.local.category.CategoryEntity
-import com.pedfu.daystreak.domain.streak.StreakCategoryItem
 import com.pedfu.daystreak.domain.streak.StreakItem
 import kotlinx.coroutines.flow.Flow
 

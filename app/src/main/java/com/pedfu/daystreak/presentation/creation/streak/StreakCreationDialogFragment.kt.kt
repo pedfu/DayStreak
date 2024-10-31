@@ -1,6 +1,7 @@
 package com.pedfu.daystreak.presentation.creation.streak
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -8,6 +9,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -104,7 +107,6 @@ class StreakCreationDialogFragment(
         viewModel.streakLiveData.observe(viewLifecycleOwner) {
             if (it != null) {
                 editTextName.setText(it.name)
-//                editTextStreakMinPerDay.setText(it.)
                 editTextDescription.setText(it.description)
 //                streakBackgroundImage
 //                streakBackgroundColor
@@ -121,10 +123,18 @@ class StreakCreationDialogFragment(
 
     private fun FragmentStreakCreationDialogBinding.setupInputs() {
         editTextName.addTextChangedListener { viewModel.onStreakNameChanged(it.toString()) }
-        editTextStreakMinPerDay.addTextChangedListener {
-            val value = if (it.toString().isNullOrBlank()) "0" else it.toString()
-            viewModel.onStreakMinTimePerDayInMinutesChanged(value.toInt())
+        textInputStreakMinPerDay.setOnClickListener {
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+                textInputStreakMinPerDay.setText(String.format("%02d:%02d", hour, minute))
+                val minutes = (hour * 60) + minute // to minutes
+                viewModel.onStreakMinTimePerDayInMinutesChanged(minutes)
+            }
+            val currentSavedMinutes = viewModel.streakMinTimePerDayInMinutesLiveData.value ?: 0
+            val currHours = (currentSavedMinutes / 60).toInt()
+            val currMin = currentSavedMinutes % 60
+            TimePickerDialog(requireContext(), timeSetListener, currHours, currMin, true).show()
         }
+
         editTextDescription.addTextChangedListener { viewModel.onStreakDescriptionChanged(it.toString()) }
         constraintLayoutBackgroundPicture.setOnClickListener { dispatchSelectPictureIntent() }
         constraintLayoutBackgroundPictureLocal.setOnClickListener {

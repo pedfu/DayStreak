@@ -1,33 +1,18 @@
 package com.pedfu.daystreak.presentation.home
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.map
-import androidx.lifecycle.viewModelScope
 import com.pedfu.daystreak.Inject
-import com.pedfu.daystreak.data.remote.streak.CategoryRequest
-import com.pedfu.daystreak.data.remote.streak.StreakRequest
 import com.pedfu.daystreak.data.repositories.notification.NotificationRepository
 import com.pedfu.daystreak.data.repositories.streak.StreakRepository
 import com.pedfu.daystreak.data.repositories.user.UserRepository
-import com.pedfu.daystreak.domain.streak.StreakCategoryItem
 import com.pedfu.daystreak.domain.streak.StreakItem
 import com.pedfu.daystreak.domain.user.User
-import com.pedfu.daystreak.usecases.streak.StreakUseCase
 import com.pedfu.daystreak.utils.ImageProvider
-import kotlinx.coroutines.launch
-import java.io.File
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
-import java.util.Calendar
-import java.util.Date
 
 enum class HomeState {
     IDLE,
