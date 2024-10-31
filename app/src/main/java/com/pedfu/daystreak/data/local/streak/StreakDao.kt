@@ -32,7 +32,6 @@ interface StreakDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun update(streak: StreakEntity)
 
-    @Transaction
     suspend fun refreshStreaks(streaks: List<StreakItem>) {
         val allStreaks = getAll()
 
@@ -40,9 +39,15 @@ interface StreakDao {
         val streaksToRemove = allStreaks.filter { streaks.any { c -> c.id != it.id } }
         streaksToRemove.forEach { if (it.id != null) delete(it.id) }
 
-        // Update existing categories
-        streaks.forEach {
-            runCatching { insert(StreakEntity(it)) }
+        streaks.forEach { streak ->
+            insertWithTransaction(streak)
+        }
+    }
+
+    @Transaction
+    suspend fun insertWithTransaction(streak: StreakItem) {
+        runCatching {
+            insert(StreakEntity(streak))
         }
     }
 
