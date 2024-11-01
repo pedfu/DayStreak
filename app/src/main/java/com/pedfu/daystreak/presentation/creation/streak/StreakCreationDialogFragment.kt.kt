@@ -32,7 +32,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 
 private const val REQUEST_IMAGE_SELECTED = 1
@@ -114,8 +113,13 @@ class StreakCreationDialogFragment(
                     viewModel.onStreakMinTimePerDayInMinutesChanged(it.minTimePerDayInMinutes)
                 }
                 if (it.goalDeadLine != null) {
+                    val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val goalDate = format.parse(it.goalDeadLine)
+
                     val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                    val formattedDate = dateFormat.format(it.goalDeadLine)
+                    val formattedDate = dateFormat.format(goalDate)
+
+                    viewModel.onStreakGoalDeadlineChanged(goalDate)
                     textInputStreakGoalDeadline.text = "$formattedDate"
                 }
             }
@@ -217,7 +221,7 @@ class StreakCreationDialogFragment(
                 val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 val formattedDate = dateFormat.format(selectedDate.time)
                 textView.text = "$formattedDate"
-                viewModel.onStreakGoalDeadlineChanged(Date(formattedDate))
+                viewModel.onStreakGoalDeadlineChanged(selectedDate.time)
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),

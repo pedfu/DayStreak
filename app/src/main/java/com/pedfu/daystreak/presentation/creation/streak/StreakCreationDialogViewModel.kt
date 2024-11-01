@@ -208,11 +208,13 @@ class StreakCreationDialogViewModel(
                     streakBackgroundImage,
                     streakCategory?.id,
                     streakMinTimePerDayInMinutes,
-                    streakBackgroundLocal?.name
+                    streakBackgroundLocal?.name,
+                    formattedDate,
                 )
 
                 if (streakId != null) streakUseCase.updateStreak(streakId, request)
                 else streakUseCase.createStreak(request)
+
                 state = StreakCreationState.DONE
             } catch (ex: Throwable) {
                 errorLiveData.value = listOf(StreakCreationFields.NETWORK)
