@@ -28,7 +28,7 @@ data class StreakItem(
     val status: StreakStatus = StreakStatus.PENDING,
     val backgroundPicture: String?,
     val createdAt: Date,
-    val goalDeadLine: Date?,
+    val goalDeadLine: String?,
     val maxStreak: Int = 0,
     val localBackgroundPicture: String? = null,
     val localBackgroundPictureRes: Int? = null,

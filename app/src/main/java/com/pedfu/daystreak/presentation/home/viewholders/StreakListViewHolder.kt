@@ -21,7 +21,7 @@ class StreakListViewHolder(
 
     private fun ItemCardBinding.setupCard(streakItem: StreakItem, onClick: (streakId: Long) -> Unit, showPopupMenu: (View, Long, ConfirmDeleteType) -> Unit) {
         if (streakItem.backgroundPicture != null) ImageProvider.loadImageFromUrl(imageViewCardBg, streakItem.backgroundPicture)
-        if (streakItem.localBackgroundPictureRes != null) imageViewCardBg.setImageResource(streakItem.localBackgroundPictureRes)
+        else if (streakItem.localBackgroundPicture != null) imageViewCardBg.setImageResource(ImageProvider.loadOptimizedLocalImage(streakItem.localBackgroundPicture, root.context))
         contraintLayoutCard.setOnClickListener {
             onClick(streakItem.id ?: 0)
         }

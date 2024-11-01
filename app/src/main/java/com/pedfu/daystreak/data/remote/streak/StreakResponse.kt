@@ -11,7 +11,7 @@ class StreakResponse (
     @Json(name = "id") val id: Long,
     @Json(name = "name") val name: String,
     @Json(name = "duration_days") val durationDays: Int?,
-    @Json(name = "goal_deadline") val goalDeadLine: Date?,
+    @Json(name = "goal_deadline") val goalDeadLine: String?,
     @Json(name = "description") val description: String,
     @Json(name = "created_by") val createdBy: String?,
     @Json(name = "category") val category: CategoryResponse,

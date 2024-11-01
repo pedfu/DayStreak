@@ -15,7 +15,8 @@ class StreakRequest (
     @Json(name = "category") val category: CategoryRequest?,
     @Json(name = "category_id") val categoryId: Long?,
     @Json(name = "min_time_per_day") val minTimePerDay: Int, // minutes
-    @Json(name = "local_background") val localBackground: String?
+    @Json(name = "local_background") val localBackground: String?,
+    @Json(name = "goal_deadline") val goalDeadline: String?
 ) {
     constructor(
         name: String,
@@ -25,7 +26,8 @@ class StreakRequest (
         background: File?,
         categoryId: Long?,
         minTimePerDay: Int,
-        localBackground: String?
+        localBackground: String?,
+        goalDeadline: String?,
     ): this(
         null,
         name,
@@ -36,7 +38,8 @@ class StreakRequest (
         null,
         categoryId,
         minTimePerDay,
-        localBackground
+        localBackground,
+        goalDeadline
     )
 }
 
@@ -49,6 +52,7 @@ class SimplifiedStreakRequest (
     @Json(name = "category_id") val categoryId: Long?,
     @Json(name = "min_time_per_day") val minTimePerDay: Int, // minutes
     @Json(name = "local_background_picture") val localBackground: String?, // minutes
+    @Json(name = "goal_deadline") val goalDeadline: String?
 ) {
     constructor(request: StreakRequest): this(
         name = request.name,
@@ -58,5 +62,6 @@ class SimplifiedStreakRequest (
         categoryId = request.categoryId,
         minTimePerDay = request.minTimePerDay,
         localBackground = request.localBackground,
+        goalDeadline = request.goalDeadline,
     )
 }

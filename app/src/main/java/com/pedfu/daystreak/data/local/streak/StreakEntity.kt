@@ -36,7 +36,7 @@ class StreakEntity(
     val status: String,
     val backgroundPicture: String?,
     val createdAt: Date,
-    val goalDeadLine: Date?,
+    val goalDeadLine: String?,
     val maxStreak: Int,
     val localBackgroundPicture: String?,
 ) {

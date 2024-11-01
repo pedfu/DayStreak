@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.imageview.ShapeableImageView
@@ -27,6 +28,7 @@ object ImageProvider {
 
     fun loadOptimizedLocalImage(imageName: String, context: Context): Int {
         val resourceName = imageName.substringBeforeLast(".") + "_optimized_50"
+        Log.i("TESTE OPT", "OPT - " + resourceName + " - " + imageName)
         return context.resources.getIdentifier(resourceName, "drawable", context.packageName)
     }
 
@@ -44,10 +46,7 @@ object ImageProvider {
 }
 
 val BACKGROUND_OPTIONS = listOf(
-    "bg_background.jpg",
-    "bg_background2.jpg",
-    "bg_balloon.jpg",
-    "bg_books.jpg",
+    "bg_balloons.jpg",
     "bg_car.jpg",
     "bg_car2.jpg",
     "bg_clothes.jpg",

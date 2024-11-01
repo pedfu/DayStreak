@@ -156,7 +156,7 @@ class StreakDetailFragment : Fragment() {
             textViewStreakTitle.text = streak.name
             textViewStreakDescription.text = streak.description
             if (streak.backgroundPicture != null) ImageProvider.loadImageFromUrl(detailsPicture, streak.backgroundPicture)
-            if (streak.localBackgroundPicture != null) detailsPicture.setImageResource(ImageProvider.loadLocalImage(streak.localBackgroundPicture, requireContext()))
+            else if (streak.localBackgroundPicture != null) detailsPicture.setImageResource(ImageProvider.loadLocalImage(streak.localBackgroundPicture, requireContext()))
 
             cardTag.isVisible = true
             imageViewCardTag.setImageDrawable(

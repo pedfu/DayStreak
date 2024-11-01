@@ -10,10 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.ItemBottomSheetBinding
-import com.pedfu.daystreak.presentation.creation.streak.backgroundOptions.BackgroundOption
 import com.pedfu.daystreak.presentation.creation.streak.backgroundOptions.BackgroundOptionsAdapter
-import com.pedfu.daystreak.utils.BACKGROUND_OPTIONS
-import com.pedfu.daystreak.utils.ImageProvider
 import com.pedfu.daystreak.utils.lazyViewModel
 
 class ModalBottomSheetDialog(
