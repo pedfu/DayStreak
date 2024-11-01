@@ -111,6 +111,7 @@
                         android:textSize="14sp"
                         app:backgroundTint="@color/transparent"
                         app:cornerRadius="4dp"
+                        android:text="∞"
                         app:layout_constraintBaseline_toBaselineOf="@id/textInputStreakMinPerDay"
                         app:layout_constraintBottom_toBottomOf="@id/textInputStreakMinPerDay"
                         app:layout_constraintEnd_toStartOf="@id/guideline"

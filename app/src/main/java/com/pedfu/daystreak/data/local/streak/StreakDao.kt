@@ -1,6 +1,5 @@
 package com.pedfu.daystreak.data.local.streak
 
-import android.database.sqlite.SQLiteConstraintException
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy

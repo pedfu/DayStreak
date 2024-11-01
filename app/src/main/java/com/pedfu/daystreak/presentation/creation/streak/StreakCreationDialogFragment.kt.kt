@@ -9,8 +9,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +21,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
-import com.bumptech.glide.load.model.UnitModelLoader
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentStreakCreationDialogBinding
 import com.pedfu.daystreak.domain.streak.StreakCategoryItem
@@ -108,21 +105,26 @@ class StreakCreationDialogFragment(
             if (it != null) {
                 editTextName.setText(it.name)
                 editTextDescription.setText(it.description)
-//                streakBackgroundImage
-//                streakBackgroundColor
                 val index = viewModel.categoriesLiveData.value?.indexOfFirst { t -> t.id == it.categoryId }
                 if (index != null) spinnerCategory.setSelection(index)
-//                if (it.goalDeadline != null) {
-//                    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-//                    val formattedDate = dateFormat.format(it.time)
-//                    textInputStreakGoalDeadline.text = "$formattedDate"
-//                }
+                if (it.minTimePerDayInMinutes != null) {
+                    val currHours = it.minTimePerDayInMinutes / 60
+                    val currMin = it.minTimePerDayInMinutes % 60
+                    textInputStreakMinPerDay.setText(String.format("%02d:%02d", currHours, currMin))
+                    viewModel.onStreakMinTimePerDayInMinutesChanged(it.minTimePerDayInMinutes)
+                }
+                if (it.goalDeadLine != null) {
+                    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    val formattedDate = dateFormat.format(it.goalDeadLine)
+                    textInputStreakGoalDeadline.text = "$formattedDate"
+                }
             }
         }
     }
 
     private fun FragmentStreakCreationDialogBinding.setupInputs() {
         editTextName.addTextChangedListener { viewModel.onStreakNameChanged(it.toString()) }
+
         textInputStreakMinPerDay.setOnClickListener {
             val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
                 textInputStreakMinPerDay.setText(String.format("%02d:%02d", hour, minute))
@@ -136,16 +138,19 @@ class StreakCreationDialogFragment(
         }
 
         editTextDescription.addTextChangedListener { viewModel.onStreakDescriptionChanged(it.toString()) }
+
         constraintLayoutBackgroundPicture.setOnClickListener { dispatchSelectPictureIntent() }
         constraintLayoutBackgroundPictureLocal.setOnClickListener {
             val modal = ModalBottomSheetDialog(::onSelectLocalImage)
             modal.show(parentFragmentManager, ModalBottomSheetDialog.TAG)
         }
+
         imageViewLocalPicture.setOnClickListener {
             val modal = ModalBottomSheetDialog(::onSelectLocalImage)
             modal.show(parentFragmentManager, ModalBottomSheetDialog.TAG)
         }
         imageViewPictureTaken.setOnClickListener { dispatchSelectPictureIntent() }
+
         textInputStreakGoalDeadline.setOnClickListener {
             showDatePicker(textInputStreakGoalDeadline)
         }

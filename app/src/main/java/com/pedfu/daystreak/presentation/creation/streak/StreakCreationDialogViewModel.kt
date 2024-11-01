@@ -1,18 +1,15 @@
 package com.pedfu.daystreak.presentation.creation.streak
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pedfu.daystreak.Inject
-import com.pedfu.daystreak.data.remote.streak.CategoryRequest
 import com.pedfu.daystreak.data.remote.streak.StreakRequest
 import com.pedfu.daystreak.data.repositories.streak.StreakRepository
 import com.pedfu.daystreak.domain.streak.StreakCategoryItem
 import com.pedfu.daystreak.domain.streak.StreakItem
 import com.pedfu.daystreak.presentation.creation.streak.backgroundOptions.BackgroundOption
-import com.pedfu.daystreak.presentation.home.HomeViewModel
 import com.pedfu.daystreak.usecases.streak.StreakUseCase
 import com.pedfu.daystreak.utils.ImageProvider
 import kotlinx.coroutines.launch
@@ -157,8 +154,7 @@ class StreakCreationDialogViewModel(
 
 
     private fun validateFields() {
-        val ready = !streakName.isNullOrBlank() && streakGoalDeadline != null &&
-                streakMinTimePerDayInMinutes >= 0 && streakCategory != null && !streakDescription.isNullOrBlank()
+        val ready = !streakName.isNullOrBlank() && streakCategory != null && !streakDescription.isNullOrBlank()
 
         if (ready) {
             errorLiveData.value = emptyList()
@@ -171,8 +167,6 @@ class StreakCreationDialogViewModel(
     private fun validateOnFinish(): Boolean {
         val errors = mutableListOf<StreakCreationFields>()
         if (streakName.isNullOrBlank()) errors.add(StreakCreationFields.NAME)
-        if (streakGoalDeadline == null) errors.add(StreakCreationFields.GOAL_DEADLINE)
-        if (streakMinTimePerDayInMinutes < 0) errors.add(StreakCreationFields.MIN_TIME_PER_DAY)
         if (streakCategory == null) errors.add(StreakCreationFields.CATEGORY)
         if (streakDescription.isNullOrBlank()) errors.add(StreakCreationFields.DESCRIPTION)
 

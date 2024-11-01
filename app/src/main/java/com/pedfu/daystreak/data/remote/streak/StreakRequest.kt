@@ -3,9 +3,6 @@ package com.pedfu.daystreak.data.remote.streak
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.io.File
-import java.time.LocalDate
-import java.util.Date
-import kotlin.math.min
 
 @JsonClass(generateAdapter = true)
 class StreakRequest (
@@ -17,7 +14,7 @@ class StreakRequest (
     @Json(name = "background") val background: File?,
     @Json(name = "category") val category: CategoryRequest?,
     @Json(name = "category_id") val categoryId: Long?,
-    @Json(name = "min_time_per_day") val minTimePerDay: Int?, // minutes
+    @Json(name = "min_time_per_day") val minTimePerDay: Int, // minutes
     @Json(name = "local_background") val localBackground: String?
 ) {
     constructor(
@@ -27,7 +24,7 @@ class StreakRequest (
         endDate: String?,
         background: File?,
         categoryId: Long?,
-        minTimePerDay: Int?,
+        minTimePerDay: Int,
         localBackground: String?
     ): this(
         null,
@@ -50,7 +47,7 @@ class SimplifiedStreakRequest (
     @Json(name = "duration_days") val durationDays: Long?, // duration days
     @Json(name = "end_date") val endDate: String?, // duration days
     @Json(name = "category_id") val categoryId: Long?,
-    @Json(name = "min_time_per_day") val minTimePerDay: Int?, // minutes
+    @Json(name = "min_time_per_day") val minTimePerDay: Int, // minutes
     @Json(name = "local_background_picture") val localBackground: String?, // minutes
 ) {
     constructor(request: StreakRequest): this(

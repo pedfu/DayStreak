@@ -5,8 +5,14 @@ import java.util.Date
 
 class DateConverter {
     @TypeConverter
-    fun fromDate(date: Date): Long = date.time
+    fun fromDate(date: Date?): Long? {
+        val datetime = date ?: return null
+        return datetime.time
+    }
 
     @TypeConverter
-    fun toDate(time: Long): Date = Date(time)
+    fun toDate(time: Long?): Date? {
+        val timeLong = time ?: return null
+        return Date(timeLong)
+    }
 }
