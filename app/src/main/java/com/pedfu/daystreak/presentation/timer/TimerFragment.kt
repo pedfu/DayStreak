@@ -23,7 +23,7 @@ class TimerFragment : Fragment() {
     private val binding: FragmentTimerBinding get() = _binding!!
 
     private val viewModel by lazyViewModel {
-        TimerViewModel(args.minutes)
+        TimerViewModel(args.minutes, args.streakId)
     }
 
     private lateinit var countDownTimer: CountDownTimer
@@ -65,6 +65,10 @@ class TimerFragment : Fragment() {
         timerText.isClickable = state == TimerState.IDLE
         timerText.isActivated = state == TimerState.IDLE
         timerText.isEnabled = state == TimerState.IDLE
+
+        if (state == TimerState.TIME_SAVED) {
+            findNavController().navigateUp()
+        }
     }
 
     private fun FragmentTimerBinding.setTimer(timeInSeconds: Long) {
@@ -205,6 +209,8 @@ class TimerFragment : Fragment() {
             override fun onFinish() {
                 isRunning = false
                 updateTimerText()
+                viewModel.stopTimer()
+                openConfirmationModal()
             }
         }
     }

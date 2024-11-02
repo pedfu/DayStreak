@@ -2,11 +2,8 @@ package com.pedfu.daystreak.utils
 
 import android.app.Dialog
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.util.DisplayMetrics
-import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager.LayoutParams
 import android.widget.ImageButton
@@ -21,7 +18,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.domain.notification.NotificationItem
-import com.pedfu.daystreak.domain.streak.StreakStatus
 import com.pedfu.daystreak.presentation.home.adapters.NotificationAdapter
 import java.util.Date
 
@@ -91,12 +87,10 @@ object Modals {
         }
         buttonCancel.setOnClickListener {
             dialog.hide()
-//            if (onCancel != null) {
-//                onCancel()
-//            }
         }
         buttonConfirm.setOnClickListener {
             onConfirm()
+            dialog.hide()
         }
 
         dialog.show()

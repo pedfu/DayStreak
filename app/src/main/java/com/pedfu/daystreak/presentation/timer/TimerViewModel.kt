@@ -4,20 +4,24 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pedfu.daystreak.Inject
-import com.pedfu.daystreak.usecases.timer.TimerUseCase
+import com.pedfu.daystreak.data.remote.streak.CompleteDayRequest
+import com.pedfu.daystreak.usecases.streak.StreakUseCase
 import kotlinx.coroutines.launch
 import java.util.Date
+import kotlin.math.ceil
 
 enum class TimerState {
     IDLE,
     RUNNING,
     PAUSED,
-    LOADING
+    LOADING,
+    TIME_SAVED,
 }
 
 class TimerViewModel(
     private val minutes: Long,
-    private val timerUseCase: TimerUseCase = Inject.timerUseCase,
+    private val streakId: Long,
+    private val streakUseCase: StreakUseCase = Inject.streakUseCase,
 ): ViewModel() {
     private var state: TimerState = TimerState.IDLE
         set(value) {
@@ -58,6 +62,7 @@ class TimerViewModel(
     fun stopTimer() {
         endTime = Date()
         durationInSec = totalTimer
+        state = TimerState.IDLE
     }
 
     fun onConfirmCreateTrack() {
@@ -65,8 +70,11 @@ class TimerViewModel(
 
         viewModelScope.launch {
             state = TimerState.LOADING
-            timerUseCase.sendNewTrack(durationInSec, startTime, endTime)
-            state = TimerState.IDLE
+
+            // date = null => today
+            val minutes = ceil(totalTimer.toDouble() / 60).toInt()
+            streakUseCase.completeStreakDay(CompleteDayRequest(streakId, null, minutes, "Using timer"))
+            state = TimerState.TIME_SAVED
         }
     }
 }

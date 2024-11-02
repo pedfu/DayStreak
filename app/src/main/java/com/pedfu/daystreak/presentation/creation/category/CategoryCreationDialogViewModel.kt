@@ -2,13 +2,11 @@ package com.pedfu.daystreak.presentation.creation.category
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.pedfu.daystreak.Inject
 import com.pedfu.daystreak.data.remote.streak.CategoryRequest
 import com.pedfu.daystreak.data.repositories.streak.StreakRepository
 import com.pedfu.daystreak.domain.streak.StreakCategoryItem
-import com.pedfu.daystreak.presentation.home.HomeViewModel
 import com.pedfu.daystreak.usecases.streak.StreakUseCase
 import kotlinx.coroutines.launch
 

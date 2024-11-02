@@ -104,7 +104,8 @@ class StreakDetailFragment : Fragment() {
 
         buttonStartTimer.setOnClickListener {
             // precisa aparecer modal -> pessoa digita quantidade -> inicia timer
-            val args = TimerFragmentArgs.Builder(15).build()
+            val streakId = viewModel.streakLiveData.value?.id ?: -1
+            val args = TimerFragmentArgs.Builder(15, streakId).build()
             findNavController().navigate(R.id.action_from_details_to_timer, args.toBundle())
         }
         imageButtonDelete.setOnClickListener {

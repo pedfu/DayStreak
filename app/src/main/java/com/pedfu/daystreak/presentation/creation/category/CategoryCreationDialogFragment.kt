@@ -7,19 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams
-import android.widget.FrameLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentCategoryCreationDialogBinding
 import com.pedfu.daystreak.presentation.creation.OnItemCreatedListener
-import com.pedfu.daystreak.presentation.home.HomeViewModel
 import com.pedfu.daystreak.presentation.reusable.showErrorModalSnackbar
-import com.pedfu.daystreak.presentation.reusable.showErrorSnackbar
 import com.pedfu.daystreak.utils.lazyViewModel
 
 class CategoryCreationDialogFragment(

@@ -92,6 +92,9 @@
         <argument
             android:name="minutes"
             app:argType="long"/>
+        <argument
+            android:name="streakId"
+            app:argType="long"/>
     </fragment>
 
     <fragment
