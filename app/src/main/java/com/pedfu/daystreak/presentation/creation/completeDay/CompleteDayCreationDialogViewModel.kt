@@ -79,13 +79,6 @@ class CompleteDayCreationDialogViewModel(
     }
 
     private fun validateFields() {
-        val minTime = streak?.minTimePerDayInMinutes ?: 0
-        if (streakDayTimeInMinutes < minTime) {
-            errorLiveData.value = EMPTY_NAME
-            stateLiveData.value = CompleteDayCreationState.IDLE
-            return
-        }
-
         errorLiveData.value = null
         stateLiveData.value = CompleteDayCreationState.READY
     }
