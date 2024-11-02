@@ -1,6 +1,5 @@
 package com.pedfu.daystreak.presentation.timer
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,13 +20,19 @@ class TimerViewModel(
     private val timerUseCase: TimerUseCase = Inject.timerUseCase,
 ): ViewModel() {
     private var state: TimerState = TimerState.IDLE
+        set(value) {
+            field = value
+            stateLiveData.value = value
+        }
 
-    private var first = true
     private var startTime: Date = Date()
     private var endTime: Date = Date()
     private var durationInSec: Long = 0
     var totalTimer: Long = minutes * 60
-        private set
+        private set(value) {
+            field = value
+            totalTimerLiveData.value = value
+        }
     var timeLeft: Long = totalTimer
         private set
 
@@ -35,8 +40,10 @@ class TimerViewModel(
     val totalTimerLiveData = MutableLiveData(totalTimer)
 
     // create functionality to edit the total timer
-    fun updateTotalTimer(timeInSec: Long) {
-        totalTimer = timeInSec
+    fun updateTotalTimer(timeInSec: String) {
+        val minutes = timeInSec.substring(0, 2).toInt() * 60
+        val seconds = timeInSec.substring(2, 4).toInt()
+        totalTimer = (minutes + seconds).toLong()
     }
 
     fun updateTimeLeft(timeInSec: Long) {

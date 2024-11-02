@@ -2,21 +2,20 @@ package com.pedfu.daystreak.presentation.timer
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentTimerBinding
-import com.pedfu.daystreak.domain.streak.StreakStatus
 import com.pedfu.daystreak.utils.Modals
 import com.pedfu.daystreak.utils.lazyViewModel
-import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
 class TimerFragment : Fragment() {
@@ -69,8 +68,7 @@ class TimerFragment : Fragment() {
     }
 
     private fun FragmentTimerBinding.setTimer(timeInSeconds: Long) {
-        val totalTime = TimeUnit.SECONDS.toMillis(timeInSeconds)
-        timeLeft = totalTime * 1000
+        timeLeft = TimeUnit.SECONDS.toMillis(timeInSeconds)
         updateCountDownTimer(timeLeft)
         updateTimerText()
     }
@@ -106,6 +104,36 @@ class TimerFragment : Fragment() {
                 else -> startTimer()
             }
         }
+        timerTextInput.setText("${String.format("%02d", args.minutes)}:00")
+        timerTextInput.addTextChangedListener(object : TextWatcher {
+            private var currentText = ""
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s.toString() != currentText) {
+                    val cleanInput = s.toString().replace(":", "")
+                    if (cleanInput.length == 4) {
+                        viewModel.updateTotalTimer(cleanInput)
+                    }
+
+                    // Format the string as NN:NN
+                    if (cleanInput.length <= 4) {
+                        val formatted = StringBuilder(cleanInput)
+                        if (cleanInput.length >= 3) {
+                            formatted.insert(2, ":")
+                        }
+                        currentText = formatted.toString()
+                        timerTextInput.setText(currentText)
+                        timerTextInput.setSelection(currentText.length)
+                    } else {
+                        timerTextInput.setText(currentText)
+                        timerTextInput.setSelection(currentText.length)
+                    }
+                }
+            }
+        })
     }
 
     private fun openConfirmationModal() {
@@ -120,7 +148,18 @@ class TimerFragment : Fragment() {
         viewModel.onConfirmCreateTrack()
     }
 
+    private fun FragmentTimerBinding.setTimerText(started: Boolean=true) {
+        timerTextInput.isVisible = !started
+        timerText.isVisible = started
+
+        timerTextInput.isClickable = !started
+        timerTextInput.isActivated = !started
+        timerTextInput.isEnabled = !started
+    }
+
     private fun FragmentTimerBinding.startTimer() {
+        setTimerText(true)
+
         viewModel.startTimer()
         imageButtonPause.setImageDrawable(
             ContextCompat.getDrawable(
@@ -131,10 +170,6 @@ class TimerFragment : Fragment() {
         isRunning = true
         updateCountDownTimer(timeLeft)
         countDownTimer.start()
-
-        timerText.isClickable = false
-        timerText.isActivated = false
-        timerText.isEnabled = false
     }
 
     private fun FragmentTimerBinding.pauseTimer() {
@@ -152,35 +187,12 @@ class TimerFragment : Fragment() {
         timerText.isEnabled = true
     }
 
-//    private fun FragmentTimerBinding.resetTimer() {
-//        countDownTimer.cancel()
-////        timeLeft = TimeUnit.MILLISECONDS.toSeconds(viewModel.timeLeft)
-//        viewModel.updateTimeLeft(900)
-//        viewModel.startTimer()
-//        isRunning = false
-//        updateTimerText()
-//        imageButtonPause.setImageDrawable(
-//            ContextCompat.getDrawable(
-//                this.root.context,
-//                R.drawable.ic_unpause_black
-//            )
-//        )
-//
-//        timerText.isClickable = true
-//        timerText.isActivated = true
-//        timerText.isEnabled = true
-//    }
-
     private fun FragmentTimerBinding.resetTimer() {
+        setTimerText(false)
         pauseTimer()
 
         // restart timer
         setTimer(viewModel.totalTimer)
-
-        // Habilita a interação com o campo de texto do timer
-        timerText.isClickable = true
-        timerText.isActivated = true
-        timerText.isEnabled = true
     }
 
     private fun FragmentTimerBinding.updateCountDownTimer(milliSec: Long) {
