@@ -1,6 +1,7 @@
 package com.pedfu.daystreak.presentation.creation.completeDay
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -67,39 +68,22 @@ class CompleteDayCreationDialogFragment(
                 dismiss()
                 viewModel.resetData()
             }
-            editTextHour.addTextChangedListener(object : TextWatcher {
-                private var current = ""
-                private var isUpdating = false
 
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-                override fun afterTextChanged(s: Editable?) {
-                    if (isUpdating) {
-                        isUpdating = false
-                        return
-                    }
-
-                    var formatted = s.toString().replace(Regex("[^\\d]"), "")
-                    var cleanInput = formatted.replace(":", "").replace("-", "")
-                    if (cleanInput.length >= 4) {
-                        val hh = formatted.substring(0, 2)
-                        val mm = formatted.substring(2, 4)
-                        formatted = "${if (hh.toInt() >= 24) "23" else hh}:${if (mm.toInt() >= 60) "59" else mm}"
-                    }
-
-                    isUpdating = true
-                    current = formatted
-                    editTextHour.setText(formatted)
-                    editTextHour.setSelection(formatted.length)
-                    viewModel.onStreakHoursChanged(formatted)
+            buttonInputHour.setOnClickListener {
+                val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+                    buttonInputHour.setText(String.format("%02d:%02d", hour, minute))
+                    val minutes = (hour * 60) + minute // to minutes
+                    viewModel.onStreakDayTimeInMinutesChanged(minutes)
                 }
-            })
+                val currentSavedMinutes = viewModel.streakDayTimeInMinutesLiveData.value ?: 0
+                val currHours = (currentSavedMinutes / 60).toInt()
+                val currMin = currentSavedMinutes % 60
+                TimePickerDialog(requireContext(), timeSetListener, currHours, currMin, true).show()
+            }
 
             editTextDescription.addTextChangedListener { viewModel.onStreakDescriptionChanged(it.toString()) }
-            textInputDate.setOnClickListener {
-                showDatePicker(textInputDate)
+            buttonInputDate.setOnClickListener {
+                showDatePicker(buttonInputDate)
             }
 
             observeViewModel()

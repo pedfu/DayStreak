@@ -4,10 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pedfu.daystreak.Inject
-import com.pedfu.daystreak.data.remote.streak.CategoryRequest
 import com.pedfu.daystreak.data.remote.streak.CompleteDayRequest
 import com.pedfu.daystreak.data.repositories.streak.StreakRepository
 import com.pedfu.daystreak.domain.streak.StreakCategoryItem
+import com.pedfu.daystreak.domain.streak.StreakItem
 import com.pedfu.daystreak.usecases.streak.StreakUseCase
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -28,10 +28,11 @@ class CompleteDayCreationDialogViewModel(
     private val streakRepository: StreakRepository = Inject.streakRepository,
     private val streakUseCase: StreakUseCase = Inject.streakUseCase,
 ) : ViewModel() {
-    private var streakDayHours: String = ""
+    private var streak: StreakItem? = null
+    private var streakDayTimeInMinutes: Int = 0
         set(value) {
             field = value
-            streakDayHoursLiveData.value = value
+            streakDayTimeInMinutesLiveData.value = value
             validateFields()
         }
     private var streakDayDescription: String = ""
@@ -52,7 +53,7 @@ class CompleteDayCreationDialogViewModel(
             stateLiveData.value = value
         }
 
-    val streakDayHoursLiveData = MutableLiveData(streakDayHours)
+    val streakDayTimeInMinutesLiveData = MutableLiveData(streakDayTimeInMinutes)
     val streakDayDescriptionLiveData = MutableLiveData(streakDayDescription)
     val streakDayDateLiveData = MutableLiveData(streakDayDate)
     val stateLiveData = MutableLiveData(state)
@@ -63,11 +64,12 @@ class CompleteDayCreationDialogViewModel(
     init {
         viewModelScope.launch {
             existingCategories = streakRepository.getAllCategories()
+            streak = streakRepository.getStreak(streakId)
         }
     }
 
-    fun onStreakHoursChanged(hours: String) {
-        streakDayHours = hours
+    fun onStreakDayTimeInMinutesChanged(min: Int) {
+        streakDayTimeInMinutes = min
     }
     fun onStreakDescriptionChanged(text: String) {
         streakDayDescription = text
@@ -77,7 +79,8 @@ class CompleteDayCreationDialogViewModel(
     }
 
     private fun validateFields() {
-        if (streakDayHours?.isNullOrEmpty() == true || streakDayHours.replace(":", "").length < 4) {
+        val minTime = streak?.minTimePerDayInMinutes ?: 0
+        if (streakDayTimeInMinutes < minTime) {
             errorLiveData.value = EMPTY_NAME
             stateLiveData.value = CompleteDayCreationState.IDLE
             return
@@ -87,13 +90,6 @@ class CompleteDayCreationDialogViewModel(
         stateLiveData.value = CompleteDayCreationState.READY
     }
 
-    private fun getTimeInMinutes(): Int {
-        val cleanTxt = streakDayHours.replace(":", "")
-        val hh = cleanTxt.substring(0, 2).toInt() * 60
-        val mm = cleanTxt.substring(2, 4).toInt()
-        return hh + mm
-    }
-
     fun onFinish() {
         if (stateLiveData.value != CompleteDayCreationState.READY) return
 
@@ -101,8 +97,7 @@ class CompleteDayCreationDialogViewModel(
         viewModelScope.launch {
             try {
                 state = CompleteDayCreationState.LOADING
-                val minutes = getTimeInMinutes()
-                streakUseCase.completeStreakDay(CompleteDayRequest(streakId, streakDayDate, minutes, streakDayDescription))
+                streakUseCase.completeStreakDay(CompleteDayRequest(streakId, streakDayDate, streakDayTimeInMinutes, streakDayDescription))
                 state = CompleteDayCreationState.DONE
             } catch (ex: Throwable) {
                 errorLiveData.value = NETWORK
@@ -111,7 +106,7 @@ class CompleteDayCreationDialogViewModel(
     }
 
     fun resetData() {
-        streakDayHours = ""
+        streakDayTimeInMinutes = 0
         streakDayDate = null
         streakDayDescription = ""
     }

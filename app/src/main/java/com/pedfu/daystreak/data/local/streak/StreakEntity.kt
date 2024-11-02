@@ -66,7 +66,7 @@ class StreakEntity(
         categoryId = categoryId,
         userStreakId = userStreakId,
         minTimePerDayInMinutes = minTimePerDayInMinutes,
-        status = StreakStatus.fromString(status) ?: StreakStatus.PENDING,
+        status = StreakStatus.fromString(status),
         backgroundPicture = backgroundPicture,
         createdAt = createdAt,
         goalDeadLine = goalDeadLine,

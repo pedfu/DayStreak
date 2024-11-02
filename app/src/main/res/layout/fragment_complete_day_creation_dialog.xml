@@ -70,30 +70,25 @@
             android:id="@+id/labelHour"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/hour_mandatory"
+            android:text="@string/time_spent_mandatory"
             android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutTabOptions" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputHour"
-            style="@style/TextInputLayout"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonInputHour"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="65dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelHour">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextHour"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hour"
-                android:textColor="@color/black"
-                android:inputType="number"
-                android:singleLine="true" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            app:layout_constraintTop_toBottomOf="@+id/labelHour"
+            android:text="00:00"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:backgroundTint="@color/transparent"
+            app:cornerRadius="4dp"
+            app:strokeColor="@color/gray_font"
+            app:strokeWidth="1dp" />
 
         <TextView
             android:id="@+id/labelDate"
@@ -105,20 +100,10 @@
             android:textSize="12sp"
             android:visibility="gone"
             tools:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@id/textInputHour" />
-
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/textInputDate"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:visibility="gone"-->
-<!--            tools:visibility="visible"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/labelDate" />-->
+            app:layout_constraintTop_toBottomOf="@id/buttonInputHour" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/textInputDate"
+            android:id="@+id/buttonInputDate"
             android:layout_width="0dp"
             android:layout_height="63dp"
             android:textColor="@color/black"
@@ -141,7 +126,7 @@
             android:text="@string/description"
             android:textColor="@color/black"
             android:textSize="12sp"
-            app:layout_constraintTop_toBottomOf="@id/textInputDate" />
+            app:layout_constraintTop_toBottomOf="@id/buttonInputDate" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputDescription"
