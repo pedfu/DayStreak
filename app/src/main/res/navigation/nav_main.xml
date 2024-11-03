@@ -105,10 +105,21 @@
             android:id="@+id/action_from_emailsent_to_login"
             app:destination="@id/loginFragment"/>
     </fragment>
+
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.pedfu.daystreak.presentation.profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_from_profile_to_settings"
+            app:destination="@id/settingsFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.pedfu.daystreak.presentation.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 
 </navigation>

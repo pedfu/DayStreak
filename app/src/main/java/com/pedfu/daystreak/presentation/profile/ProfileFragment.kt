@@ -16,6 +16,7 @@ import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.pedfu.daystreak.R
 import com.pedfu.daystreak.databinding.FragmentProfileBinding
 import com.pedfu.daystreak.domain.user.User
 import com.pedfu.daystreak.presentation.MainActivity
@@ -77,6 +78,9 @@ class ProfileFragment : Fragment() {
         }
         linearLayoutSignOut.setOnClickListener {
             (requireActivity() as? MainActivity)?.signOutAndStartSignInActivity()
+        }
+        linearLayoutSettings.setOnClickListener {
+            findNavController().navigate(R.id.action_from_profile_to_settings)
         }
         linearLayoutPrivacyPolicy.setOnClickListener {
             frameLayout.isVisible = true

@@ -1,21 +1,31 @@
 package com.pedfu.daystreak.presentation.settings
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.pedfu.daystreak.R
-import com.pedfu.daystreak.databinding.FragmentHomeBinding
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.pedfu.daystreak.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
     private val binding: FragmentSettingsBinding get() = _binding!!
 
+    private lateinit var onBackPressedCallback: OnBackPressedCallback
+
+    private fun setupBackButton() {
+        onBackPressedCallback = requireActivity().onBackPressedDispatcher.addCallback {
+            findNavController().navigateUp()
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupBackButton()
         binding.run {
         }
     }
@@ -39,7 +49,5 @@ class SettingsFragment : Fragment() {
         linearLayoutDayStreaks.setOnClickListener {  }
         linearLayoutHiddenDayStreaks.setOnClickListener {  }
         linearLayoutSettings.setOnClickListener {  }
-        linearLayoutSignOut.setOnClickListener {  }
-        linearLayoutGoogleSignIn.setOnClickListener {  }
     }
 }
