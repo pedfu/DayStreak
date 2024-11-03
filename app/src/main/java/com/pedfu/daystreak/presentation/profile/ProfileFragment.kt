@@ -2,12 +2,15 @@ package com.pedfu.daystreak.presentation.profile
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
@@ -20,6 +23,7 @@ import com.pedfu.daystreak.utils.ImageProvider
 import com.pedfu.daystreak.utils.lazyViewModel
 
 private const val REQUEST_CODE_SELECT_IMAGE = 1
+private const val PRIVACY_POLICY_URL = "https://i.imgur.com/MFZmP0Y.png" // change in future
 
 class ProfileFragment : Fragment() {
 
@@ -35,10 +39,11 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupBackButton()
         binding.run {
+            setupBackButton()
             observeViewModel()
             setupButtons()
+            setupWebView()
         }
     }
 
@@ -56,9 +61,13 @@ class ProfileFragment : Fragment() {
         _binding = null
     }
 
-    private fun setupBackButton() {
+    private fun FragmentProfileBinding.setupBackButton() {
         onBackPressedCallback = requireActivity().onBackPressedDispatcher.addCallback {
-            findNavController().navigateUp()
+            if (frameLayout.isVisible) {
+                frameLayout.isVisible = false
+            } else {
+                findNavController().navigateUp()
+            }
         }
     }
 
@@ -68,6 +77,23 @@ class ProfileFragment : Fragment() {
         }
         linearLayoutSignOut.setOnClickListener {
             (requireActivity() as? MainActivity)?.signOutAndStartSignInActivity()
+        }
+        linearLayoutPrivacyPolicy.setOnClickListener {
+            frameLayout.isVisible = true
+            webview.loadUrl(PRIVACY_POLICY_URL)
+        }
+    }
+
+    private fun FragmentProfileBinding.setupWebView() {
+        webview.webViewClient = object : WebViewClient() {
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                super.onPageStarted(view, url, favicon)
+                progress.visibility = View.VISIBLE
+            }
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                progress.visibility = View.INVISIBLE
+            }
         }
     }
 

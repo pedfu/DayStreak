@@ -8,7 +8,6 @@
     android:background="@color/white"
     tools:context=".presentation.profile.ProfileFragment">
 
-
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageViewProfilePicture"
         android:layout_width="150dp"
@@ -129,7 +128,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayoutSignOut" />
 
     <LinearLayout
-        android:id="@+id/linearLayoutOptions3"
+        android:id="@+id/linearLayoutPrivacyPolicy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -154,6 +153,23 @@
             android:text="@string/privacy_policy"/>
 
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+    </FrameLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
