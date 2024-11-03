@@ -207,7 +207,7 @@ class StreakCreationDialogViewModel(
                     formattedDate,
                     streakBackgroundImage,
                     streakCategory?.id,
-                    streakMinTimePerDayInMinutes,
+                    streakMinTimePerDayInMinutes * 60, // to seconds
                     streakBackgroundLocal?.name,
                     formattedDate,
                 )

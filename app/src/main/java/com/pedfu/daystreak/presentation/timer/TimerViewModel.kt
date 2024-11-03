@@ -72,8 +72,7 @@ class TimerViewModel(
             state = TimerState.LOADING
 
             // date = null => today
-            val minutes = ceil(totalTimer.toDouble() / 60).toInt()
-            streakUseCase.completeStreakDay(CompleteDayRequest(streakId, null, minutes, "Using timer"))
+            streakUseCase.completeStreakDay(CompleteDayRequest(streakId, null, totalTimer.toInt(), "Using timer"))
             state = TimerState.TIME_SAVED
         }
     }

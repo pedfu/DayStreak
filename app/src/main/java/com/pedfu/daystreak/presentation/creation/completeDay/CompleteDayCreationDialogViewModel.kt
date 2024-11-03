@@ -90,7 +90,7 @@ class CompleteDayCreationDialogViewModel(
         viewModelScope.launch {
             try {
                 state = CompleteDayCreationState.LOADING
-                streakUseCase.completeStreakDay(CompleteDayRequest(streakId, streakDayDate, streakDayTimeInMinutes, streakDayDescription))
+                streakUseCase.completeStreakDay(CompleteDayRequest(streakId, streakDayDate, streakDayTimeInMinutes * 60, streakDayDescription))
                 state = CompleteDayCreationState.DONE
             } catch (ex: Throwable) {
                 errorLiveData.value = NETWORK
