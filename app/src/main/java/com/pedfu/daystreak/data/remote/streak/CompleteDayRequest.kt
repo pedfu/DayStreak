@@ -8,7 +8,7 @@ import java.util.Date
 class CompleteDayRequest (
     @Json(name = "id") val id: Long,
     @Json(name = "date") val date: Date?,
-    @Json(name = "minutes") val minutes: Int,
+    @Json(name = "seconds") val seconds: Int,
     @Json(name = "description") val description: String?,
 ) {
 }

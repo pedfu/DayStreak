@@ -99,7 +99,13 @@ class HomeFragment : Fragment() {
             }
             viewModel.filterStreaks()
         }
-        viewModel.streaksLiveData.observe(viewLifecycleOwner) { viewModel.filterStreaks() }
+        viewModel.streaksLiveData.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                val maxStreak = it.sortedByDescending { it.maxStreak }.first().maxStreak
+                dayStreakQnt.text = maxStreak.toString()
+            }
+            viewModel.filterStreaks()
+        }
         viewModel.categoriesLiveData.observe(viewLifecycleOwner) {
             var selectedId = viewModel.selectedCategoryLiveData.value
             if (selectedId == -1L && it.isNotEmpty()) {

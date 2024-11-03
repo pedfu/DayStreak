@@ -28,7 +28,6 @@ object ImageProvider {
 
     fun loadOptimizedLocalImage(imageName: String, context: Context): Int {
         val resourceName = imageName.substringBeforeLast(".") + "_optimized_50"
-        Log.i("TESTE OPT", "OPT - " + resourceName + " - " + imageName)
         return context.resources.getIdentifier(resourceName, "drawable", context.packageName)
     }
 
