@@ -8,7 +8,6 @@ import com.pedfu.daystreak.data.remote.streak.CompleteDayRequest
 import com.pedfu.daystreak.usecases.streak.StreakUseCase
 import kotlinx.coroutines.launch
 import java.util.Date
-import kotlin.math.ceil
 
 enum class TimerState {
     IDLE,
@@ -71,8 +70,9 @@ class TimerViewModel(
         viewModelScope.launch {
             state = TimerState.LOADING
 
+            val seconds = (totalTimer - timeLeft).toInt()
             // date = null => today
-            streakUseCase.completeStreakDay(CompleteDayRequest(streakId, null, totalTimer.toInt(), "Using timer"))
+            streakUseCase.completeStreakDay(CompleteDayRequest(streakId, null, seconds, "Using timer"))
             state = TimerState.TIME_SAVED
         }
     }
